@@ -1,12 +1,8 @@
-export default function Page() {
+export default function Home() {
   return (
-    <main
-      style={{
-        height: "100vh",
-        backgroundImage: "url('/images/top-visual.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-    />
-  )
+    <main>
+      <h1>さく楽</h1>
+      <p>テスト表示成功</p>
+    </main>
+  );
 }
