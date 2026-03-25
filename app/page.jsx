@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <main>
       <h1>さく楽</h1>
-      <p>テスト表示成功</p>
+      <p>表示テスト成功！</p>
     </main>
   );
 }
