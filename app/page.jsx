@@ -22,12 +22,13 @@ export default function Home() {
           aspectRatio: "9 / 16",
         }}
       >
+        {/* 予約する */}
         <a
           href="/reserve"
           style={{
             position: "absolute",
             left: "50%",
-            top: "56.8%",
+            top: "54.8%", // ← 少し上に調整
             transform: "translateX(-50%)",
             display: "flex",
             alignItems: "center",
@@ -44,21 +45,24 @@ export default function Home() {
             fontWeight: "bold",
             fontFamily:
               '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-            border: "4px solid #1f120d",
+            border: "2px solid #2a1810", // ← 細く
             boxSizing: "border-box",
             letterSpacing: "0.04em",
             textShadow: "0 1px 0 rgba(255,255,255,0.25)",
+            boxShadow:
+              "0 6px 10px rgba(0,0,0,0.25), inset 0 1px 2px rgba(255,255,255,0.15)", // ← 影追加
           }}
         >
           予約する
         </a>
 
+        {/* 下ボタン */}
         <a
           href="/confirm"
           style={{
             position: "absolute",
             left: "35%",
-            top: "65.8%",
+            top: "63.8%", // ← 一緒に上げる
             transform: "translateX(-50%)",
             display: "flex",
             alignItems: "center",
@@ -75,9 +79,11 @@ export default function Home() {
             fontWeight: "bold",
             fontFamily:
               '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-            border: "4px solid #1f120d",
+            border: "2px solid #2a1810",
             boxSizing: "border-box",
             letterSpacing: "0.03em",
+            boxShadow:
+              "0 4px 8px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15)",
           }}
         >
           予約確認
@@ -88,7 +94,7 @@ export default function Home() {
           style={{
             position: "absolute",
             left: "65%",
-            top: "65.8%",
+            top: "63.8%",
             transform: "translateX(-50%)",
             display: "flex",
             alignItems: "center",
@@ -105,9 +111,11 @@ export default function Home() {
             fontWeight: "bold",
             fontFamily:
               '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-            border: "4px solid #1f120d",
+            border: "2px solid #2a1810",
             boxSizing: "border-box",
             letterSpacing: "0.03em",
+            boxShadow:
+              "0 4px 8px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15)",
           }}
         >
           店舗情報
