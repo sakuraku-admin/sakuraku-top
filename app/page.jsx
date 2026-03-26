@@ -27,7 +27,7 @@ export default function Home() {
           style={{
             position: "absolute",
             left: "50%",
-            top: "60%",
+            top: "56.8%",
             transform: "translateX(-50%)",
             display: "flex",
             alignItems: "center",
@@ -38,14 +38,16 @@ export default function Home() {
             minHeight: "56px",
             borderRadius: "999px",
             backgroundColor: "#8f5d40",
-            color: "#f6d7d0",
+            color: "#f08f88",
             textDecoration: "none",
             fontSize: "clamp(20px, 2.2vw, 34px)",
             fontWeight: "bold",
+            fontFamily:
+              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
             border: "4px solid #1f120d",
             boxSizing: "border-box",
-            textShadow:
-              "-1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff",
+            letterSpacing: "0.04em",
+            textShadow: "0 1px 0 rgba(255,255,255,0.25)",
           }}
         >
           予約する
@@ -56,7 +58,7 @@ export default function Home() {
           style={{
             position: "absolute",
             left: "35%",
-            top: "70.5%",
+            top: "65.8%",
             transform: "translateX(-50%)",
             display: "flex",
             alignItems: "center",
@@ -67,12 +69,15 @@ export default function Home() {
             minHeight: "46px",
             borderRadius: "999px",
             backgroundColor: "#8f5d40",
-            color: "#d9b29a",
+            color: "#d5b19b",
             textDecoration: "none",
             fontSize: "clamp(15px, 1.5vw, 22px)",
             fontWeight: "bold",
+            fontFamily:
+              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
             border: "4px solid #1f120d",
             boxSizing: "border-box",
+            letterSpacing: "0.03em",
           }}
         >
           予約確認
@@ -83,7 +88,7 @@ export default function Home() {
           style={{
             position: "absolute",
             left: "65%",
-            top: "70.5%",
+            top: "65.8%",
             transform: "translateX(-50%)",
             display: "flex",
             alignItems: "center",
@@ -94,12 +99,15 @@ export default function Home() {
             minHeight: "46px",
             borderRadius: "999px",
             backgroundColor: "#8f5d40",
-            color: "#d9b29a",
+            color: "#d5b19b",
             textDecoration: "none",
             fontSize: "clamp(15px, 1.5vw, 22px)",
             fontWeight: "bold",
+            fontFamily:
+              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
             border: "4px solid #1f120d",
             boxSizing: "border-box",
+            letterSpacing: "0.03em",
           }}
         >
           店舗情報
