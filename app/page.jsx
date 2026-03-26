@@ -15,7 +15,7 @@ export default function Home() {
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#8fd6b5", // ← パステルグリーン
+    color: "#8fd6b5",
     textDecoration: "none",
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
@@ -27,7 +27,7 @@ export default function Home() {
     boxShadow:
       "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
     textShadow:
-      "0 1px 0 rgba(255,130,90,0.9), 0 0 8px rgba(143,214,181,0.5)",
+      "0 1px 0 rgba(242,106,79,0.95), 0 0 2px rgba(242,106,79,0.55), 0 0 8px rgba(143,214,181,0.28)",
     paddingBottom: "2px",
   };
 
@@ -53,7 +53,7 @@ export default function Home() {
     boxSizing: "border-box",
     letterSpacing: "0.03em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
-    textShadow: "0 1px 0 rgba(255,255,255,0.35)",
+    textShadow: "0 1px 0 rgba(255,255,255,0.18)",
     paddingBottom: "1px",
   };
 
@@ -80,12 +80,10 @@ export default function Home() {
           aspectRatio: "9 / 16",
         }}
       >
-        {/* メインボタン */}
         <a href="/reserve" style={mainButtonStyle}>
           予約する
         </a>
 
-        {/* 下ボタン */}
         <a
           href="/confirm"
           style={{
