@@ -2,7 +2,7 @@ export default function Home() {
   const mainButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "52.8%",
+    top: "45.5%", // ← かなり上へ
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -15,9 +15,9 @@ export default function Home() {
     background: "rgba(255, 245, 238, 0.16)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#d97f7f",
+    color: "#f26a4f", // ← さく楽に寄せたオレンジピンク
     textDecoration: "none",
-    fontSize: "clamp(19px, 2vw, 30px)",
+    fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
     fontFamily:
       '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
@@ -26,7 +26,7 @@ export default function Home() {
     letterSpacing: "0.06em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.14)",
     textShadow:
-      "0 1px 0 rgba(255,255,255,0.45), 0 0 2px rgba(255,255,255,0.18)",
+      "0 1px 0 rgba(255,255,255,0.4), 0 0 2px rgba(255,255,255,0.15)",
     paddingBottom: "2px",
   };
 
@@ -79,17 +79,19 @@ export default function Home() {
           aspectRatio: "9 / 16",
         }}
       >
+        {/* メイン */}
         <a href="/reserve" style={mainButtonStyle}>
           予約する
         </a>
 
+        {/* 下ボタン */}
         <a
           href="/confirm"
           style={{
             ...subButtonStyle,
             position: "absolute",
             left: "35%",
-            top: "61.7%",
+            top: "53.5%", // ← 一緒にグッと上へ
             transform: "translateX(-50%)",
           }}
         >
@@ -102,7 +104,7 @@ export default function Home() {
             ...subButtonStyle,
             position: "absolute",
             left: "65%",
-            top: "61.7%",
+            top: "53.5%",
             transform: "translateX(-50%)",
           }}
         >
