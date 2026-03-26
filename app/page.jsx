@@ -1,4 +1,60 @@
 export default function Home() {
+  const mainButtonStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "54.2%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "36%",
+    minWidth: "190px",
+    height: "5.2%",
+    minHeight: "58px",
+    borderRadius: "20px",
+    background: "rgba(255, 245, 238, 0.16)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#d98585",
+    textDecoration: "none",
+    fontSize: "clamp(18px, 2vw, 30px)",
+    fontWeight: "600",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(90, 55, 40, 0.55)",
+    boxSizing: "border-box",
+    letterSpacing: "0.06em",
+    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.14)",
+    textShadow: "0 1px 0 rgba(255,255,255,0.18)",
+    paddingBottom: "2px",
+  };
+
+  const subButtonStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "22%",
+    minWidth: "122px",
+    height: "3.9%",
+    minHeight: "46px",
+    borderRadius: "18px",
+    background: "rgba(255, 245, 238, 0.14)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#9d6f63",
+    textDecoration: "none",
+    fontSize: "clamp(14px, 1.3vw, 20px)",
+    fontWeight: "600",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(90, 55, 40, 0.5)",
+    boxSizing: "border-box",
+    letterSpacing: "0.03em",
+    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
+    textShadow: "0 1px 0 rgba(255,255,255,0.16)",
+    paddingBottom: "1px",
+  };
+
   return (
     <main
       style={{
@@ -22,68 +78,18 @@ export default function Home() {
           aspectRatio: "9 / 16",
         }}
       >
-        {/* 予約する */}
-        <a
-          href="/reserve"
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "54.8%", // ← 少し上に調整
-            transform: "translateX(-50%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "34%",
-            minWidth: "180px",
-            height: "4.8%",
-            minHeight: "56px",
-            borderRadius: "999px",
-            backgroundColor: "#8f5d40",
-            color: "#f08f88",
-            textDecoration: "none",
-            fontSize: "clamp(20px, 2.2vw, 34px)",
-            fontWeight: "bold",
-            fontFamily:
-              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-            border: "2px solid #2a1810", // ← 細く
-            boxSizing: "border-box",
-            letterSpacing: "0.04em",
-            textShadow: "0 1px 0 rgba(255,255,255,0.25)",
-            boxShadow:
-              "0 6px 10px rgba(0,0,0,0.25), inset 0 1px 2px rgba(255,255,255,0.15)", // ← 影追加
-          }}
-        >
+        <a href="/reserve" style={mainButtonStyle}>
           予約する
         </a>
 
-        {/* 下ボタン */}
         <a
           href="/confirm"
           style={{
+            ...subButtonStyle,
             position: "absolute",
             left: "35%",
-            top: "63.8%", // ← 一緒に上げる
+            top: "63.1%",
             transform: "translateX(-50%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "22%",
-            minWidth: "120px",
-            height: "3.9%",
-            minHeight: "46px",
-            borderRadius: "999px",
-            backgroundColor: "#8f5d40",
-            color: "#d5b19b",
-            textDecoration: "none",
-            fontSize: "clamp(15px, 1.5vw, 22px)",
-            fontWeight: "bold",
-            fontFamily:
-              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-            border: "2px solid #2a1810",
-            boxSizing: "border-box",
-            letterSpacing: "0.03em",
-            boxShadow:
-              "0 4px 8px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15)",
           }}
         >
           予約確認
@@ -92,30 +98,11 @@ export default function Home() {
         <a
           href="/info"
           style={{
+            ...subButtonStyle,
             position: "absolute",
             left: "65%",
-            top: "63.8%",
+            top: "63.1%",
             transform: "translateX(-50%)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            width: "22%",
-            minWidth: "120px",
-            height: "3.9%",
-            minHeight: "46px",
-            borderRadius: "999px",
-            backgroundColor: "#8f5d40",
-            color: "#d5b19b",
-            textDecoration: "none",
-            fontSize: "clamp(15px, 1.5vw, 22px)",
-            fontWeight: "bold",
-            fontFamily:
-              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-            border: "2px solid #2a1810",
-            boxSizing: "border-box",
-            letterSpacing: "0.03em",
-            boxShadow:
-              "0 4px 8px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.15)",
           }}
         >
           店舗情報
