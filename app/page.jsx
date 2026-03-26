@@ -2,7 +2,7 @@ export default function Home() {
   const mainButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "45.5%", // ← かなり上へ
+    top: "42.8%", // ← さらにしっかり上へ
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -15,7 +15,7 @@ export default function Home() {
     background: "rgba(255, 245, 238, 0.16)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#f26a4f", // ← さく楽に寄せたオレンジピンク
+    color: "#f26a4f",
     textDecoration: "none",
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
@@ -26,7 +26,7 @@ export default function Home() {
     letterSpacing: "0.06em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.14)",
     textShadow:
-      "0 1px 0 rgba(255,255,255,0.4), 0 0 2px rgba(255,255,255,0.15)",
+      "0 1px 0 rgba(255,255,255,0.55), 0 0 3px rgba(255,255,255,0.25)", // ← 少し強く
     paddingBottom: "2px",
   };
 
@@ -42,7 +42,7 @@ export default function Home() {
     background: "rgba(255, 245, 238, 0.14)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#9a6a5f",
+    color: "#7a4f45", // ← 濃くした
     textDecoration: "none",
     fontSize: "clamp(14px, 1.3vw, 20px)",
     fontWeight: "700",
@@ -84,14 +84,14 @@ export default function Home() {
           予約する
         </a>
 
-        {/* 下ボタン */}
+        {/* 下 */}
         <a
           href="/confirm"
           style={{
             ...subButtonStyle,
             position: "absolute",
             left: "35%",
-            top: "53.5%", // ← 一緒にグッと上へ
+            top: "50.5%", // ← 一緒にかなり上へ
             transform: "translateX(-50%)",
           }}
         >
@@ -104,7 +104,7 @@ export default function Home() {
             ...subButtonStyle,
             position: "absolute",
             left: "65%",
-            top: "53.5%",
+            top: "50.5%",
             transform: "translateX(-50%)",
           }}
         >
