@@ -27,7 +27,7 @@ export default function Home() {
     boxShadow:
       "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
     textShadow:
-      "0 1px 0 rgba(255,255,255,0.85), 0 0 6px rgba(143,214,181,0.45)",
+      "0 1px 0 rgba(255,140,100,0.9), 0 0 6px rgba(143,214,181,0.45)",
     paddingBottom: "2px",
   };
 
