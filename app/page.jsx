@@ -15,7 +15,7 @@ export default function Home() {
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#7a4f45",
+    color: "#5a3a2c", // ← ダークブラウン
     textDecoration: "none",
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
@@ -26,8 +26,11 @@ export default function Home() {
     letterSpacing: "0.06em",
     boxShadow:
       "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
+
+    // ← 主役だけ白縁
     textShadow:
-      "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9)"
+      "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.6)",
+
     paddingBottom: "2px",
   };
 
@@ -43,7 +46,7 @@ export default function Home() {
     background: "rgba(255, 245, 238, 0.14)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#7a4f45",
+    color: "#5a3a2c", // ← 統一
     textDecoration: "none",
     fontSize: "clamp(14px, 1.3vw, 20px)",
     fontWeight: "700",
@@ -53,7 +56,10 @@ export default function Home() {
     boxSizing: "border-box",
     letterSpacing: "0.03em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
-    textShadow: "0 1px 0 rgba(255,255,255,0.18)",
+
+    // ← 下はシンプル
+    textShadow: "none",
+
     paddingBottom: "1px",
   };
 
@@ -80,10 +86,12 @@ export default function Home() {
           aspectRatio: "9 / 16",
         }}
       >
+        {/* 予約する */}
         <a href="/reserve" style={mainButtonStyle}>
           予約する
         </a>
 
+        {/* 下ボタン */}
         <a
           href="/confirm"
           style={{
