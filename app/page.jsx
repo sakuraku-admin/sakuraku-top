@@ -15,7 +15,7 @@ export default function Home() {
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#3e2723", // ← ダークブラウン
+    color: "#5a3a2c", // ← ダークブラウン
     textDecoration: "none",
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
@@ -29,7 +29,7 @@ export default function Home() {
 
     // ← 主役だけ白縁
     textShadow:
-       "0 0 0 #fff, 0 0 8px rgba(255,255,255,1), 0 0 14px rgba(255,255,255,0.8)",
+      "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.6)",
 
     paddingBottom: "2px",
   };
