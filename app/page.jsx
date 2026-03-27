@@ -15,7 +15,7 @@ export default function Home() {
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#8fd6b5",
+    color: "#7a4f45",
     textDecoration: "none",
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
