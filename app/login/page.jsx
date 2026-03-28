@@ -15,73 +15,10 @@ export default function LoginPage() {
     console.log("メール再送", { email });
   };
 
-  const mainButtonStyle = {
-    position: "absolute",
-    left: "50%",
-    top: "35.8%",
-    transform: "translateX(-50%)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "22%",
-    minWidth: "116px",
-    height: "4.6%",
-    minHeight: "42px",
-    borderRadius: "18px",
-    background: "rgba(255, 244, 236, 0.24)",
-    backdropFilter: "blur(2px)",
-    WebkitBackdropFilter: "blur(2px)",
-    color: "#5a3a2c",
-    textDecoration: "none",
-    fontSize: "clamp(18px, 1.8vw, 28px)",
-    fontWeight: "700",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    border: "1.5px solid rgba(95, 58, 42, 0.62)",
-    boxSizing: "border-box",
-    letterSpacing: "0.04em",
-    boxShadow:
-      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
-    textShadow: "none",
-    paddingBottom: "1px",
-    cursor: "pointer",
-  };
-
-  const subButtonStyle = {
-    position: "absolute",
-    left: "74%",
-    top: "41.8%",
-    transform: "translateX(-50%)",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "18%",
-    minWidth: "94px",
-    height: "2.8%",
-    minHeight: "28px",
-    borderRadius: "14px",
-    background: "rgba(255, 245, 238, 0.14)",
-    backdropFilter: "blur(2px)",
-    WebkitBackdropFilter: "blur(2px)",
-    color: "#5a3a2c",
-    textDecoration: "none",
-    fontSize: "clamp(10px, 1vw, 14px)",
-    fontWeight: "700",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    border: "1.5px solid rgba(90, 55, 40, 0.5)",
-    boxSizing: "border-box",
-    letterSpacing: "0.02em",
-    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
-    textShadow: "none",
-    paddingBottom: "1px",
-    cursor: "pointer",
-  };
-
   const inputStyle = {
     position: "absolute",
-    left: "42.2%",
-    width: "39.5%",
+    left: "44.2%",
+    width: "38.5%",
     height: "4.2%",
     borderRadius: "999px",
     border: "2px solid rgba(95, 58, 42, 0.62)",
@@ -93,6 +30,70 @@ export default function LoginPage() {
     fontSize: "16px",
     fontFamily:
       '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
+  };
+
+  const loginButtonStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "22%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "20%",
+    minWidth: "108px",
+    height: "4.6%",
+    minHeight: "42px",
+    borderRadius: "18px",
+    background: "rgba(255, 244, 236, 0.24)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c",
+    textDecoration: "none",
+    fontSize: "clamp(15px, 1.5vw, 22px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "2px solid rgba(70, 40, 28, 0.85)",
+    boxSizing: "border-box",
+    letterSpacing: "0.03em",
+    boxShadow:
+      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
+    textShadow: "none",
+    paddingBottom: "1px",
+    cursor: "pointer",
+  };
+
+  const subButtonStyle = {
+    position: "absolute",
+    left: "73%",
+    top: "27%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "17%",
+    minWidth: "92px",
+    height: "2.8%",
+    minHeight: "28px",
+    borderRadius: "14px",
+    background: "rgba(255, 245, 238, 0.14)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c",
+    textDecoration: "none",
+    fontSize: "clamp(9px, 0.9vw, 12px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(90, 55, 40, 0.5)",
+    boxSizing: "border-box",
+    letterSpacing: "0.01em",
+    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
+    textShadow: "none",
+    paddingBottom: "1px",
+    cursor: "pointer",
+    whiteSpace: "nowrap",
   };
 
   return (
@@ -126,7 +127,7 @@ export default function LoginPage() {
             aria-label="メールアドレス"
             style={{
               ...inputStyle,
-              top: "18.2%",
+              top: "12%",
             }}
           />
 
@@ -141,11 +142,11 @@ export default function LoginPage() {
             aria-label="電話番号下4桁"
             style={{
               ...inputStyle,
-              top: "25.1%",
+              top: "17%",
             }}
           />
 
-          <button type="submit" style={mainButtonStyle}>
+          <button type="submit" style={loginButtonStyle}>
             ログイン
           </button>
 
