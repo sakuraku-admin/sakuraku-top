@@ -127,7 +127,7 @@ export default function LoginPage() {
             aria-label="メールアドレス"
             style={{
               ...inputStyle,
-              top: "16%",
+              top: "15%",
             }}
           />
 
