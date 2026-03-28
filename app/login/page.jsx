@@ -110,7 +110,7 @@ export default function LoginPage() {
             style={{
               position: "absolute",
               left: "40.5%",
-              top: "38%",
+              top: "30%",
               width: "22%",
               height: "4.8%",
               borderRadius: "14px",
