@@ -127,7 +127,7 @@ export default function RegisterPage() {
             style={{
               position: "absolute",
               left: "39%",
-              top: "40%",
+              top: "30%",
               width: "22%",
               height: "4.8%",
               borderRadius: "14px",
