@@ -1,1 +1,1 @@
-
+/images/touroku.png
