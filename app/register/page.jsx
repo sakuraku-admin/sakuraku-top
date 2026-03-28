@@ -51,7 +51,10 @@ export default function RegisterPage() {
     fontWeight: "700",
     fontFamily:
       '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    border: "1.5px solid rgba(95, 58, 42, 0.62)",
+
+    // ★ここ変更
+    border: "3px solid rgba(70, 40, 28, 0.85)",
+
     boxSizing: "border-box",
     letterSpacing: "0.04em",
     boxShadow:
