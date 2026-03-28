@@ -12,15 +12,63 @@ export default function RegisterPage() {
     console.log("新規登録", { name, phone, email });
   };
 
+  const mainButtonStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "37.4%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "22%",
+    minWidth: "116px",
+    height: "4.6%",
+    minHeight: "42px",
+    borderRadius: "18px",
+    background: "rgba(255, 244, 236, 0.24)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c",
+    textDecoration: "none",
+    fontSize: "clamp(18px, 1.8vw, 28px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(95, 58, 42, 0.62)",
+    boxSizing: "border-box",
+    letterSpacing: "0.04em",
+    boxShadow:
+      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
+    textShadow: "none",
+    paddingBottom: "1px",
+    cursor: "pointer",
+  };
+
+  const inputStyle = {
+    position: "absolute",
+    left: "34.8%",
+    width: "43.5%",
+    height: "4.2%",
+    borderRadius: "999px",
+    border: "2px solid rgba(95, 58, 42, 0.62)",
+    background: "rgba(255, 248, 242, 0.36)",
+    color: "#5a3a2c",
+    boxSizing: "border-box",
+    outline: "none",
+    padding: "0 14px",
+    fontSize: "16px",
+    fontFamily:
+      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
+  };
+
   return (
     <main
       style={{
+        margin: 0,
         minHeight: "100vh",
-        background: "#e3c0a2",
+        backgroundColor: "#e6b895",
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start",
-        padding: "0",
       }}
     >
       <div
@@ -28,53 +76,26 @@ export default function RegisterPage() {
           position: "relative",
           width: "100%",
           maxWidth: "520px",
-          aspectRatio: "900 / 1600",
-          overflow: "hidden",
+          minHeight: "100vh",
+          backgroundImage: "url('/images/touroku.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center top",
+          backgroundSize: "100% auto",
+          aspectRatio: "9 / 16",
         }}
       >
-        <img
-          src="/images/touroku.png"
-          alt="新規会員登録"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-          }}
-        />
-
-        <form
-          onSubmit={handleRegister}
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
-        >
-          {/* お名前 */}
+        <form onSubmit={handleRegister}>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             aria-label="お名前"
             style={{
-              position: "absolute",
-              left: "37%",
-              top: "18.5%",
-              width: "44%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
+              ...inputStyle,
+              top: "18.9%",
             }}
           />
 
-          {/* 電話番号 */}
           <input
             type="tel"
             inputMode="numeric"
@@ -82,66 +103,24 @@ export default function RegisterPage() {
             onChange={(e) => setPhone(e.target.value)}
             aria-label="電話番号"
             style={{
-              position: "absolute",
-              left: "37%",
-              top: "25%",
-              width: "44%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
+              ...inputStyle,
+              top: "25.3%",
             }}
           />
 
-          {/* メールアドレス */}
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             aria-label="メールアドレス"
             style={{
-              position: "absolute",
-              left: "37%",
-              top: "31.5%",
-              width: "50%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
+              ...inputStyle,
+              top: "31.9%",
+              width: "49%",
             }}
           />
 
-          {/* 登録ボタン */}
-          <button
-            type="submit"
-            style={{
-              position: "absolute",
-              left: "39%",
-              top: "30%",
-              width: "22%",
-              height: "4.8%",
-              borderRadius: "14px",
-              border: "1.5px solid rgba(107, 77, 58, 0.72)",
-              background: "rgba(255, 255, 255, 0.22)",
-              color: "#4a3425",
-              fontSize: "22px",
-              cursor: "pointer",
-              boxSizing: "border-box",
-              backdropFilter: "blur(2px)",
-              WebkitBackdropFilter: "blur(2px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
-            }}
-          >
+          <button type="submit" style={mainButtonStyle}>
             登録
           </button>
         </form>
