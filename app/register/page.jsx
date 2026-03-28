@@ -32,7 +32,7 @@ export default function RegisterPage() {
   const registerButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "25.5%",
+    top: "27.2%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -85,32 +85,41 @@ export default function RegisterPage() {
         }}
       >
         <form onSubmit={handleRegister}>
-          {/* 名前 */}
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            style={{ ...inputStyle, top: "12.5%" }}
+            aria-label="お名前"
+            style={{
+              ...inputStyle,
+              top: "12.5%",
+            }}
           />
 
-          {/* 電話 */}
           <input
             type="tel"
             inputMode="numeric"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            style={{ ...inputStyle, top: "17%" }}
+            aria-label="電話番号"
+            style={{
+              ...inputStyle,
+              top: "17%",
+            }}
           />
 
-          {/* メール */}
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{ ...inputStyle, top: "21.5%", width: "49%" }}
+            aria-label="メールアドレス"
+            style={{
+              ...inputStyle,
+              top: "21.5%",
+              width: "49%",
+            }}
           />
 
-          {/* ボタン */}
           <button type="submit" style={registerButtonStyle}>
             登録
           </button>
