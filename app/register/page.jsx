@@ -52,8 +52,8 @@ export default function RegisterPage() {
     fontFamily:
       '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
 
-    // ★ここ変更
-    border: "3px solid rgba(70, 40, 28, 0.85)",
+    // ★ここが理想バランス
+    border: "2px solid rgba(70, 40, 28, 0.85)",
 
     boxSizing: "border-box",
     letterSpacing: "0.04em",
