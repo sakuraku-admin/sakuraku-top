@@ -16,7 +16,7 @@ export default function RegisterPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#f3c9aa",
+        background: "#e3c0a2",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
@@ -51,6 +51,7 @@ export default function RegisterPage() {
             inset: 0,
           }}
         >
+          {/* お名前 */}
           <input
             type="text"
             value={name}
@@ -59,19 +60,21 @@ export default function RegisterPage() {
             style={{
               position: "absolute",
               left: "37%",
-              top: "16.5%",
+              top: "18.5%",
               width: "44%",
               height: "4.3%",
               borderRadius: "999px",
               border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.65)",
+              background: "rgba(255,248,242,0.42)",
               padding: "0 14px",
               fontSize: "16px",
               color: "#2f2117",
               boxSizing: "border-box",
+              outline: "none",
             }}
           />
 
+          {/* 電話番号 */}
           <input
             type="tel"
             inputMode="numeric"
@@ -81,19 +84,21 @@ export default function RegisterPage() {
             style={{
               position: "absolute",
               left: "37%",
-              top: "22.0%",
+              top: "25%",
               width: "44%",
               height: "4.3%",
               borderRadius: "999px",
               border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.65)",
+              background: "rgba(255,248,242,0.42)",
               padding: "0 14px",
               fontSize: "16px",
               color: "#2f2117",
               boxSizing: "border-box",
+              outline: "none",
             }}
           />
 
+          {/* メールアドレス */}
           <input
             type="email"
             value={email}
@@ -102,33 +107,39 @@ export default function RegisterPage() {
             style={{
               position: "absolute",
               left: "37%",
-              top: "27.5%",
+              top: "31.5%",
               width: "50%",
               height: "4.3%",
               borderRadius: "999px",
               border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.65)",
+              background: "rgba(255,248,242,0.42)",
               padding: "0 14px",
               fontSize: "16px",
               color: "#2f2117",
               boxSizing: "border-box",
+              outline: "none",
             }}
           />
 
+          {/* 登録ボタン */}
           <button
             type="submit"
             style={{
               position: "absolute",
               left: "39%",
-              top: "35.4%",
+              top: "40%",
               width: "22%",
               height: "4.8%",
-              borderRadius: "22px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,244,236,0.88)",
-              color: "#2f2117",
+              borderRadius: "14px",
+              border: "1.5px solid rgba(107, 77, 58, 0.72)",
+              background: "rgba(255, 255, 255, 0.22)",
+              color: "#4a3425",
               fontSize: "22px",
               cursor: "pointer",
+              boxSizing: "border-box",
+              backdropFilter: "blur(2px)",
+              WebkitBackdropFilter: "blur(2px)",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
             }}
           >
             登録
