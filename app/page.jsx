@@ -1,26 +1,76 @@
-"use client";
+export default function Home() {
+  const mainButtonStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "40.8%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "36%",
+    minWidth: "190px",
+    height: "5.2%",
+    minHeight: "58px",
+    borderRadius: "20px",
+    background: "rgba(255, 244, 236, 0.24)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c", // ← ダークブラウン
+    textDecoration: "none",
+    fontSize: "clamp(20px, 2vw, 30px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(95, 58, 42, 0.62)",
+    boxSizing: "border-box",
+    letterSpacing: "0.06em",
+    boxShadow:
+      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
 
-import { useState } from "react";
+    // ← 主役だけ白縁
+    textShadow:
+      "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.6)",
 
-export default function RegisterPage() {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+    paddingBottom: "2px",
+  };
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    console.log("新規登録", { name, phone, email });
+  const subButtonStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "22%",
+    minWidth: "122px",
+    height: "3.9%",
+    minHeight: "46px",
+    borderRadius: "18px",
+    background: "rgba(255, 245, 238, 0.14)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c", // ← 統一
+    textDecoration: "none",
+    fontSize: "clamp(14px, 1.3vw, 20px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(90, 55, 40, 0.5)",
+    boxSizing: "border-box",
+    letterSpacing: "0.03em",
+    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
+
+    // ← 下はシンプル
+    textShadow: "none",
+
+    paddingBottom: "1px",
   };
 
   return (
     <main
       style={{
+        margin: 0,
         minHeight: "100vh",
-        background: "#e3c0a2",
+        backgroundColor: "#e6b895",
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start",
-        padding: "0",
       }}
     >
       <div
@@ -28,123 +78,45 @@ export default function RegisterPage() {
           position: "relative",
           width: "100%",
           maxWidth: "520px",
-          aspectRatio: "900 / 1600",
-          overflow: "hidden",
+          minHeight: "100vh",
+          backgroundImage: "url('/images/top-visual.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center top",
+          backgroundSize: "100% auto",
+          aspectRatio: "9 / 16",
         }}
       >
-        <img
-          src="/images/touroku.png"
-          alt="新規会員登録"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-          }}
-        />
+        {/* 予約する */}
+        <a href="/reserve" style={mainButtonStyle}>
+          予約する
+        </a>
 
-        <form
-          onSubmit={handleRegister}
+        {/* 下ボタン */}
+        <a
+          href="/confirm"
           style={{
+            ...subButtonStyle,
             position: "absolute",
-            inset: 0,
+            left: "35%",
+            top: "50.5%",
+            transform: "translateX(-50%)",
           }}
         >
-          {/* お名前 */}
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            aria-label="お名前"
-            style={{
-              position: "absolute",
-              left: "37%",
-              top: "18.5%",
-              width: "44%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
-            }}
-          />
+          予約確認
+        </a>
 
-          {/* 電話番号 */}
-          <input
-            type="tel"
-            inputMode="numeric"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            aria-label="電話番号"
-            style={{
-              position: "absolute",
-              left: "37%",
-              top: "25%",
-              width: "44%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
-            }}
-          />
-
-          {/* メールアドレス */}
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-label="メールアドレス"
-            style={{
-              position: "absolute",
-              left: "37%",
-              top: "31.5%",
-              width: "50%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
-            }}
-          />
-
-          {/* 登録ボタン */}
-          <button
-            type="submit"
-            style={{
-              position: "absolute",
-              left: "39%",
-              top: "40%",
-              width: "22%",
-              height: "4.8%",
-              borderRadius: "14px",
-              border: "1.5px solid rgba(107, 77, 58, 0.72)",
-              background: "rgba(255, 255, 255, 0.22)",
-              color: "#4a3425",
-              fontSize: "22px",
-              cursor: "pointer",
-              boxSizing: "border-box",
-              backdropFilter: "blur(2px)",
-              WebkitBackdropFilter: "blur(2px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
-            }}
-          >
-            登録
-          </button>
-        </form>
+        <a
+          href="/info"
+          style={{
+            ...subButtonStyle,
+            position: "absolute",
+            left: "65%",
+            top: "50.5%",
+            transform: "translateX(-50%)",
+          }}
+        >
+          店舗情報
+        </a>
       </div>
     </main>
   );
