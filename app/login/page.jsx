@@ -35,7 +35,7 @@ export default function LoginPage() {
   const loginButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "22%",
+    top: "27%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -67,7 +67,7 @@ export default function LoginPage() {
   const subButtonStyle = {
     position: "absolute",
     left: "73%",
-    top: "27%",
+    top: "31%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -127,7 +127,7 @@ export default function LoginPage() {
             aria-label="メールアドレス"
             style={{
               ...inputStyle,
-              top: "12%",
+              top: "16%",
             }}
           />
 
@@ -142,7 +142,7 @@ export default function LoginPage() {
             aria-label="電話番号下4桁"
             style={{
               ...inputStyle,
-              top: "17%",
+              top: "21%",
             }}
           />
 
