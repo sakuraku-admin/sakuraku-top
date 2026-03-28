@@ -1,65 +1,145 @@
+"use client";
+
+import { useState } from "react";
+
 export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [phoneLast4, setPhoneLast4] = useState("");
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    console.log("ログイン", { email, phoneLast4 });
+  };
+
+  const handleResendMail = () => {
+    console.log("メール再送", { email });
+  };
+
   return (
-    <div
+    <main
       style={{
-        backgroundImage: "url('/images/riroguin.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        width: "100%",
-        height: "100vh",
-        position: "relative",
+        minHeight: "100vh",
+        background: "#f3c9aa",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "flex-start",
+        padding: "0",
       }}
     >
-      {/* 入力エリア */}
       <div
         style={{
-          position: "absolute",
-          top: "34%",
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: "75%",
+          position: "relative",
+          width: "100%",
+          maxWidth: "520px",
+          aspectRatio: "900 / 1600",
+          overflow: "hidden",
         }}
       >
-        <input placeholder="example@mail.com" style={inputStyle} />
-        <input placeholder="下4桁" style={inputStyle} />
+        <img
+          src="/images/riroguin.png"
+          alt="会員ログイン"
+          style={{
+            position: "absolute",
+            inset: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
+        />
 
-        <button style={buttonStyle}>ログイン</button>
+        <form
+          onSubmit={handleLogin}
+          style={{
+            position: "absolute",
+            inset: 0,
+          }}
+        >
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            aria-label="メールアドレス"
+            style={{
+              position: "absolute",
+              left: "42%",
+              top: "16.3%",
+              width: "42%",
+              height: "4.3%",
+              borderRadius: "999px",
+              border: "2.5px solid #6b4d3a",
+              background: "rgba(255,248,242,0.65)",
+              padding: "0 14px",
+              fontSize: "16px",
+              color: "#2f2117",
+              boxSizing: "border-box",
+            }}
+          />
 
-        <button style={subButtonStyle}>
-          ✉ メール再送
-        </button>
+          <input
+            type="text"
+            inputMode="numeric"
+            maxLength={4}
+            value={phoneLast4}
+            onChange={(e) =>
+              setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))
+            }
+            aria-label="電話番号下4桁"
+            style={{
+              position: "absolute",
+              left: "42%",
+              top: "22.6%",
+              width: "42%",
+              height: "4.3%",
+              borderRadius: "999px",
+              border: "2.5px solid #6b4d3a",
+              background: "rgba(255,248,242,0.65)",
+              padding: "0 14px",
+              fontSize: "16px",
+              color: "#2f2117",
+              boxSizing: "border-box",
+            }}
+          />
+
+          <button
+            type="submit"
+            style={{
+              position: "absolute",
+              left: "40.5%",
+              top: "34.0%",
+              width: "22%",
+              height: "4.8%",
+              borderRadius: "22px",
+              border: "2.5px solid #6b4d3a",
+              background: "rgba(255,244,236,0.88)",
+              color: "#2f2117",
+              fontSize: "20px",
+              cursor: "pointer",
+            }}
+          >
+            ログイン
+          </button>
+
+          <button
+            type="button"
+            onClick={handleResendMail}
+            style={{
+              position: "absolute",
+              left: "63%",
+              top: "41.6%",
+              width: "18%",
+              height: "2.8%",
+              borderRadius: "999px",
+              border: "2px solid #6b4d3a",
+              background: "rgba(255,244,236,0.85)",
+              color: "#2f2117",
+              fontSize: "12px",
+              cursor: "pointer",
+            }}
+          >
+            ✉ メール再送
+          </button>
+        </form>
       </div>
-    </div>
+    </main>
   );
 }
-
-const inputStyle = {
-  width: "100%",
-  padding: "14px",
-  marginBottom: "16px",
-  borderRadius: "30px",
-  border: "1px solid #ccc",
-  fontSize: "16px",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "14px",
-  borderRadius: "30px",
-  border: "none",
-  backgroundColor: "#8B5A2B",
-  color: "white",
-  fontSize: "18px",
-  fontWeight: "bold",
-  marginBottom: "10px",
-};
-
-const subButtonStyle = {
-  width: "100%",
-  padding: "10px",
-  borderRadius: "20px",
-  border: "1px solid #8B5A2B",
-  backgroundColor: "transparent",
-  color: "#8B5A2B",
-  fontSize: "14px",
-};
