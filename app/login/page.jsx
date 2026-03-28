@@ -15,15 +15,94 @@ export default function LoginPage() {
     console.log("メール再送", { email });
   };
 
+  const mainButtonStyle = {
+    position: "absolute",
+    left: "50%",
+    top: "35.8%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "22%",
+    minWidth: "116px",
+    height: "4.6%",
+    minHeight: "42px",
+    borderRadius: "18px",
+    background: "rgba(255, 244, 236, 0.24)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c",
+    textDecoration: "none",
+    fontSize: "clamp(18px, 1.8vw, 28px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(95, 58, 42, 0.62)",
+    boxSizing: "border-box",
+    letterSpacing: "0.04em",
+    boxShadow:
+      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
+    textShadow: "none",
+    paddingBottom: "1px",
+    cursor: "pointer",
+  };
+
+  const subButtonStyle = {
+    position: "absolute",
+    left: "74%",
+    top: "41.8%",
+    transform: "translateX(-50%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "18%",
+    minWidth: "94px",
+    height: "2.8%",
+    minHeight: "28px",
+    borderRadius: "14px",
+    background: "rgba(255, 245, 238, 0.14)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    color: "#5a3a2c",
+    textDecoration: "none",
+    fontSize: "clamp(10px, 1vw, 14px)",
+    fontWeight: "700",
+    fontFamily:
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    border: "1.5px solid rgba(90, 55, 40, 0.5)",
+    boxSizing: "border-box",
+    letterSpacing: "0.02em",
+    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
+    textShadow: "none",
+    paddingBottom: "1px",
+    cursor: "pointer",
+  };
+
+  const inputStyle = {
+    position: "absolute",
+    left: "42.2%",
+    width: "39.5%",
+    height: "4.2%",
+    borderRadius: "999px",
+    border: "2px solid rgba(95, 58, 42, 0.62)",
+    background: "rgba(255, 248, 242, 0.36)",
+    color: "#5a3a2c",
+    boxSizing: "border-box",
+    outline: "none",
+    padding: "0 14px",
+    fontSize: "16px",
+    fontFamily:
+      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
+  };
+
   return (
     <main
       style={{
+        margin: 0,
         minHeight: "100vh",
-        background: "#e3c0a2",
+        backgroundColor: "#e6b895",
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start",
-        padding: "0",
       }}
     >
       <div
@@ -31,53 +110,26 @@ export default function LoginPage() {
           position: "relative",
           width: "100%",
           maxWidth: "520px",
-          aspectRatio: "900 / 1600",
-          overflow: "hidden",
+          minHeight: "100vh",
+          backgroundImage: "url('/images/riroguin.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center top",
+          backgroundSize: "100% auto",
+          aspectRatio: "9 / 16",
         }}
       >
-        <img
-          src="/images/riroguin.png"
-          alt="会員ログイン"
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-          }}
-        />
-
-        <form
-          onSubmit={handleLogin}
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
-        >
-          {/* メールアドレス */}
+        <form onSubmit={handleLogin}>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             aria-label="メールアドレス"
             style={{
-              position: "absolute",
-              left: "42%",
-              top: "18%",
-              width: "42%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
+              ...inputStyle,
+              top: "18.2%",
             }}
           />
 
-          {/* 電話番号下4桁 */}
           <input
             type="text"
             inputMode="numeric"
@@ -88,68 +140,16 @@ export default function LoginPage() {
             }
             aria-label="電話番号下4桁"
             style={{
-              position: "absolute",
-              left: "42%",
-              top: "25%",
-              width: "42%",
-              height: "4.3%",
-              borderRadius: "999px",
-              border: "2.5px solid #6b4d3a",
-              background: "rgba(255,248,242,0.42)",
-              padding: "0 14px",
-              fontSize: "16px",
-              color: "#2f2117",
-              boxSizing: "border-box",
-              outline: "none",
+              ...inputStyle,
+              top: "25.1%",
             }}
           />
 
-          {/* ログインボタン */}
-          <button
-            type="submit"
-            style={{
-              position: "absolute",
-              left: "40.5%",
-              top: "30%",
-              width: "22%",
-              height: "4.8%",
-              borderRadius: "14px",
-              border: "1.5px solid rgba(107, 77, 58, 0.72)",
-              background: "rgba(255, 255, 255, 0.22)",
-              color: "#4a3425",
-              fontSize: "20px",
-              cursor: "pointer",
-              boxSizing: "border-box",
-              backdropFilter: "blur(2px)",
-              WebkitBackdropFilter: "blur(2px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
-            }}
-          >
+          <button type="submit" style={mainButtonStyle}>
             ログイン
           </button>
 
-          {/* メール再送 */}
-          <button
-            type="button"
-            onClick={handleResendMail}
-            style={{
-              position: "absolute",
-              left: "63%",
-              top: "45%",
-              width: "18%",
-              height: "2.8%",
-              borderRadius: "11px",
-              border: "1.5px solid rgba(107, 77, 58, 0.72)",
-              background: "rgba(255, 255, 255, 0.18)",
-              color: "#4a3425",
-              fontSize: "12px",
-              cursor: "pointer",
-              boxSizing: "border-box",
-              backdropFilter: "blur(2px)",
-              WebkitBackdropFilter: "blur(2px)",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
-            }}
-          >
+          <button type="button" onClick={handleResendMail} style={subButtonStyle}>
             ✉ メール再送
           </button>
         </form>
