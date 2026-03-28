@@ -32,7 +32,7 @@ export default function RegisterPage() {
   const registerButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "33%",
+    top: "30.5%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -92,7 +92,7 @@ export default function RegisterPage() {
             aria-label="お名前"
             style={{
               ...inputStyle,
-              top: "15%",
+              top: "12.5%",
             }}
           />
 
@@ -104,7 +104,7 @@ export default function RegisterPage() {
             aria-label="電話番号"
             style={{
               ...inputStyle,
-              top: "21%",
+              top: "18.5%",
             }}
           />
 
@@ -115,7 +115,7 @@ export default function RegisterPage() {
             aria-label="メールアドレス"
             style={{
               ...inputStyle,
-              top: "27%",
+              top: "24.5%",
               width: "49%",
             }}
           />
