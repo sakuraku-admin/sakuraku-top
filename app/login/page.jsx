@@ -67,7 +67,7 @@ export default function LoginPage() {
   const subButtonStyle = {
     position: "absolute",
     left: "73%",
-    top: "31%",
+    top: "35%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
