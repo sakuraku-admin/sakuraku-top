@@ -54,8 +54,17 @@ const menuItems = [
     duration: "90分",
     price: "9000円",
     shortDescription: "お疲れ・お辛い箇所の集中ケアに",
-    featureText:
-      "【整体／オイル／ホットストーン／よもぎ蒸しパッド／マグバーム】",
+    featureRows: [
+      [
+        { text: "【整体】", color: "#6f5448" },
+        { text: "【オイル】", color: "#d27b5d" },
+        { text: "【マグバーム】", color: "#de8a8a" },
+      ],
+      [
+        { text: "【ホットストーン】", color: "#ef84b4" },
+        { text: "【よもぎ蒸しパッド】", color: "#62b774" },
+      ],
+    ],
     descriptionLines: [
       "慢性的なお疲れや痛みにアプローチし、",
       "お身体の回復をしっかりと促していく特別コースです。",
@@ -71,8 +80,17 @@ const menuItems = [
     duration: "120分",
     price: "12000円",
     shortDescription: "しっかり温め、巡らせる深部ケアに",
-    featureText:
-      "【整体／オイル／ホットストーン／よもぎ蒸しパッド／マグバーム】",
+    featureRows: [
+      [
+        { text: "【整体】", color: "#6f5448" },
+        { text: "【オイル】", color: "#d27b5d" },
+        { text: "【マグバーム】", color: "#de8a8a" },
+      ],
+      [
+        { text: "【ホットストーン】", color: "#ef84b4" },
+        { text: "【よもぎ蒸しパッド】", color: "#62b774" },
+      ],
+    ],
     descriptionLines: [
       "お身体の状態に合わせて全身を温め、巡らせ、",
       "深部からゆるめて整えていくおすすめの深整コースです。",
@@ -88,8 +106,25 @@ const menuItems = [
     duration: "180分",
     price: "19800円",
     shortDescription: "全身フルケア、特別なひとときを",
-    featureText:
-      "【整体／オイル／ホットストーン／よもぎ蒸しパッド／マグバーム／アイマスク／フィルム発汗シート／ホットタオル／ダーマレーザー美容マスク】",
+    featureRows: [
+      [
+        { text: "【整体】", color: "#6f5448" },
+        { text: "【オイル】", color: "#d27b5d" },
+        { text: "【マグバーム】", color: "#de8a8a" },
+      ],
+      [
+        { text: "【ホットストーン】", color: "#ef84b4" },
+        { text: "【よもぎ蒸しパッド】", color: "#62b774" },
+      ],
+      [
+        { text: "【アイマスク】", color: "#86a6e5" },
+        { text: "【発汗シート】", color: "#d88b58" },
+      ],
+      [
+        { text: "【ホットタオル】", color: "#b98fd8" },
+        { text: "【美容マスク】", color: "#63b4b7" },
+      ],
+    ],
     descriptionLines: [
       "全身のお辛い箇所やむくみ、疲労に対して",
       "オールハンドで丁寧にアプローチし、",
@@ -237,8 +272,24 @@ export default function MenuPage() {
               </div>
             </div>
 
-            {selectedMenu.featureText && (
-              <div style={styles.popupFeature}>{selectedMenu.featureText}</div>
+            {selectedMenu.featureRows && (
+              <div style={styles.popupFeatureBlock}>
+                {selectedMenu.featureRows.map((row, rowIndex) => (
+                  <div key={rowIndex} style={styles.popupFeatureRow}>
+                    {row.map((feature, featureIndex) => (
+                      <span
+                        key={featureIndex}
+                        style={{
+                          ...styles.popupFeatureItem,
+                          color: feature.color,
+                        }}
+                      >
+                        {feature.text}
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
             )}
 
             <div style={styles.popupDescription}>
@@ -527,17 +578,26 @@ const styles = {
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
-  popupFeature: {
-    textAlign: "center",
-    color: "#d96b5f",
-    fontSize: "clamp(14px, 2.2vw, 18px)",
-    lineHeight: 1.7,
+  popupFeatureBlock: {
     marginBottom: "10px",
-    padding: "0 6px",
+  },
+
+  popupFeatureRow: {
+    display: "flex",
+    justifyContent: "center",
+    flexWrap: "nowrap",
+    gap: "8px",
+    marginBottom: "4px",
+  },
+
+  popupFeatureItem: {
+    fontSize: "clamp(13px, 2.1vw, 17px)",
+    lineHeight: 1.5,
     fontFamily:
       '"Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
-    fontWeight: "500",
-    textShadow: "0 0 4px rgba(255,255,255,0.4)",
+    fontWeight: "600",
+    whiteSpace: "nowrap",
+    textShadow: "0 0 4px rgba(255,255,255,0.38)",
   },
 
   popupDescription: {
