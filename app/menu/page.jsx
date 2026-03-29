@@ -7,69 +7,96 @@ const menuItems = [
   {
     id: "seitai-60",
     type: "seitai",
+    categoryLabel: "整体コース",
     name: "60分",
     duration: "60分",
     price: "5000円",
     shortDescription: "定期的なお身体のケアに",
-    description:
-      "整体、ストレッチ、筋膜リリース、自律神経ケア等を含む手技メインのコースです",
-    teaIncluded: true,
+    descriptionLines: [
+      "お辛い箇所を中心にほぐし整え、",
+      "日々のお疲れをやさしく解消していくコースです。",
+    ],
+    teaText: "アフターティー付き",
   },
   {
     id: "seitai-90",
     type: "seitai",
+    categoryLabel: "整体コース",
     name: "90分",
     duration: "90分",
-    price: "6500円",
-    shortDescription: "しっかり整えたい方に",
-    description:
-      "全身のバランスを見ながら、つらい部位を中心に丁寧に整えていく人気のコースです",
-    teaIncluded: true,
+    price: "7000円",
+    shortDescription: "ゆったり整えたい方に",
+    descriptionLines: [
+      "60分では足りない慢性的なお疲れや不調に対して、",
+      "全身のバランスを見ながら丁寧に整えていく人気コースです。",
+    ],
+    teaText: "アフターティー付き",
   },
   {
     id: "seitai-120",
     type: "seitai",
+    categoryLabel: "整体コース",
     name: "120分",
     duration: "120分",
-    price: "8000円",
-    shortDescription: "より深く、ゆったり整えたい方に",
-    description:
-      "気になる箇所をより細かく見ながら、全身をじっくり整えていく余裕のあるコースです",
-    teaIncluded: true,
+    price: "9000円",
+    shortDescription: "より深く、しっかり整えたい方に",
+    descriptionLines: [
+      "整体・ストレッチ・筋膜リリース・自律神経ケアなどを組み合わせ、",
+      "お顔や頭を含めて全身を深く整えていく充実のコースです。",
+    ],
+    teaText: "アフターティー付き",
   },
   {
     id: "shinsei-kaifuku",
     type: "shinsei",
+    categoryLabel: "深整コース［回復］",
     name: "回復",
     duration: "90分",
     price: "9000円",
-    shortDescription: "お疲れが強い時の集中ケアに",
-    description:
-      "深部のこわばりへアプローチし、巡りと回復を促す深整コースです",
-    teaIncluded: true,
+    shortDescription: "お疲れ・お辛い箇所の集中ケアに",
+    featureText:
+      "【整体／オイル／ホットストーン／よもぎ蒸しパッド／マグバーム】",
+    descriptionLines: [
+      "慢性的なお疲れや痛みにアプローチし、",
+      "お身体の回復をしっかりと促していく特別コースです。",
+      "お久しぶりの方にもおすすめです。",
+    ],
+    teaText: "ウェルカム／アフターティー付き",
   },
   {
     id: "shinsei-onjun",
     type: "shinsei",
+    categoryLabel: "深整コース［温巡］",
     name: "温巡",
     duration: "120分",
     price: "12000円",
-    shortDescription: "全身をしっかり温め、巡らせたい方に",
-    description:
-      "温めと巡りを組み合わせながら、全身を深くゆるめて整えるおすすめの深整コースです",
+    shortDescription: "しっかり温め、巡らせる深部ケアに",
+    featureText:
+      "【整体／オイル／ホットストーン／よもぎ蒸しパッド／マグバーム】",
+    descriptionLines: [
+      "お身体の状態に合わせて全身を温め、巡らせ、",
+      "深部からゆるめて整えていくおすすめの深整コースです。",
+    ],
+    teaText: "ウェルカム／アフターティー付き",
     recommend: true,
-    teaIncluded: true,
   },
   {
     id: "shinsei-kaihou",
     type: "shinsei",
+    categoryLabel: "深整コース［解放］",
     name: "解放",
     duration: "180分",
-    price: "18000円",
-    shortDescription: "深い解放感を求める方へ",
-    description:
-      "ゆったり長めのお時間の中で、全身を丁寧にほどきながら深く整えていく特別コースです",
-    teaIncluded: true,
+    price: "19800円",
+    shortDescription: "全身フルケア、特別なひとときを",
+    featureText:
+      "【整体／オイル／ホットストーン／よもぎ蒸しパッド／マグバーム／アイマスク／フィルム発汗シート／ホットタオル／ダーマレーザー美容マスク】",
+    descriptionLines: [
+      "全身のお辛い箇所やむくみ、疲労に対して",
+      "オールハンドで丁寧にアプローチし、",
+      "お顔や頭を含めて全身をリセットしていきます。",
+      "ご自身へのご褒美や特別なケアにもおすすめです。",
+    ],
+    teaText: "ウェルカム／アフターティー付き",
   },
 ];
 
@@ -155,20 +182,22 @@ export default function MenuPage() {
                     onClick={() => setSelectedMenu(item)}
                     style={styles.menuButton}
                   >
-                    <span
-                      style={{
-                        ...styles.deepMenuName,
-                        ...(item.name === "回復" ? styles.deepKaifuku : {}),
-                        ...(item.name === "温巡" ? styles.deepOnjun : {}),
-                        ...(item.name === "解放" ? styles.deepKaihou : {}),
-                      }}
-                    >
-                      {item.name}
-                    </span>
+                    <div style={styles.buttonInner}>
+                      <span
+                        style={{
+                          ...styles.deepMenuName,
+                          ...(item.name === "回復" ? styles.deepKaifuku : {}),
+                          ...(item.name === "温巡" ? styles.deepOnjun : {}),
+                          ...(item.name === "解放" ? styles.deepKaihou : {}),
+                        }}
+                      >
+                        {item.name}
+                      </span>
 
-                    <span style={styles.deepDuration}>（{item.duration}）</span>
+                      <span style={styles.deepDuration}>（{item.duration}）</span>
+                    </div>
 
-                    {item.recommend && <span style={styles.star}>☆</span>}
+                    {item.recommend && <span style={styles.star}>★</span>}
                   </button>
                 ))}
               </div>
@@ -193,7 +222,7 @@ export default function MenuPage() {
 
             <div style={styles.popupHeader}>
               <div style={styles.popupHeaderLabel}>
-                {selectedMenu.type === "seitai" ? "整体コース" : "深整コース"}
+                {selectedMenu.categoryLabel}
               </div>
             </div>
 
@@ -208,13 +237,19 @@ export default function MenuPage() {
               </div>
             </div>
 
+            {selectedMenu.featureText && (
+              <div style={styles.popupFeature}>{selectedMenu.featureText}</div>
+            )}
+
             <div style={styles.popupDescription}>
-              {selectedMenu.description}
+              {selectedMenu.descriptionLines.map((line, index) => (
+                <div key={index} style={styles.popupDescriptionLine}>
+                  {line}
+                </div>
+              ))}
             </div>
 
-            {selectedMenu.teaIncluded && (
-              <div style={styles.popupTea}>アフターティー付き</div>
-            )}
+            <div style={styles.popupTea}>{selectedMenu.teaText}</div>
 
             <button
               type="button"
@@ -307,6 +342,7 @@ const styles = {
   },
 
   menuButton: {
+    position: "relative",
     width: "92%",
     minHeight: "66px",
     borderRadius: "16px",
@@ -317,7 +353,6 @@ const styles = {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    gap: "6px",
     cursor: "pointer",
     padding: "14px 12px",
     boxSizing: "border-box",
@@ -332,6 +367,13 @@ const styles = {
     color: "#46312a",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  buttonInner: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
   },
 
   deepMenuName: {
@@ -371,12 +413,16 @@ const styles = {
   },
 
   star: {
-    fontSize: "clamp(22px, 3vw, 28px)",
+    position: "absolute",
+    right: "16px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    fontSize: "26px",
     color: "#f0958f",
+    fontWeight: "bold",
     lineHeight: 1,
-    marginLeft: "3px",
-    transform: "translateY(-1px)",
-    textShadow: "0 0 4px rgba(255,255,255,0.65)",
+    textShadow:
+      "0 0 4px rgba(255,255,255,0.75), 0 0 8px rgba(255, 170, 160, 0.55)",
   },
 
   overlay: {
@@ -433,7 +479,7 @@ const styles = {
     lineHeight: 1.2,
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-    letterSpacing: "0.08em",
+    letterSpacing: "0.06em",
     boxSizing: "border-box",
   },
 
@@ -441,7 +487,7 @@ const styles = {
     background: "rgba(244, 211, 201, 0.62)",
     borderRadius: "12px",
     padding: "18px 14px 16px",
-    marginBottom: "16px",
+    marginBottom: "14px",
     boxSizing: "border-box",
   },
 
@@ -451,7 +497,7 @@ const styles = {
     alignItems: "baseline",
     gap: "22px",
     flexWrap: "wrap",
-    marginBottom: "12px",
+    marginBottom: "10px",
   },
 
   popupDuration: {
@@ -481,15 +527,32 @@ const styles = {
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
+  popupFeature: {
+    textAlign: "center",
+    color: "#d96b5f",
+    fontSize: "clamp(14px, 2.2vw, 18px)",
+    lineHeight: 1.7,
+    marginBottom: "10px",
+    padding: "0 6px",
+    fontFamily:
+      '"Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
+    fontWeight: "500",
+    textShadow: "0 0 4px rgba(255,255,255,0.4)",
+  },
+
   popupDescription: {
     textAlign: "center",
     color: "#5a4940",
-    fontSize: "clamp(16px, 2.6vw, 22px)",
-    lineHeight: 1.7,
+    fontSize: "clamp(15px, 2.35vw, 20px)",
+    lineHeight: 1.75,
     marginBottom: "12px",
-    padding: "0 8px",
+    padding: "0 6px",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  popupDescriptionLine: {
+    marginBottom: "2px",
   },
 
   popupTea: {
@@ -500,7 +563,7 @@ const styles = {
     marginBottom: "18px",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-    letterSpacing: "0.08em",
+    letterSpacing: "0.06em",
   },
 
   reserveButton: {
