@@ -139,6 +139,8 @@ export default function MenuPage() {
                 ))}
               </div>
 
+              <div style={styles.sectionGap} />
+
               <img
                 src="/images/banner-shinsei.png"
                 alt="深整コース"
@@ -170,6 +172,8 @@ export default function MenuPage() {
                   </button>
                 ))}
               </div>
+
+              <div style={styles.bottomSpacer} />
             </div>
           </div>
         </div>
@@ -256,14 +260,15 @@ const styles = {
 
   scrollArea: {
     position: "absolute",
-    left: "16.7%",
-    top: "8.2%",
-    width: "67.0%",
-    height: "83.0%",
+    left: "15.8%",
+    top: "8.4%",
+    width: "71.5%",
+    height: "82.5%",
     overflowY: "auto",
     overflowX: "hidden",
     background: "transparent",
     boxSizing: "border-box",
+    paddingRight: "4px",
     scrollbarWidth: "thin",
   },
 
@@ -272,14 +277,14 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "2px 0 28px",
+    padding: "0 0 26px",
     boxSizing: "border-box",
   },
 
   sectionBanner: {
-    width: "88%",
+    width: "97%",
     display: "block",
-    margin: "0 auto 14px",
+    margin: "0 auto 16px",
     userSelect: "none",
     pointerEvents: "none",
   },
@@ -289,27 +294,35 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "14px",
-    marginBottom: "16px",
+    gap: "18px",
+    marginBottom: "0",
+  },
+
+  sectionGap: {
+    height: "34px",
+  },
+
+  bottomSpacer: {
+    height: "18px",
   },
 
   menuButton: {
     width: "92%",
-    minHeight: "64px",
+    minHeight: "66px",
     borderRadius: "16px",
-    border: "1px solid rgba(120, 82, 69, 0.28)",
-    background: "rgba(255, 225, 225, 0.38)",
+    border: "1px solid rgba(120, 82, 69, 0.26)",
+    background: "rgba(255, 222, 222, 0.30)",
     boxShadow:
-      "0 4px 10px rgba(90, 58, 44, 0.12), inset 0 1px 0 rgba(255,255,255,0.45)",
+      "0 5px 12px rgba(90, 58, 44, 0.12), inset 0 1px 0 rgba(255,255,255,0.42)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "6px",
     cursor: "pointer",
-    padding: "14px 10px",
+    padding: "14px 12px",
     boxSizing: "border-box",
-    backdropFilter: "blur(1px)",
-    WebkitBackdropFilter: "blur(1px)",
+    backdropFilter: "blur(0.5px)",
+    WebkitBackdropFilter: "blur(0.5px)",
   },
 
   menuButtonText: {
@@ -322,43 +335,48 @@ const styles = {
   },
 
   deepMenuName: {
-    fontSize: "clamp(20px, 3.1vw, 29px)",
+    fontSize: "clamp(23px, 3.3vw, 31px)",
     lineHeight: 1.1,
+    color: "#ffffff",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
     letterSpacing: "0.06em",
-    textShadow: "0 0 2px rgba(255,255,255,0.55)",
   },
 
   deepKaifuku: {
-    color: "#b8ded8",
-    WebkitTextStroke: "0.45px rgba(126, 108, 98, 0.55)",
+    color: "#ffffff",
+    textShadow:
+      "0 0 2px rgba(255,255,255,0.95), 0 0 6px rgba(125, 223, 209, 0.95), 0 0 12px rgba(99, 193, 182, 0.85)",
   },
 
   deepOnjun: {
-    color: "#e3a092",
-    WebkitTextStroke: "0.45px rgba(128, 97, 90, 0.55)",
+    color: "#ffffff",
+    textShadow:
+      "0 0 2px rgba(255,255,255,0.95), 0 0 6px rgba(255, 139, 128, 0.95), 0 0 12px rgba(235, 106, 96, 0.88)",
   },
 
   deepKaihou: {
-    color: "#b9e8ee",
-    WebkitTextStroke: "0.45px rgba(118, 102, 93, 0.55)",
+    color: "#ffffff",
+    textShadow:
+      "0 0 2px rgba(255,255,255,0.95), 0 0 6px rgba(140, 228, 255, 0.95), 0 0 12px rgba(107, 199, 241, 0.88)",
   },
 
   deepDuration: {
-    fontSize: "clamp(19px, 2.8vw, 26px)",
+    fontSize: "clamp(20px, 2.9vw, 27px)",
     color: "#46312a",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
     letterSpacing: "0.04em",
+    marginLeft: "2px",
   },
 
   star: {
-    fontSize: "clamp(20px, 2.9vw, 26px)",
-    color: "#e98c85",
+    fontSize: "clamp(22px, 3vw, 28px)",
+    color: "#f0958f",
     lineHeight: 1,
-    marginLeft: "2px",
+    marginLeft: "3px",
     transform: "translateY(-1px)",
+    textShadow: "0 0 4px rgba(255,255,255,0.65)",
   },
 
   overlay: {
