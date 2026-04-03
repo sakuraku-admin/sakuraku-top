@@ -138,6 +138,7 @@ const menuItems = [
 export default function MenuPage() {
   const router = useRouter();
   const [selectedMenu, setSelectedMenu] = useState(null);
+  const [showFirstCoursePopup, setShowFirstCoursePopup] = useState(false);
 
   const seitaiMenus = useMemo(
     () => menuItems.filter((item) => item.type === "seitai"),
@@ -182,6 +183,21 @@ export default function MenuPage() {
 
           <div style={styles.scrollArea}>
             <div style={styles.scrollInner}>
+              <button
+                type="button"
+                onClick={() => setShowFirstCoursePopup(true)}
+                style={styles.firstCourseBannerButton}
+                aria-label="初回限定コースの詳細を見る"
+              >
+                <img
+                  src="/images/banner-syokai.png"
+                  alt="初回限定コース"
+                  style={styles.firstCourseBanner}
+                />
+              </button>
+
+              <div style={styles.sectionGapSmall} />
+
               <img
                 src="/images/banner-seitai.png"
                 alt="整体コース"
@@ -312,6 +328,49 @@ export default function MenuPage() {
           </div>
         </div>
       )}
+
+      {showFirstCoursePopup && (
+        <div
+          style={styles.overlay}
+          onClick={() => setShowFirstCoursePopup(false)}
+        >
+          <div style={styles.popup} onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setShowFirstCoursePopup(false)}
+              style={styles.closeButton}
+              aria-label="閉じる"
+            >
+              ×
+            </button>
+
+            <div style={styles.popupHeader}>
+              <div style={styles.popupHeaderLabel}>初回限定コース</div>
+            </div>
+
+            <div style={styles.popupMainCard}>
+              <div style={styles.popupTopRow}>
+                <div style={styles.popupDuration}>100分</div>
+                <div style={styles.popupPrice}>5000円</div>
+              </div>
+
+              <div style={styles.popupShortDescription}>
+                初めての方専用の特別メニューです。
+              </div>
+            </div>
+
+            <div style={styles.popupDescription}>
+              <div style={styles.popupDescriptionLine}>
+                ※初回はカウンセリング等のお時間を含みます。
+              </div>
+            </div>
+
+            <div style={styles.popupTea}>
+              ウェルカム／アフターティー付
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -367,6 +426,22 @@ const styles = {
     boxSizing: "border-box",
   },
 
+  firstCourseBannerButton: {
+    width: "97%",
+    display: "block",
+    margin: "0 auto",
+    padding: 0,
+    border: "none",
+    background: "transparent",
+    cursor: "pointer",
+  },
+
+  firstCourseBanner: {
+    width: "100%",
+    display: "block",
+    userSelect: "none",
+  },
+
   sectionBanner: {
     width: "97%",
     display: "block",
@@ -382,6 +457,10 @@ const styles = {
     alignItems: "center",
     gap: "18px",
     marginBottom: "0",
+  },
+
+  sectionGapSmall: {
+    height: "18px",
   },
 
   sectionGap: {
