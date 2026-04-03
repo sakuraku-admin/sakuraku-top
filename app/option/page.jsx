@@ -2,9 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-
-
-const magCreamOptions: OptionItem[] = [
+const magCreamOptions = [
   {
     id: "mag-neck",
     name: "首",
@@ -47,7 +45,7 @@ const magCreamOptions: OptionItem[] = [
   },
 ];
 
-const shapeCareOptions: OptionItem[] = [
+const shapeCareOptions = [
   {
     id: "shape-1",
     name: "1部位",
@@ -55,7 +53,6 @@ const shapeCareOptions: OptionItem[] = [
     minutes: 20,
     description:
       "冷え、むくみ、セルライトなどの気になる箇所を、温めたマグバームとオイルでしっかり流して柔らかくスッキリ整えます。",
-    note: "20分",
   },
   {
     id: "shape-2",
@@ -64,7 +61,6 @@ const shapeCareOptions: OptionItem[] = [
     minutes: 40,
     description:
       "気になる箇所をしっかり流したい方におすすめです。お腹＋他部位の組み合わせも人気です。",
-    note: "40分",
   },
   {
     id: "shape-3",
@@ -73,27 +69,27 @@ const shapeCareOptions: OptionItem[] = [
     minutes: 60,
     description:
       "脚・背中・お腹など、広い範囲をしっかり整えたい方におすすめです。",
-    note: "60分",
   },
 ];
 
-const headCareOption: OptionItem = {
+const headCareOption = {
   id: "head-release",
   name: "頭部解放（深部筋膜リリース）",
   price: 3000,
   minutes: 30,
   description:
-    "噛みしめ、食いしばり、眼精疲労、頭痛、お顔のむくみやフェイスラインのもたつき、鼻づまり、眩暈、耳鳴りなどが気になる方におすすめです。マグバーム・マッサージクリームを使用し、お顔と頭蓋の骨・筋膜・筋肉にしっかりアプローチしながらも、痛みの少ない頭部ケアを行います。",
-  note: "30分",
+    "噛みしめ、食いしばり、眼精疲労、頭痛、お顔の気になるむくみやフェイスライン、鼻づまり、眩暈、耳鳴りなどが気になる方におすすめです。マグバーム・マッサージクリームを使用し、お顔と頭蓋の骨、筋膜、筋肉にしっかりアプローチしながらも、「痛みの少ない頭部ケア」を行います。",
 };
 
 export default function OptionMenuPage() {
-  const [selectedMag, setSelectedMag] = useState<string | null>(null);
-  const [selectedShape, setSelectedShape] = useState<string | null>(null);
+  const [selectedMag, setSelectedMag] = useState(null);
+  const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
 
-  const selectedMagItem = magCreamOptions.find((item) => item.id === selectedMag) || null;
-  const selectedShapeItem = shapeCareOptions.find((item) => item.id === selectedShape) || null;
+  const selectedMagItem =
+    magCreamOptions.find((item) => item.id === selectedMag) || null;
+  const selectedShapeItem =
+    shapeCareOptions.find((item) => item.id === selectedShape) || null;
   const selectedHeadItem = selectedHead ? headCareOption : null;
 
   const totalPrice = useMemo(() => {
@@ -112,15 +108,15 @@ export default function OptionMenuPage() {
     );
   }, [selectedMagItem, selectedShapeItem, selectedHeadItem]);
 
-  const handleMagSelect = (id: string) => {
+  const handleMagSelect = (id) => {
     setSelectedMag((prev) => (prev === id ? null : id));
   };
 
-  const handleShapeSelect = (id: string) => {
+  const handleShapeSelect = (id) => {
     setSelectedShape((prev) => (prev === id ? null : id));
   };
 
-  const containerStyle: React.CSSProperties = {
+  const containerStyle = {
     width: "100%",
     minHeight: "100vh",
     background:
@@ -132,7 +128,7 @@ export default function OptionMenuPage() {
     boxSizing: "border-box",
   };
 
-  const phoneStyle: React.CSSProperties = {
+  const phoneStyle = {
     width: "100%",
     maxWidth: "430px",
     height: "calc(100vh - 48px)",
@@ -143,7 +139,7 @@ export default function OptionMenuPage() {
     border: "1px solid rgba(145, 112, 90, 0.12)",
   };
 
-  const scrollStyle: React.CSSProperties = {
+  const scrollStyle = {
     width: "100%",
     height: "100%",
     overflowY: "auto",
@@ -152,7 +148,7 @@ export default function OptionMenuPage() {
     scrollbarWidth: "thin",
   };
 
-  const sectionTitleStyle: React.CSSProperties = {
+  const sectionTitleStyle = {
     fontSize: "20px",
     fontWeight: 700,
     color: "#5a3a2c",
@@ -160,14 +156,14 @@ export default function OptionMenuPage() {
     margin: "0 0 6px 0",
   };
 
-  const sectionSubStyle: React.CSSProperties = {
+  const sectionSubStyle = {
     fontSize: "12px",
     lineHeight: 1.7,
     color: "rgba(90, 58, 44, 0.82)",
     margin: "0 0 16px 0",
   };
 
-  const blockStyle: React.CSSProperties = {
+  const blockStyle = {
     background: "rgba(255,255,255,0.78)",
     border: "1px solid rgba(155, 120, 94, 0.18)",
     borderRadius: "20px",
@@ -176,7 +172,7 @@ export default function OptionMenuPage() {
     boxSizing: "border-box",
   };
 
-  const optionButtonStyle = (selected: boolean): React.CSSProperties => ({
+  const optionButtonStyle = (selected) => ({
     width: "100%",
     textAlign: "left",
     borderRadius: "18px",
@@ -193,7 +189,7 @@ export default function OptionMenuPage() {
     transition: "all 0.2s ease",
   });
 
-  const summaryBoxStyle: React.CSSProperties = {
+  const summaryBoxStyle = {
     marginTop: "18px",
     background: "linear-gradient(180deg, #f4e8dc 0%, #f9f0e8 100%)",
     border: "1px solid rgba(140, 106, 83, 0.22)",
@@ -202,7 +198,7 @@ export default function OptionMenuPage() {
     boxSizing: "border-box",
   };
 
-  const reserveButtonStyle: React.CSSProperties = {
+  const reserveButtonStyle = {
     width: "100%",
     border: "none",
     borderRadius: "999px",
@@ -261,7 +257,8 @@ export default function OptionMenuPage() {
           <section style={blockStyle}>
             <h2 style={sectionTitleStyle}>① マグクリーム（塗布）</h2>
             <p style={sectionSubStyle}>
-              1000円　
+              1000円
+              <br />
               お辛い箇所に塗布し、筋肉をゆるめコリ、ハリの緩和と疲労回復を促します。
               <br />
               （首・肩・お腹・腰・足裏からお好きな箇所をお選びいただけます）
@@ -394,11 +391,9 @@ export default function OptionMenuPage() {
             <p style={sectionSubStyle}>
               3000円（約30分）
               <br />
-              噛みしめ、食いしばり、眼精疲労、頭痛、お顔の気になるむくみやフェイスライン、
-              鼻づまり、眩暈、耳鳴りなどが気になる方におすすめです。
+              噛みしめ、食いしばり、眼精疲労、頭痛、お顔の気になるむくみやフェイスライン、鼻づまり、眩暈、耳鳴りなどが気になる方におすすめです。
               <br />
-              マグバーム・マッサージクリームを使用し、お顔と頭蓋の骨、筋膜、筋肉にしっかりアプローチしながらも、
-              「痛みの少ない頭部ケア」を行います。
+              マグバーム・マッサージクリームを使用し、お顔と頭蓋の骨、筋膜、筋肉にしっかりアプローチしながらも、「痛みの少ない頭部ケア」を行います。
             </p>
 
             <button
@@ -486,11 +481,11 @@ export default function OptionMenuPage() {
                     <div>・マグクリーム（{selectedMagItem.name}）</div>
                   )}
                   {selectedShapeItem && (
-                    <div>
-                      ・巡りシェイプケア（{selectedShapeItem.name}）
-                    </div>
+                    <div>・巡りシェイプケア（{selectedShapeItem.name}）</div>
                   )}
-                  {selectedHeadItem && <div>・頭部解放（深部筋膜リリース）</div>}
+                  {selectedHeadItem && (
+                    <div>・頭部解放（深部筋膜リリース）</div>
+                  )}
                 </>
               ) : (
                 <div>現在オプションは選択されていません。</div>
