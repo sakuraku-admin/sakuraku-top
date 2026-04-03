@@ -55,13 +55,11 @@ const menuItems = [
     shortDescription: "お疲れ・お辛い箇所の集中ケアに",
     featureRows: [
       [
-        { text: "【整体】", color: "#6f5448" },
-        { text: "【オイル】", color: "#d27b5d" },
-        { text: "【マグバーム】", color: "#de8a8a" },
-      ],
-      [
-        { text: "【ホットストーン】", color: "#ef84b4" },
-        { text: "【よもぎ蒸しパッド】", color: "#62b774" },
+        { text: "整体", color: "#8fb8c4" },
+        { text: "オイル", color: "#f1b15d" },
+        { text: "マグバーム", color: "#f08aa2" },
+        { text: "ホットストーン", color: "#d9877d" },
+        { text: "よもぎ蒸しパッド", color: "#78c488" },
       ],
     ],
     customAdjustLines: [
@@ -85,13 +83,11 @@ const menuItems = [
     shortDescription: "しっかり温め、巡らせる深部ケアに",
     featureRows: [
       [
-        { text: "【整体】", color: "#6f5448" },
-        { text: "【オイル】", color: "#d27b5d" },
-        { text: "【マグバーム】", color: "#de8a8a" },
-      ],
-      [
-        { text: "【ホットストーン】", color: "#ef84b4" },
-        { text: "【よもぎ蒸しパッド】", color: "#62b774" },
+        { text: "整体", color: "#8fb8c4" },
+        { text: "オイル", color: "#f1b15d" },
+        { text: "マグバーム", color: "#f08aa2" },
+        { text: "ホットストーン", color: "#d9877d" },
+        { text: "よもぎ蒸しパッド", color: "#78c488" },
       ],
     ],
     customAdjustLines: [
@@ -115,21 +111,17 @@ const menuItems = [
     shortDescription: "全身フルケア、特別なひとときを",
     featureRows: [
       [
-        { text: "【整体】", color: "#6f5448" },
-        { text: "【オイル】", color: "#d27b5d" },
-        { text: "【マグバーム】", color: "#de8a8a" },
+        { text: "整体", color: "#8fb8c4" },
+        { text: "オイル", color: "#f1b15d" },
+        { text: "マグバーム", color: "#f08aa2" },
+        { text: "ホットストーン", color: "#d9877d" },
+        { text: "よもぎ蒸しパッド", color: "#78c488" },
       ],
       [
-        { text: "【ホットストーン】", color: "#ef84b4" },
-        { text: "【よもぎ蒸しパッド】", color: "#62b774" },
-      ],
-      [
-        { text: "【アイマスク】", color: "#86a6e5" },
-        { text: "【発汗シート】", color: "#d88b58" },
-      ],
-      [
-        { text: "【ホットタオル】", color: "#b98fd8" },
-        { text: "【美容マスク】", color: "#63b4b7" },
+        { text: "アイマスク", color: "#9ab7ee" },
+        { text: "発汗シート", color: "#e7a36f" },
+        { text: "ホットタオル", color: "#b99ae7" },
+        { text: "美容マスク", color: "#81c9c9" },
       ],
     ],
     customAdjustLines: [
@@ -304,14 +296,17 @@ export default function MenuPage() {
                 {selectedMenu.featureRows.map((row, rowIndex) => (
                   <div key={rowIndex} style={styles.popupFeatureRow}>
                     {row.map((feature, featureIndex) => (
-                      <span
-                        key={featureIndex}
-                        style={{
-                          ...styles.popupFeatureItem,
-                          color: feature.color,
-                        }}
-                      >
-                        {feature.text}
+                      <span key={featureIndex} style={styles.popupFeatureItem}>
+                        <span style={styles.popupFeatureBracket}>【</span>
+                        <span
+                          style={{
+                            ...styles.popupFeatureLabel,
+                            color: feature.color,
+                          }}
+                        >
+                          {feature.text}
+                        </span>
+                        <span style={styles.popupFeatureBracket}>】</span>
                       </span>
                     ))}
                   </div>
@@ -679,36 +674,58 @@ const styles = {
   },
 
   popupFeatureBlock: {
-    marginBottom: "10px",
+    marginBottom: "18px",
   },
 
   popupFeatureRow: {
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
     flexWrap: "nowrap",
-    gap: "8px",
+    gap: "6px",
     marginBottom: "4px",
+    overflowX: "auto",
+    overflowY: "hidden",
+    whiteSpace: "nowrap",
+    scrollbarWidth: "none",
+    msOverflowStyle: "none",
   },
 
   popupFeatureItem: {
-    fontSize: "clamp(13px, 2.1vw, 17px)",
-    lineHeight: 1.5,
-    fontFamily:
-      '"Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
-    fontWeight: "600",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     whiteSpace: "nowrap",
-    textShadow: "0 0 4px rgba(255,255,255,0.38)",
+    lineHeight: 1,
+    fontFamily:
+      '"Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif',
+    letterSpacing: "0.01em",
+    opacity: 0.96,
+    flex: "0 0 auto",
+  },
+
+  popupFeatureBracket: {
+    fontSize: "clamp(12px, 1.9vw, 15px)",
+    color: "#4d3c35",
+    fontWeight: "600",
+  },
+
+  popupFeatureLabel: {
+    fontSize: "clamp(12px, 2.0vw, 15px)",
+    fontWeight: "700",
+    margin: "0 1px",
   },
 
   popupCustomAdjustNote: {
-    marginTop: "8px",
+    marginTop: "14px",
+    marginBottom: "4px",
     textAlign: "center",
-    color: "#8a6958",
-    fontSize: "clamp(11px, 1.8vw, 14px)",
-    lineHeight: 1.6,
+    color: "rgba(138, 105, 88, 0.92)",
+    fontSize: "clamp(10px, 1.65vw, 13px)",
+    lineHeight: 1.8,
     fontFamily:
       '"Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
-    padding: "0 8px",
+    padding: "0 10px",
   },
 
   popupCustomAdjustLine: {
@@ -719,7 +736,7 @@ const styles = {
     textAlign: "center",
     color: "#5a4940",
     fontSize: "clamp(15px, 2.35vw, 20px)",
-    lineHeight: 1.75,
+    lineHeight: 1.88,
     marginBottom: "12px",
     padding: "0 6px",
     fontFamily:
@@ -727,7 +744,7 @@ const styles = {
   },
 
   popupDescriptionLine: {
-    marginBottom: "2px",
+    marginBottom: "3px",
   },
 
   popupTea: {
