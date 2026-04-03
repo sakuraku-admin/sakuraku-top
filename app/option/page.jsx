@@ -4,16 +4,8 @@ import { useMemo, useState } from "react";
 
 const magCreamOptions = [
   {
-    id: "mag-neck",
-    name: "首",
-    price: 1000,
-    minutes: 10,
-    description:
-      "お辛い箇所に塗布し、筋肉をゆるめ、コリ・ハリの緩和と疲労回復を促します。",
-  },
-  {
-    id: "mag-shoulder",
-    name: "肩",
+    id: "mag-neck-shoulder",
+    name: "首・肩",
     price: 1000,
     minutes: 10,
     description:
@@ -257,11 +249,11 @@ export default function OptionMenuPage() {
           <section style={blockStyle}>
             <h2 style={sectionTitleStyle}>① マグクリーム（塗布）</h2>
             <p style={sectionSubStyle}>
-              1000円
+              1部位 1000円
               <br />
               お辛い箇所に塗布し、筋肉をゆるめコリ、ハリの緩和と疲労回復を促します。
               <br />
-              （首・肩・お腹・腰・足裏からお好きな箇所をお選びいただけます）
+              （首・肩 / お腹 / 腰 / 足裏 からお選びいただけます）
             </p>
 
             {magCreamOptions.map((item) => (
