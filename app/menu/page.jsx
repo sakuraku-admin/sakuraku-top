@@ -13,8 +13,8 @@ const menuItems = [
     price: "5000円",
     shortDescription: "定期的なお身体のケアに",
     descriptionLines: [
-      "お辛い箇所を中心にほぐし、整え、",
-      "日々のお疲れをやさしく解消していくコース",
+      "お辛い箇所を中心にほぐし整え、",
+      "日々のお疲れをやさしく解消していくコースです。",
     ],
     teaText: "アフターティー付き",
   },
@@ -28,7 +28,7 @@ const menuItems = [
     shortDescription: "ゆったり整えたい方に",
     descriptionLines: [
       "60分では足りない慢性的なお疲れや不調に対して、",
-      "全身のバランスを見ながら丁寧に整えていく人気コース",
+      "全身のバランスを見ながら丁寧に整えていく人気コースです。",
     ],
     teaText: "アフターティー付き",
   },
@@ -41,7 +41,7 @@ const menuItems = [
     price: "9000円",
     shortDescription: "より深く、しっかり整えたい方に",
     descriptionLines: [
-      "整体・ストレッチ・筋膜リリース・自律神経ケアなど、顔/頭を含め全身を深く整えていく充実のコース",
+      "整体・ストレッチ・筋膜リリース・自律神経ケアなど、お顔・頭を含めた全身を深く整えていく充実のコースです。",
     ],
     teaText: "アフターティー付き",
   },
@@ -64,9 +64,13 @@ const menuItems = [
         { text: "【よもぎ蒸しパッド】", color: "#62b774" },
       ],
     ],
+    customAdjustLines: [
+      "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
+      "ご希望に応じて施術内容を柔軟に調整いたします。",
+    ],
     descriptionLines: [
       "慢性的なお疲れや痛みにアプローチし、",
-      "お身体の回復をしっかりと促していく特別コース",
+      "お身体の回復をしっかりと促していく特別コースです。",
       "お久しぶりの方にも◎",
     ],
     teaText: "ウェルカム／アフターティー付き",
@@ -89,6 +93,10 @@ const menuItems = [
         { text: "【ホットストーン】", color: "#ef84b4" },
         { text: "【よもぎ蒸しパッド】", color: "#62b774" },
       ],
+    ],
+    customAdjustLines: [
+      "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
+      "ご希望に応じて施術内容を柔軟に調整いたします。",
     ],
     descriptionLines: [
       "お身体の状態に合わせて全身を温め、巡らせ、",
@@ -124,11 +132,15 @@ const menuItems = [
         { text: "【美容マスク】", color: "#63b4b7" },
       ],
     ],
+    customAdjustLines: [
+      "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
+      "ご希望に応じて施術内容を柔軟に調整いたします。",
+    ],
     descriptionLines: [
       "全身のお辛い箇所やむくみ、疲労に対して",
       "オールハンドで丁寧にアプローチし、",
       "お顔や頭を含めて全身をリセットしていきます。",
-      "自分へのご褒美や特別なケアにも◎",
+      "ご自身へのご褒美や特別なケアに◎",
     ],
     teaText: "ウェルカム／アフターティー付き",
   },
@@ -304,6 +316,16 @@ export default function MenuPage() {
                     ))}
                   </div>
                 ))}
+
+                {selectedMenu.customAdjustLines && (
+                  <div style={styles.popupCustomAdjustNote}>
+                    {selectedMenu.customAdjustLines.map((line, index) => (
+                      <div key={index} style={styles.popupCustomAdjustLine}>
+                        {line}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
@@ -676,6 +698,21 @@ const styles = {
     fontWeight: "600",
     whiteSpace: "nowrap",
     textShadow: "0 0 4px rgba(255,255,255,0.38)",
+  },
+
+  popupCustomAdjustNote: {
+    marginTop: "8px",
+    textAlign: "center",
+    color: "#8a6958",
+    fontSize: "clamp(11px, 1.8vw, 14px)",
+    lineHeight: 1.6,
+    fontFamily:
+      '"Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
+    padding: "0 8px",
+  },
+
+  popupCustomAdjustLine: {
+    marginBottom: "1px",
   },
 
   popupDescription: {
