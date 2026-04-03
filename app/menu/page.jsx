@@ -354,7 +354,7 @@ export default function MenuPage() {
               </div>
 
               <div style={styles.popupShortDescription}>
-                初めての方はこちらをお選びください。
+                初回の方はこちらをお選び下さい。
               </div>
             </div>
 
