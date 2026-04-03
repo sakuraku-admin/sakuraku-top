@@ -295,9 +295,10 @@ export default function MenuPage() {
               <div style={styles.popupFeatureBlock}>
                 {selectedMenu.featureRows.map((row, rowIndex) => (
                   <div key={rowIndex} style={styles.popupFeatureRow}>
+                    <span style={styles.popupFeatureBracket}>【</span>
+
                     {row.map((feature, featureIndex) => (
                       <span key={featureIndex} style={styles.popupFeatureItem}>
-                        <span style={styles.popupFeatureBracket}>【</span>
                         <span
                           style={{
                             ...styles.popupFeatureLabel,
@@ -306,9 +307,13 @@ export default function MenuPage() {
                         >
                           {feature.text}
                         </span>
-                        <span style={styles.popupFeatureBracket}>】</span>
+                        {featureIndex !== row.length - 1 && (
+                          <span style={styles.popupFeatureSpacer}>　</span>
+                        )}
                       </span>
                     ))}
+
+                    <span style={styles.popupFeatureBracket}>】</span>
                   </div>
                 ))}
 
@@ -682,7 +687,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     flexWrap: "nowrap",
-    gap: "6px",
+    gap: "0px",
     marginBottom: "4px",
     overflowX: "auto",
     overflowY: "hidden",
@@ -706,14 +711,19 @@ const styles = {
 
   popupFeatureBracket: {
     fontSize: "clamp(12px, 1.9vw, 15px)",
-    color: "#4d3c35",
-    fontWeight: "600",
+    color: "#3f312b",
+    fontWeight: "700",
+    flex: "0 0 auto",
   },
 
   popupFeatureLabel: {
     fontSize: "clamp(12px, 2.0vw, 15px)",
     fontWeight: "700",
-    margin: "0 1px",
+  },
+
+  popupFeatureSpacer: {
+    fontSize: "clamp(10px, 1.7vw, 13px)",
+    color: "transparent",
   },
 
   popupCustomAdjustNote: {
