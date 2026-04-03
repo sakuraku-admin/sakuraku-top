@@ -41,7 +41,7 @@ const menuItems = [
     price: "9000円",
     shortDescription: "より深く、しっかり整えたい方に",
     descriptionLines: [
-      "整体・ストレッチ・筋膜リリース・自律神経ケアなどを組み合わせ、お顔や頭を含めて全身を深く整えていく充実のコースです。",
+      "整体・ストレッチ・筋膜リリース・自律神経ケアなど、お顔・頭を含めた全身を深く整えていく充実のコースです。",
     ],
     teaText: "アフターティー付き",
   },
@@ -354,13 +354,13 @@ export default function MenuPage() {
               </div>
 
               <div style={styles.popupShortDescription}>
-                初めての方専用の特別メニューです。
+                初めての方はこちらをお選びください。
               </div>
             </div>
 
             <div style={styles.popupDescription}>
               <div style={styles.popupDescriptionLine}>
-                ※初回はカウンセリング等のお時間を含みます。
+                ※カウンセリング等のお時間を含みます。
               </div>
             </div>
 
