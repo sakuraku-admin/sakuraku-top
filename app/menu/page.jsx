@@ -95,9 +95,8 @@ const menuItems = [
       "ご希望に応じて施術内容を柔軟に調整いたします。",
     ],
     descriptionLines: [
-      "お身体全体を温め・巡りを整え",
-      "深部からゆるめる全身ケアコース",
-      "深整コースをしっかり味わいたい方におすすめです",
+      "お身体の状態に合わせて全身を温め・巡らせ・深部からゆるめて整える",
+      "深整コースをしっかり味わいたい方におすすめのコース",
     ],
     teaText: "ウェルカム／アフターティー付き",
     recommend: true,
@@ -330,15 +329,20 @@ export default function MenuPage() {
               </div>
             )}
 
-            <div style={styles.popupDescription}>
-              {selectedMenu.descriptionLines.map((line, index) => (
-                <div key={index} style={styles.popupDescriptionLine}>
-                  {line}
+            <div style={styles.popupDescriptionWrap}>
+              <div style={styles.popupDescriptionGradientTop} />
+              <div style={styles.popupDescriptionPanel}>
+                <div style={styles.popupDescription}>
+                  {selectedMenu.descriptionLines.map((line, index) => (
+                    <div key={index} style={styles.popupDescriptionLine}>
+                      {line}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
 
-            <div style={styles.popupTea}>{selectedMenu.teaText}</div>
+                <div style={styles.popupTea}>{selectedMenu.teaText}</div>
+              </div>
+            </div>
 
             <button
               type="button"
@@ -680,7 +684,7 @@ const styles = {
   },
 
   popupFeatureBlock: {
-    marginBottom: "18px",
+    marginBottom: "0px",
   },
 
   popupFeatureRow: {
@@ -729,7 +733,7 @@ const styles = {
 
   popupCustomAdjustNote: {
     marginTop: "14px",
-    marginBottom: "4px",
+    marginBottom: "0px",
     textAlign: "center",
     color: "rgba(138, 105, 88, 0.92)",
     fontSize: "clamp(10px, 1.65vw, 13px)",
@@ -741,6 +745,27 @@ const styles = {
 
   popupCustomAdjustLine: {
     marginBottom: "1px",
+  },
+
+  popupDescriptionWrap: {
+    marginTop: "10px",
+    marginBottom: "12px",
+  },
+
+  popupDescriptionGradientTop: {
+    height: "22px",
+    background:
+      "linear-gradient(180deg, rgba(244, 233, 227, 0) 0%, rgba(240, 225, 219, 0.78) 100%)",
+    borderTopLeftRadius: "14px",
+    borderTopRightRadius: "14px",
+  },
+
+  popupDescriptionPanel: {
+    background: "rgba(240, 225, 219, 0.78)",
+    borderBottomLeftRadius: "14px",
+    borderBottomRightRadius: "14px",
+    padding: "10px 10px 14px",
+    boxSizing: "border-box",
   },
 
   popupDescription: {
@@ -763,7 +788,7 @@ const styles = {
     color: "#dd7e4a",
     fontSize: "clamp(18px, 3vw, 26px)",
     lineHeight: 1.5,
-    marginBottom: "18px",
+    marginBottom: "0px",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
     letterSpacing: "0.06em",
