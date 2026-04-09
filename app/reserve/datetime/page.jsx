@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 const STORAGE_KEY = "sakuraku-calendar-v1";
 const OPEN_HOUR = 11;
@@ -45,7 +44,6 @@ function generateTimeSlots() {
     slots.push(`${String(hour).padStart(2, "0")}:00`);
     slots.push(`${String(hour).padStart(2, "0")}:30`);
   }
-  slots.push(`${String(CLOSE_HOUR).padStart(2, "0")}:00`);
   return slots;
 }
 
@@ -59,7 +57,7 @@ function generateInitialCalendar() {
     calendar[dateKey] = {};
 
     const day = date.getDay();
-    const isClosedLike = day === 0; // 日曜を少し埋め気味にする例
+    const isClosedLike = day === 0;
     const slots = generateTimeSlots();
 
     slots.forEach((time, index) => {
@@ -68,7 +66,7 @@ function generateInitialCalendar() {
       if (isClosedLike) {
         status = "unavailable";
       } else {
-        if (index < 2 || index > slots.length - 3) {
+        if (index < 1 || index > slots.length - 2) {
           status = Math.random() > 0.5 ? "unavailable" : "available";
         } else {
           status = Math.random() > 0.18 ? "available" : "unavailable";
@@ -85,6 +83,7 @@ function generateInitialCalendar() {
 function readCalendar() {
   if (typeof window === "undefined") return {};
   const saved = localStorage.getItem(STORAGE_KEY);
+
   if (saved) {
     try {
       return JSON.parse(saved);
@@ -92,6 +91,7 @@ function readCalendar() {
       return {};
     }
   }
+
   const initial = generateInitialCalendar();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
   return initial;
@@ -99,22 +99,25 @@ function readCalendar() {
 
 function countRequiredSlots(durationText) {
   if (!durationText) return 2;
-  const normalized = durationText.replace(/\s/g, "");
 
+  const normalized = durationText.replace(/\s/g, "");
   const hourMatch = normalized.match(/(\d+)時間/);
   const minMatch = normalized.match(/(\d+)分/);
 
   let totalMinutes = 0;
+
   if (hourMatch) totalMinutes += Number(hourMatch[1]) * 60;
   if (minMatch) totalMinutes += Number(minMatch[1]);
 
   if (totalMinutes <= 0) return 2;
+
   return Math.ceil(totalMinutes / SLOT_MINUTES);
 }
 
 function canStartAt(calendar, dateKey, time, requiredSlots) {
   const slots = generateTimeSlots();
   const startIndex = slots.indexOf(time);
+
   if (startIndex === -1) return false;
 
   for (let i = 0; i < requiredSlots; i++) {
@@ -127,9 +130,8 @@ function canStartAt(calendar, dateKey, time, requiredSlots) {
 }
 
 export default function ReserveDateTimePage() {
-  const searchParams = useSearchParams();
-  const menuName = searchParams.get("menu") || "深整コース 120分";
-  const durationText = searchParams.get("duration") || "2時間";
+  const menuName = "深整コース 120分";
+  const durationText = "2時間";
   const requiredSlots = countRequiredSlots(durationText);
 
   const [calendar, setCalendar] = useState({});
@@ -140,12 +142,12 @@ export default function ReserveDateTimePage() {
     const loaded = readCalendar();
     setCalendar(loaded);
 
-    const onStorage = () => {
+    const onFocus = () => {
       setCalendar(readCalendar());
     };
 
-    window.addEventListener("storage", onStorage);
-    return () => window.removeEventListener("storage", onStorage);
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
   }, []);
 
   const weekDates = useMemo(() => {
@@ -224,11 +226,7 @@ export default function ReserveDateTimePage() {
                         <div
                           style={{
                             ...styles.dateTop,
-                            color: isSun
-                              ? "#d96c84"
-                              : isSat
-                              ? "#6a74d8"
-                              : "#5a3a2c",
+                            color: isSun ? "#d96c84" : isSat ? "#6a74d8" : "#5a3a2c",
                           }}
                         >
                           {jp.month}/{jp.day}
@@ -236,11 +234,7 @@ export default function ReserveDateTimePage() {
                         <div
                           style={{
                             ...styles.dateBottom,
-                            color: isSun
-                              ? "#d96c84"
-                              : isSat
-                              ? "#6a74d8"
-                              : "#5a3a2c",
+                            color: isSun ? "#d96c84" : isSat ? "#6a74d8" : "#5a3a2c",
                           }}
                         >
                           ({jp.week})
@@ -255,7 +249,6 @@ export default function ReserveDateTimePage() {
                 {timeSlots.map((time) => (
                   <tr key={time}>
                     <td style={styles.timeCell}>{time}</td>
-
                     {weekDates.map((date) => {
                       const dateKey = formatDateKey(date);
                       const ok = canStartAt(calendar, dateKey, time, requiredSlots);
@@ -299,8 +292,7 @@ export default function ReserveDateTimePage() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background:
-      "linear-gradient(180deg, #f7f1eb 0%, #f4ece4 45%, #efe5dc 100%)",
+    background: "linear-gradient(180deg, #f7f1eb 0%, #f4ece4 45%, #efe5dc 100%)",
     padding: "24px 12px 56px",
   },
   container: {
