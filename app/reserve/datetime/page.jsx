@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
-const SLOT_MINUTES = 30;
 const BUFFER_MINUTES = 60;
 
 const MENU_NAME = "深整コース 120分";
@@ -66,10 +65,22 @@ function minutesToTimeString(totalMinutes) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
-function getTimeLabel(time) {
-  const [, minute] = time.split(":");
-  if (minute === "00") return time;
-  return "30";
+function getTimeLabelParts(time) {
+  const [hour, minute] = time.split(":");
+
+  if (minute === "00") {
+    return {
+      hour,
+      minute: "00",
+      isHalf: false,
+    };
+  }
+
+  return {
+    hour: "",
+    minute: "30",
+    isHalf: true,
+  };
 }
 
 function buildMockAvailability() {
@@ -174,10 +185,6 @@ export default function ReserveDateTimePage() {
             </div>
           </div>
 
-          <p style={styles.noticeText}>
-            ※予約枠は施術内容に応じた準備時間を含めてご案内しています
-          </p>
-
           {selected && (
             <div style={styles.selectedBox}>
               選択中：
@@ -247,69 +254,87 @@ export default function ReserveDateTimePage() {
               </thead>
 
               <tbody>
-                {timeSlots.map((time) => (
-                  <tr key={time}>
-                    <td
-                      style={{
-                        ...styles.timeCell,
-                        ...(time.endsWith(":00")
-                          ? styles.timeCellHour
-                          : styles.timeCellHalf),
-                      }}
-                    >
-                      {getTimeLabel(time)}
-                    </td>
+                {timeSlots.map((time) => {
+                  const label = getTimeLabelParts(time);
 
-                    {weekDates.map((date) => {
-                      const dateKey = formatDateKey(date);
-                      const markedAvailable = isStartMarkedAvailable(
-                        dateKey,
-                        time,
-                        mockAvailability
-                      );
-                      const withinBusinessHours = canReserveAt(
-                        time,
-                        TREATMENT_MINUTES
-                      );
-                      const isReservable =
-                        markedAvailable && withinBusinessHours;
-                      const isSelected =
-                        selected?.dateKey === dateKey && selected?.time === time;
+                  return (
+                    <tr key={time}>
+                      <td
+                        style={{
+                          ...styles.timeCell,
+                          ...(label.isHalf
+                            ? styles.timeCellHalf
+                            : styles.timeCellHour),
+                        }}
+                      >
+                        {label.isHalf ? (
+                          <div style={styles.halfTimeWrap}>
+                            <span style={styles.halfTimeHourSpacer}>00</span>
+                            <span style={styles.halfTimeColon}>:</span>
+                            <span style={styles.halfTimeMinute}>30</span>
+                          </div>
+                        ) : (
+                          time
+                        )}
+                      </td>
 
-                      const blockedEndTime = getBlockedEndTime(
-                        time,
-                        TREATMENT_MINUTES,
-                        BUFFER_MINUTES
-                      );
+                      {weekDates.map((date) => {
+                        const dateKey = formatDateKey(date);
+                        const markedAvailable = isStartMarkedAvailable(
+                          dateKey,
+                          time,
+                          mockAvailability
+                        );
+                        const withinBusinessHours = canReserveAt(
+                          time,
+                          TREATMENT_MINUTES
+                        );
+                        const isReservable =
+                          markedAvailable && withinBusinessHours;
+                        const isSelected =
+                          selected?.dateKey === dateKey &&
+                          selected?.time === time;
 
-                      return (
-                        <td key={`${dateKey}-${time}`} style={styles.slotCell}>
-                          <button
-                            onClick={() => handleSelect(dateKey, time)}
-                            disabled={!isReservable}
+                        const blockedEndTime = getBlockedEndTime(
+                          time,
+                          TREATMENT_MINUTES,
+                          BUFFER_MINUTES
+                        );
+
+                        return (
+                          <td
+                            key={`${dateKey}-${time}`}
                             style={{
-                              ...styles.slotButton,
+                              ...styles.slotCell,
                               ...(isReservable
-                                ? styles.slotAvailable
-                                : styles.slotUnavailable),
-                              ...(isSelected ? styles.slotSelected : {}),
+                                ? styles.slotCellAvailable
+                                : styles.slotCellUnavailable),
                             }}
-                            title={
-                              isReservable
-                                ? `施術終了 ${minutesToTimeString(
-                                    timeStringToMinutes(time) +
-                                      TREATMENT_MINUTES
-                                  )} / 枠確保 ${blockedEndTime}まで`
-                                : "予約不可"
-                            }
                           >
-                            {isReservable ? "◎" : "✕"}
-                          </button>
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
+                            {isReservable ? (
+                              <button
+                                onClick={() => handleSelect(dateKey, time)}
+                                style={{
+                                  ...styles.slotButton,
+                                  ...styles.slotAvailable,
+                                  ...(isSelected ? styles.slotSelected : {}),
+                                }}
+                                title={`施術終了 ${minutesToTimeString(
+                                  timeStringToMinutes(time) +
+                                    TREATMENT_MINUTES
+                                )} / 枠確保 ${blockedEndTime}まで`}
+                              >
+                                ◎
+                              </button>
+                            ) : (
+                              <div style={styles.slotUnavailableMark}>✕</div>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -398,13 +423,6 @@ const styles = {
     color: "#5a3a2c",
     fontWeight: 700,
     lineHeight: 1.4,
-  },
-  noticeText: {
-    margin: "14px 0 0",
-    textAlign: "center",
-    color: "#8a7066",
-    fontSize: "0.85rem",
-    lineHeight: 1.6,
   },
   selectedBox: {
     marginTop: "16px",
@@ -506,13 +524,29 @@ const styles = {
     borderBottom: "1px solid #eee2d9",
     padding: "12px 6px",
     minWidth: "84px",
-    letterSpacing: "0.02em",
   },
   timeCellHour: {
     fontSize: "0.96rem",
+    letterSpacing: "0.02em",
   },
   timeCellHalf: {
     fontSize: "0.9rem",
+    color: "#8f786d",
+  },
+  halfTimeWrap: {
+    display: "inline-grid",
+    gridTemplateColumns: "auto auto auto",
+    alignItems: "center",
+    justifyContent: "center",
+    fontVariantNumeric: "tabular-nums",
+  },
+  halfTimeHourSpacer: {
+    visibility: "hidden",
+  },
+  halfTimeColon: {
+    color: "transparent",
+  },
+  halfTimeMinute: {
     color: "#8f786d",
   },
   slotCell: {
@@ -520,7 +554,12 @@ const styles = {
     borderLeft: "1px solid #f2e8e1",
     textAlign: "center",
     padding: "8px 4px",
+  },
+  slotCellAvailable: {
     background: "#fffdfa",
+  },
+  slotCellUnavailable: {
+    background: "#f1ebe6",
   },
   slotButton: {
     width: "44px",
@@ -538,16 +577,23 @@ const styles = {
     borderColor: "rgba(220, 111, 135, 0.25)",
     background: "rgba(255, 244, 247, 0.95)",
   },
-  slotUnavailable: {
-    color: "#b8aea8",
-    borderColor: "rgba(185, 173, 166, 0.16)",
-    background: "rgba(245, 240, 237, 0.96)",
-    cursor: "not-allowed",
-  },
   slotSelected: {
     boxShadow: "0 0 0 3px rgba(220, 111, 135, 0.18)",
     transform: "scale(1.04)",
     background: "rgba(255, 233, 238, 1)",
+  },
+  slotUnavailableMark: {
+    color: "#9d918a",
+    fontSize: "1.08rem",
+    fontWeight: 700,
+    lineHeight: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "44px",
+    height: "44px",
+    margin: "0 auto",
+    userSelect: "none",
   },
   noteCard: {
     marginTop: "16px",
