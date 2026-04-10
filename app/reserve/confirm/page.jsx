@@ -56,18 +56,18 @@ export default function ReserveConfirmPage() {
 
         <div
           style={{
-            background: "rgba(243, 225, 230, 0.82)",
-            borderRadius: "18px",
-            padding: "18px 20px",
-            color: "#7a4f4f",
-            fontSize: "26px",
-            letterSpacing: "0.1em",
+            background: "rgba(243, 225, 230, 0.65)",
+            borderRadius: "16px",
+            padding: "12px 16px",
+            color: "#7a5a5a",
+            fontSize: "22px",
+            letterSpacing: "0.08em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-            marginBottom: "18px",
+            marginBottom: "16px",
             boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.65), 0 6px 18px rgba(231, 191, 203, 0.18)",
-            backdropFilter: "blur(6px)",
-            WebkitBackdropFilter: "blur(6px)",
+              "inset 0 1px 0 rgba(255,255,255,0.7), 0 6px 18px rgba(231, 191, 203, 0.18)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
           }}
         >
           {customerName} 様
