@@ -13,38 +13,35 @@ export default function ReserveConfirmPage() {
     <main
       style={{
         minHeight: "100vh",
-        background:
-          "linear-gradient(180deg, #f7f2ec 0%, #f3ede6 48%, #f6f1ea 100%)",
+        background: "#e9e4de",
         display: "flex",
         justifyContent: "center",
-        padding: "20px 14px 40px",
+        padding: "8px 10px",
         boxSizing: "border-box",
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "430px",
-          background: "rgba(255,255,255,0.42)",
+          maxWidth: "640px",
+          background: "#f7f4f0",
           borderRadius: "28px",
-          padding: "20px 16px 22px",
+          padding: "8px 16px 22px",
           boxSizing: "border-box",
-          boxShadow: "0 10px 30px rgba(120, 93, 74, 0.08)",
-          backdropFilter: "blur(3px)",
         }}
       >
         <div
           style={{
             background: "#dcc5b0",
-            color: "#4f3428",
-            borderRadius: "18px",
+            borderRadius: "20px",
             textAlign: "center",
+            padding: "16px 12px",
+            color: "#4f3428",
             fontSize: "28px",
             fontWeight: 500,
-            letterSpacing: "0.08em",
-            padding: "12px 10px 14px",
-            marginBottom: "18px",
+            letterSpacing: "0.04em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+            marginBottom: "18px",
           }}
         >
           ご予約内容の確認
@@ -52,14 +49,14 @@ export default function ReserveConfirmPage() {
 
         <div
           style={{
-            background: "rgba(221, 211, 201, 0.68)",
-            color: "#6c4c3c",
+            background: "#ddd7d1",
             borderRadius: "18px",
             padding: "18px 20px",
+            color: "#7b5a49",
             fontSize: "26px",
-            letterSpacing: "0.08em",
-            marginBottom: "18px",
+            letterSpacing: "0.1em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+            marginBottom: "18px",
           }}
         >
           {customerName} 様
@@ -68,32 +65,32 @@ export default function ReserveConfirmPage() {
         <section
           style={{
             position: "relative",
-            background: "rgba(233, 226, 219, 0.72)",
-            borderRadius: "24px",
-            padding: "18px 16px 72px",
+            background: "#e9e3de",
+            borderRadius: "22px",
+            padding: "18px 18px 22px",
+            boxSizing: "border-box",
             overflow: "hidden",
           }}
         >
           <div
             style={{
-              border: "2px solid rgba(204, 154, 137, 0.9)",
+              border: "2px solid #d29c8a",
               borderRadius: "24px",
-              background: "rgba(255, 251, 248, 0.26)",
-              boxShadow:
-                "0 3px 10px rgba(191, 145, 128, 0.10), inset 0 1px 0 rgba(255,255,255,0.45)",
+              background: "#f4f0ec",
               padding: "24px 22px 22px",
-              marginBottom: "26px",
+              boxShadow: "0 2px 8px rgba(178, 132, 117, 0.10)",
+              marginBottom: "28px",
             }}
           >
             <div
               style={{
                 textAlign: "center",
-                color: "#5a3a2d",
-                fontSize: "28px",
+                color: "#5b3b2f",
+                fontSize: "30px",
                 fontWeight: 700,
-                letterSpacing: "0.11em",
-                marginBottom: "20px",
+                letterSpacing: "0.12em",
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+                marginBottom: "22px",
               }}
             >
               {menuName}　{menuTime}
@@ -101,34 +98,21 @@ export default function ReserveConfirmPage() {
 
             <div
               style={{
-                color: "#866254",
-                fontSize: "18px",
+                display: "grid",
+                gridTemplateColumns: "5.2em 1fr",
+                columnGap: "0.2em",
+                alignItems: "start",
+                color: "#8d695c",
+                fontSize: "17px",
                 lineHeight: 1.9,
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+                letterSpacing: "0.03em",
               }}
             >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "5.4em 1fr",
-                  alignItems: "start",
-                }}
-              >
-                <div
-                  style={{
-                    whiteSpace: "nowrap",
-                    letterSpacing: "0.06em",
-                  }}
-                >
-                  オプション：
-                </div>
-                <div>
-                  {options.map((option, index) => (
-                    <div key={option} style={{ marginTop: index === 0 ? 0 : "2px" }}>
-                      {option}
-                    </div>
-                  ))}
-                </div>
+              <div style={{ whiteSpace: "nowrap" }}>オプション：</div>
+              <div>
+                <div>{options[0]}</div>
+                <div>{options[1]}</div>
               </div>
             </div>
           </div>
@@ -144,55 +128,35 @@ export default function ReserveConfirmPage() {
             <div
               style={{
                 fontSize: "17px",
-                letterSpacing: "0.08em",
-                marginBottom: "4px",
+                letterSpacing: "0.04em",
+                marginBottom: "20px",
               }}
             >
-              所要時間：
-              <span
-                style={{
-                  fontSize: "18px",
-                  marginLeft: "6px",
-                }}
-              >
-                {totalTime}
-              </span>
+              所要時間： {totalTime}
             </div>
 
             <div
               style={{
                 fontSize: "17px",
-                letterSpacing: "0.08em",
-                marginTop: "18px",
-                marginBottom: "6px",
-              }}
-            >
-              ご予約日：
-            </div>
-
-            <div
-              style={{
-                fontSize: "18px",
-                lineHeight: 1.8,
                 letterSpacing: "0.04em",
+                lineHeight: 1.8,
               }}
             >
-              <div>{reserveDate}</div>
-              <div style={{ paddingLeft: "2.6em" }}>{reserveTime}</div>
+              ご予約日：{reserveDate}　{reserveTime}
             </div>
           </div>
 
           <img
-            src="/images/tea-illust.png"
-            alt="お茶のイラスト"
+            src="/images/tea-confirm.png"
+            alt=""
             style={{
               position: "absolute",
-              right: "14px",
+              right: "20px",
               bottom: "18px",
-              width: "118px",
-              opacity: 0.2,
+              width: "122px",
+              opacity: 0.18,
               filter:
-                "grayscale(10%) brightness(1.08) contrast(0.92) blur(0.2px) drop-shadow(0 1px 1px rgba(255,255,255,0.45))",
+                "brightness(1.03) contrast(0.95) grayscale(8%) drop-shadow(0 1px 2px rgba(255,255,255,0.55))",
               mixBlendMode: "multiply",
               pointerEvents: "none",
               userSelect: "none",
@@ -202,12 +166,12 @@ export default function ReserveConfirmPage() {
 
         <div
           style={{
-            marginTop: "16px",
-            padding: "0 4px",
-            color: "#8a6e62",
+            marginTop: "14px",
+            padding: "0 6px",
+            color: "#8f766a",
             fontSize: "13px",
             lineHeight: 1.9,
-            letterSpacing: "0.02em",
+            letterSpacing: "0.01em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
           }}
         >
@@ -220,19 +184,18 @@ export default function ReserveConfirmPage() {
         <button
           type="button"
           style={{
-            marginTop: "18px",
             width: "100%",
+            marginTop: "18px",
             border: "none",
             borderRadius: "999px",
-            background:
-              "linear-gradient(180deg, #e5a4b6 0%, #db95a8 52%, #d4869b 100%)",
+            background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
             color: "#fffdfb",
             fontSize: "22px",
             fontWeight: 700,
-            letterSpacing: "0.04em",
+            letterSpacing: "0.03em",
             padding: "18px 16px",
-            boxShadow: "0 10px 22px rgba(214, 135, 156, 0.18)",
             cursor: "pointer",
+            boxShadow: "0 8px 18px rgba(210, 140, 160, 0.18)",
           }}
         >
           この内容で予約する
