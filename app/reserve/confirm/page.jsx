@@ -28,6 +28,7 @@ export default function ReserveConfirmPage() {
           borderRadius: "28px",
           padding: "8px 16px 22px",
           boxSizing: "border-box",
+          boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
         }}
       >
         <div
@@ -49,14 +50,15 @@ export default function ReserveConfirmPage() {
 
         <div
           style={{
-            background: "#ddd7d1",
+            background: "#f3e1e6",
             borderRadius: "18px",
             padding: "18px 20px",
-            color: "#7b5a49",
+            color: "#7a4f4f",
             fontSize: "26px",
             letterSpacing: "0.1em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
             marginBottom: "18px",
+            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
           }}
         >
           {customerName} 様
@@ -74,12 +76,12 @@ export default function ReserveConfirmPage() {
         >
           <div
             style={{
-              border: "2px solid #d29c8a",
+              border: "2px solid #dba18f",
               borderRadius: "24px",
               background: "#f4f0ec",
               padding: "24px 22px 22px",
               boxShadow: "0 2px 8px rgba(178, 132, 117, 0.10)",
-              marginBottom: "28px",
+              marginBottom: "26px",
             }}
           >
             <div
@@ -102,7 +104,7 @@ export default function ReserveConfirmPage() {
                 gridTemplateColumns: "5.2em 1fr",
                 columnGap: "0.2em",
                 alignItems: "start",
-                color: "#8d695c",
+                color: "#946e63",
                 fontSize: "17px",
                 lineHeight: 1.9,
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
@@ -129,7 +131,7 @@ export default function ReserveConfirmPage() {
               style={{
                 fontSize: "17px",
                 letterSpacing: "0.04em",
-                marginBottom: "20px",
+                marginBottom: "18px",
               }}
             >
               所要時間： {totalTime}
@@ -139,10 +141,27 @@ export default function ReserveConfirmPage() {
               style={{
                 fontSize: "17px",
                 letterSpacing: "0.04em",
-                lineHeight: 1.8,
+                marginBottom: "8px",
               }}
             >
-              ご予約日：{reserveDate}　{reserveTime}
+              ご予約日：
+            </div>
+
+            <div
+              style={{
+                display: "inline-block",
+                fontSize: "21px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+                lineHeight: 1.7,
+                color: "#6a4337",
+                background: "rgba(243, 225, 230, 0.55)",
+                padding: "4px 12px 6px",
+                borderRadius: "999px",
+                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
+              }}
+            >
+              {reserveDate}　{reserveTime}
             </div>
           </div>
 
@@ -154,10 +173,10 @@ export default function ReserveConfirmPage() {
               right: "20px",
               bottom: "18px",
               width: "122px",
-              opacity: 0.18,
+              opacity: 0.3,
               filter:
-                "brightness(1.03) contrast(0.95) grayscale(8%) drop-shadow(0 1px 2px rgba(255,255,255,0.55))",
-              mixBlendMode: "multiply",
+                "brightness(1.1) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
+              mixBlendMode: "normal",
               pointerEvents: "none",
               userSelect: "none",
             }}
