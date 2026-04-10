@@ -2,12 +2,18 @@
 
 export default function ReserveConfirmPage() {
   const customerName = "〇〇　〇〇";
-  const menuName = "整体コース";
+  const menuName = "整体コース"; // ←「深整コース」にすると案内文が切り替わります
   const menuTime = "60分";
   const options = ["巡りシェイプ1部位", "頭部解放"];
   const totalTime = "90分";
   const reserveDate = "2026/4/17(金)";
   const reserveTime = "11:00〜12:30";
+
+  const isShinseiCourse = menuName.includes("深整");
+
+  const timeNote = isShinseiCourse
+    ? "※施術時間とは別に、お茶やお着替え等のお時間をご用意しております"
+    : "※施術時間にはお着替え等のお時間も含まれております";
 
   return (
     <main
@@ -50,7 +56,7 @@ export default function ReserveConfirmPage() {
 
         <div
           style={{
-            background: "#f3e1e6",
+            background: "rgba(243, 225, 230, 0.82)",
             borderRadius: "18px",
             padding: "18px 20px",
             color: "#7a4f4f",
@@ -58,7 +64,10 @@ export default function ReserveConfirmPage() {
             letterSpacing: "0.1em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
             marginBottom: "18px",
-            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
+            boxShadow:
+              "inset 0 1px 0 rgba(255,255,255,0.65), 0 6px 18px rgba(231, 191, 203, 0.18)",
+            backdropFilter: "blur(6px)",
+            WebkitBackdropFilter: "blur(6px)",
           }}
         >
           {customerName} 様
@@ -113,8 +122,9 @@ export default function ReserveConfirmPage() {
             >
               <div style={{ whiteSpace: "nowrap" }}>オプション：</div>
               <div>
-                <div>{options[0]}</div>
-                <div>{options[1]}</div>
+                {options.map((option) => (
+                  <div key={option}>{option}</div>
+                ))}
               </div>
             </div>
           </div>
@@ -139,29 +149,44 @@ export default function ReserveConfirmPage() {
 
             <div
               style={{
-                fontSize: "17px",
-                letterSpacing: "0.04em",
-                marginBottom: "8px",
+                display: "inline-block",
+                fontSize: "20px",
+                fontWeight: 700,
+                letterSpacing: "0.03em",
+                lineHeight: 1.7,
+                color: "#6a4337",
+                background: "rgba(243, 225, 230, 0.62)",
+                padding: "6px 14px 8px",
+                borderRadius: "999px",
+                boxShadow:
+                  "inset 0 1px 0 rgba(255,255,255,0.58), 0 3px 10px rgba(231, 191, 203, 0.12)",
+                whiteSpace: "nowrap",
+                maxWidth: "calc(100% - 140px)",
               }}
             >
-              ご予約日：
+              ご予約日時：{reserveDate}　{reserveTime}
             </div>
 
             <div
               style={{
+                marginTop: "10px",
+                color: isShinseiCourse ? "#7f554f" : "#8b7268",
+                fontSize: isShinseiCourse ? "14px" : "13px",
+                lineHeight: 1.8,
+                letterSpacing: "0.01em",
+                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+                background: isShinseiCourse
+                  ? "rgba(243, 225, 230, 0.28)"
+                  : "transparent",
                 display: "inline-block",
-                fontSize: "21px",
-                fontWeight: 700,
-                letterSpacing: "0.04em",
-                lineHeight: 1.7,
-                color: "#6a4337",
-                background: "rgba(243, 225, 230, 0.55)",
-                padding: "4px 12px 6px",
-                borderRadius: "999px",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
+                padding: isShinseiCourse ? "4px 10px 5px" : "0",
+                borderRadius: isShinseiCourse ? "999px" : "0",
+                boxShadow: isShinseiCourse
+                  ? "inset 0 1px 0 rgba(255,255,255,0.45)"
+                  : "none",
               }}
             >
-              {reserveDate}　{reserveTime}
+              {timeNote}
             </div>
           </div>
 
