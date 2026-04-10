@@ -56,7 +56,7 @@ export default function ReserveConfirmPage() {
 
         <div
           style={{
-            background: "rgba(243, 225, 230, 0.65)",
+            background: "rgba(246, 231, 236, 0.72)",
             borderRadius: "16px",
             padding: "12px 16px",
             color: "#7a5a5a",
@@ -65,7 +65,7 @@ export default function ReserveConfirmPage() {
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
             marginBottom: "16px",
             boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.7), 0 6px 18px rgba(231, 191, 203, 0.18)",
+              "inset 0 1px 0 rgba(255,255,255,0.74), 0 6px 18px rgba(231, 191, 203, 0.14)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
           }}
@@ -155,11 +155,11 @@ export default function ReserveConfirmPage() {
                 letterSpacing: "0.03em",
                 lineHeight: 1.7,
                 color: "#6a4337",
-                background: "rgba(243, 225, 230, 0.62)",
-                padding: "6px 14px 8px",
+                background: "rgba(238, 204, 214, 0.62)",
+                padding: "8px 16px 10px",
                 borderRadius: "999px",
                 boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.58), 0 3px 10px rgba(231, 191, 203, 0.12)",
+                  "inset 0 1px 0 rgba(255,255,255,0.62), 0 4px 12px rgba(225, 176, 192, 0.14)",
                 whiteSpace: "nowrap",
                 maxWidth: "calc(100% - 140px)",
               }}
@@ -172,17 +172,17 @@ export default function ReserveConfirmPage() {
                 marginTop: "10px",
                 color: isShinseiCourse ? "#7f554f" : "#8b7268",
                 fontSize: isShinseiCourse ? "14px" : "13px",
-                lineHeight: 1.8,
+                lineHeight: isShinseiCourse ? 2.0 : 1.9,
                 letterSpacing: "0.01em",
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
                 background: isShinseiCourse
-                  ? "rgba(243, 225, 230, 0.28)"
+                  ? "rgba(243, 225, 230, 0.24)"
                   : "transparent",
                 display: "inline-block",
-                padding: isShinseiCourse ? "4px 10px 5px" : "0",
+                padding: isShinseiCourse ? "4px 10px 6px" : "0",
                 borderRadius: isShinseiCourse ? "999px" : "0",
                 boxShadow: isShinseiCourse
-                  ? "inset 0 1px 0 rgba(255,255,255,0.45)"
+                  ? "inset 0 1px 0 rgba(255,255,255,0.42)"
                   : "none",
               }}
             >
@@ -214,7 +214,7 @@ export default function ReserveConfirmPage() {
             padding: "0 6px",
             color: "#8f766a",
             fontSize: "13px",
-            lineHeight: 1.9,
+            lineHeight: 1.95,
             letterSpacing: "0.01em",
             fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
           }}
