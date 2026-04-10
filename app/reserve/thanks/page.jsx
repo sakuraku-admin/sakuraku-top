@@ -76,11 +76,10 @@ export default function ThanksPage() {
         >
           <div
             style={{
-              border: "2px solid #dba18f",
-              borderRadius: "24px",
               background: "#f4f0ec",
+              borderRadius: "24px",
               padding: "24px 18px 22px",
-              boxShadow: "0 2px 8px rgba(178, 132, 117, 0.10)",
+              boxShadow: "0 2px 8px rgba(178, 132, 117, 0.08)",
               marginBottom: "14px",
             }}
           >
@@ -88,7 +87,7 @@ export default function ThanksPage() {
               style={{
                 display: "inline-block",
                 color: "#6a4337",
-                background: "rgba(238, 204, 214, 0.62)",
+                background: "#ffffff",
                 padding: "10px 18px 12px",
                 borderRadius: "999px",
                 fontSize: "22px",
@@ -97,7 +96,7 @@ export default function ThanksPage() {
                 letterSpacing: "0.03em",
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
                 boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.62), 0 4px 12px rgba(225, 176, 192, 0.14)",
+                  "inset 0 1px 0 rgba(255,255,255,0.85), 0 2px 8px rgba(0,0,0,0.06)",
                 margin: "0 auto",
               }}
             >
@@ -119,11 +118,7 @@ export default function ThanksPage() {
             <div>
               {menuName}（{menuTime}）
             </div>
-            {hasOptions && (
-              <div>
-                オプション：{options.join("　")}
-              </div>
-            )}
+            {hasOptions && <div>オプション：{options.join("　")}</div>}
           </div>
 
           <div
