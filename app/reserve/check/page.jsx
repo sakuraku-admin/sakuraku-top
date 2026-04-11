@@ -74,7 +74,7 @@ export default function ReserveCheckPage() {
                   display: "inline-block",
                   background: "rgba(255,255,255,0.96)",
                   borderRadius: "24px",
-                  padding: "18px 26px 16px",
+                  padding: "16px 40px 14px",
                   color: "#6a4337",
                   fontSize: "33px",
                   fontWeight: 500,
