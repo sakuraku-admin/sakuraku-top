@@ -16,15 +16,6 @@ export default function ReserveCheckPage() {
 
   const totalPrice = "￥11,000";
 
-  const message =
-    "ご来店を心よりお待ちしております🌸 ご不明な点がありましたらお気軽にLINEでお問合せください";
-
-  const reserveHistory = [
-    { date: "2026/4/10(金)", course: "整体 60分" },
-    { date: "2026/3/28(土)", course: "深整 120分" },
-    { date: "2026/3/10(火)", course: "整体 90分" },
-  ];
-
   return (
     <main
       style={{
@@ -32,7 +23,7 @@ export default function ReserveCheckPage() {
         backgroundColor: "#efeae3",
         display: "flex",
         justifyContent: "center",
-        padding: "0",
+        padding: 0,
         boxSizing: "border-box",
       }}
     >
@@ -54,7 +45,7 @@ export default function ReserveCheckPage() {
             width: "100%",
             maxWidth: "760px",
             margin: "0 auto",
-            paddingTop: "170px",
+            paddingTop: "160px",
             paddingBottom: "90px",
             paddingLeft: "42px",
             paddingRight: "42px",
@@ -63,10 +54,10 @@ export default function ReserveCheckPage() {
         >
           <div
             style={{
-              background: "rgba(255, 251, 248, 0.82)",
-              borderRadius: "26px",
-              padding: "28px 24px 26px",
-              boxShadow: "0 10px 24px rgba(120, 89, 74, 0.08)",
+              background: "rgba(255, 251, 248, 0.84)",
+              borderRadius: "24px",
+              padding: "30px 24px 28px",
+              boxShadow: "0 8px 18px rgba(120, 89, 74, 0.05)",
               backdropFilter: "blur(2px)",
               WebkitBackdropFilter: "blur(2px)",
             }}
@@ -75,26 +66,26 @@ export default function ReserveCheckPage() {
               style={{
                 display: "flex",
                 justifyContent: "center",
-                marginBottom: "24px",
+                marginBottom: "18px",
               }}
             >
               <div
                 style={{
                   display: "inline-block",
-                  background: "rgba(255,255,255,0.88)",
-                  borderRadius: "999px",
-                  padding: "14px 24px 16px",
+                  background: "rgba(255,255,255,0.96)",
+                  borderRadius: "24px",
+                  padding: "18px 26px 16px",
                   color: "#6a4337",
-                  fontSize: "34px",
+                  fontSize: "33px",
                   fontWeight: 500,
-                  letterSpacing: "0.03em",
-                  lineHeight: 1.5,
+                  letterSpacing: "0.02em",
+                  lineHeight: 1.55,
                   fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
                   textAlign: "center",
                 }}
               >
-                ご予約日時：{reserveDate}　{reserveTime}
+                <div>ご予約日時：{reserveDate}</div>
+                <div>{reserveTime}</div>
               </div>
             </div>
 
@@ -102,87 +93,97 @@ export default function ReserveCheckPage() {
               style={{
                 textAlign: "center",
                 color: "#7d5b50",
-                fontSize: "24px",
-                lineHeight: 1.9,
+                fontSize: "23px",
+                lineHeight: 1.8,
                 letterSpacing: "0.02em",
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                marginBottom: "22px",
+                marginBottom: "8px",
               }}
             >
               <div>
                 {menuName}（{menuTime}）
               </div>
-              <div style={{ fontSize: "21px", marginTop: "2px" }}>{menuPrice}</div>
-            </div>
-
-            <div
-              style={{
-                color: "#8c6c61",
-                fontSize: "20px",
-                lineHeight: 1.95,
-                letterSpacing: "0.01em",
-                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                textAlign: "center",
-                marginBottom: "18px",
-              }}
-            >
-              {options.length > 0 && (
-                <div style={{ marginBottom: "6px" }}>
-                  オプション：
-                  {options.map((option, index) => (
-                    <span key={option.name}>
-                      {index === 0 ? "" : "　"}
-                      {option.name}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {options.length > 0 && (
-                <div style={{ fontSize: "18px", color: "#9a7f76", marginBottom: "8px" }}>
-                  {options.map((option, index) => (
-                    <span key={option.name + option.price}>
-                      {index === 0 ? "" : "　"}
-                      {option.name} {option.price}
-                    </span>
-                  ))}
-                </div>
-              )}
-
               <div
                 style={{
-                  fontSize: "23px",
-                  color: "#6f4b41",
-                  marginTop: "10px",
+                  fontSize: "20px",
+                  color: "#8d7066",
+                  marginTop: "2px",
                 }}
               >
-                合計　{totalPrice}
+                {menuPrice}
               </div>
             </div>
 
             <div
               style={{
-                marginTop: "14px",
-                paddingTop: "16px",
-                borderTop: "1px solid rgba(120, 89, 74, 0.16)",
-                color: "#84675d",
+                color: "#8c6c61",
                 fontSize: "17px",
-                lineHeight: 2.0,
+                lineHeight: 1.9,
                 letterSpacing: "0.01em",
                 fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
                 textAlign: "center",
-                marginBottom: "24px",
+                marginBottom: "10px",
               }}
             >
-              {message}
+              {options.length > 0 && (
+                <>
+                  <div style={{ marginBottom: "2px" }}>オプション</div>
+                  <div style={{ color: "#9a7f76", fontSize: "16px" }}>
+                    {options.map((option, index) => (
+                      <span key={option.name}>
+                        {index === 0 ? "" : "　"}
+                        {option.name} {option.price}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+
+            <div
+              style={{
+                textAlign: "center",
+                color: "#6f4b41",
+                fontSize: "23px",
+                lineHeight: 1.8,
+                letterSpacing: "0.02em",
+                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+                marginBottom: "18px",
+              }}
+            >
+              合計　{totalPrice}
+            </div>
+
+            <div
+              style={{
+                width: "100%",
+                height: "1px",
+                background: "rgba(120, 89, 74, 0.14)",
+                marginBottom: "16px",
+              }}
+            />
+
+            <div
+              style={{
+                color: "#84675d",
+                fontSize: "16px",
+                lineHeight: 1.95,
+                letterSpacing: "0.01em",
+                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
+                textAlign: "center",
+                marginBottom: "22px",
+              }}
+            >
+              <div>ご来店を心よりお待ちしております🌸</div>
+              <div>ご不明な点がありましたらお気軽にLINEからお問合せください</div>
             </div>
 
             <div
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "14px",
-                marginBottom: "28px",
+                gap: "12px",
+                marginBottom: "18px",
               }}
             >
               <button
@@ -193,12 +194,12 @@ export default function ReserveCheckPage() {
                   borderRadius: "999px",
                   background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
                   color: "#fffdfb",
-                  fontSize: "28px",
+                  fontSize: "26px",
                   fontWeight: 700,
                   letterSpacing: "0.03em",
-                  padding: "20px 18px",
+                  padding: "18px 18px",
                   cursor: "pointer",
-                  boxShadow: "0 8px 18px rgba(210, 140, 160, 0.18)",
+                  boxShadow: "0 8px 18px rgba(210, 140, 160, 0.16)",
                   fontFamily: '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
                 }}
               >
@@ -210,15 +211,15 @@ export default function ReserveCheckPage() {
                 style={{
                   width: "100%",
                   borderRadius: "999px",
-                  background: "rgba(255,255,255,0.72)",
+                  background: "rgba(255,255,255,0.84)",
                   color: "#7d5b50",
-                  fontSize: "24px",
+                  fontSize: "23px",
                   fontWeight: 500,
                   letterSpacing: "0.03em",
-                  padding: "17px 18px",
+                  padding: "16px 18px",
                   cursor: "pointer",
-                  border: "1.5px solid rgba(145, 112, 101, 0.26)",
-                  boxShadow: "0 4px 10px rgba(120, 89, 74, 0.06)",
+                  border: "1.5px solid rgba(145, 112, 101, 0.20)",
+                  boxShadow: "none",
                   fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
                 }}
               >
@@ -227,6 +228,9 @@ export default function ReserveCheckPage() {
 
               <button
                 type="button"
+                onClick={() => {
+                  window.location.href = "/";
+                }}
                 style={{
                   width: "100%",
                   border: "none",
@@ -235,7 +239,7 @@ export default function ReserveCheckPage() {
                   fontSize: "18px",
                   letterSpacing: "0.04em",
                   cursor: "pointer",
-                  padding: "6px 0 0",
+                  padding: "4px 0 0",
                   fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
                 }}
               >
@@ -245,52 +249,30 @@ export default function ReserveCheckPage() {
 
             <div
               style={{
-                background: "rgba(255, 247, 244, 0.52)",
-                borderRadius: "22px",
-                padding: "18px 18px 16px",
-                boxShadow: "inset 0 1px 0 rgba(255,255,255,0.45)",
+                textAlign: "center",
+                marginTop: "8px",
               }}
             >
-              <div
+              <button
+                type="button"
+                onClick={() => {
+                  window.location.href = "/reserve/history";
+                }}
                 style={{
-                  textAlign: "center",
-                  color: "#6f4b41",
-                  fontSize: "24px",
-                  letterSpacing: "0.04em",
+                  border: "none",
+                  background: "transparent",
+                  color: "#8f766a",
+                  fontSize: "17px",
+                  letterSpacing: "0.03em",
+                  cursor: "pointer",
+                  padding: "6px 8px",
                   fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                  marginBottom: "14px",
+                  textDecoration: "underline",
+                  textUnderlineOffset: "4px",
                 }}
               >
-                過去のご予約
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "10px",
-                }}
-              >
-                {reserveHistory.map((history) => (
-                  <div
-                    key={`${history.date}-${history.course}`}
-                    style={{
-                      background: "rgba(255,255,255,0.78)",
-                      borderRadius: "16px",
-                      padding: "14px 16px",
-                      color: "#7a5e55",
-                      fontSize: "18px",
-                      lineHeight: 1.8,
-                      letterSpacing: "0.01em",
-                      fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                      boxShadow: "0 2px 8px rgba(120, 89, 74, 0.05)",
-                    }}
-                  >
-                    <div>{history.date}</div>
-                    <div>{history.course}</div>
-                  </div>
-                ))}
-              </div>
+                過去のご予約を見る
+              </button>
             </div>
           </div>
         </div>
