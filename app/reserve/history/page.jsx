@@ -26,7 +26,7 @@ export default function ReserveHistoryPage() {
     <main
       style={{
         minHeight: "100dvh",
-        background: "#f6efe9",
+        background: "#f8eeec",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
@@ -44,7 +44,7 @@ export default function ReserveHistoryPage() {
           maxHeight: "747px",
           border: "1.5px solid #8a6f63",
           borderRadius: "12px",
-          background: "#f8f3ef",
+          background: "#fbf4f1",
           boxSizing: "border-box",
           padding: "18px 14px 14px",
           display: "flex",
@@ -69,7 +69,7 @@ export default function ReserveHistoryPage() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "96px 1fr 84px",
+            gridTemplateColumns: "96px 1.2fr 84px",
             alignItems: "center",
             padding: "0 6px",
             marginBottom: "10px",
@@ -92,7 +92,7 @@ export default function ReserveHistoryPage() {
             paddingRight: "4px",
             boxSizing: "border-box",
             scrollbarWidth: "thin",
-            scrollbarColor: "#b59a8d #f3ebe6",
+            scrollbarColor: "#b59a8d #f6ece8",
           }}
         >
           <style>{`
@@ -100,13 +100,13 @@ export default function ReserveHistoryPage() {
               width: 8px;
             }
             .history-scroll::-webkit-scrollbar-track {
-              background: #f3ebe6;
+              background: #f6ece8;
               border-radius: 999px;
             }
             .history-scroll::-webkit-scrollbar-thumb {
               background: #b59a8d;
               border-radius: 999px;
-              border: 1px solid #f3ebe6;
+              border: 1px solid #f6ece8;
             }
           `}</style>
 
@@ -114,12 +114,12 @@ export default function ReserveHistoryPage() {
             <div
               key={item.id}
               style={{
-                background: "#fffdfb",
+                background: "#fffdfa",
                 border: "1px solid #d7c1b7",
                 borderRadius: "10px",
                 minHeight: "54px",
                 display: "grid",
-                gridTemplateColumns: "96px 1fr 84px",
+                gridTemplateColumns: "96px 1.2fr 84px",
                 alignItems: "center",
                 marginBottom: "8px",
                 padding: "0 8px",
@@ -153,6 +153,7 @@ export default function ReserveHistoryPage() {
                   lineHeight: 1.35,
                   fontWeight: 500,
                   color: "#6f5448",
+                  whiteSpace: "nowrap",
                 }}
               >
                 <span
