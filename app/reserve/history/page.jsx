@@ -66,7 +66,7 @@ export default function ReserveHistoryPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "#f6efe9",
+        background: "#faf4f0",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
