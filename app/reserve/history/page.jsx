@@ -12,15 +12,34 @@ export default function ReserveHistoryPage() {
       course: "整体コース90分",
       option: "巡りシェイプ1部位",
     },
+    {
+      id: 3,
+      date: "",
+      course: "",
+      option: "",
+    },
+    {
+      id: 4,
+      date: "",
+      course: "",
+      option: "",
+    },
+    {
+      id: 5,
+      date: "",
+      course: "",
+      option: "",
+    },
   ];
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        background: "#f8f1ec", // ←明るい生成りピンク
+        background: "#f9f3ef", // ←明るい生成りピンク
         display: "flex",
         justifyContent: "center",
+        alignItems: "flex-start",
         padding: "30px 12px",
         boxSizing: "border-box",
         fontFamily:
@@ -32,12 +51,11 @@ export default function ReserveHistoryPage() {
         style={{
           width: "100%",
           maxWidth: "390px",
-          border: "1.5px solid #c8a89a", // ←柔らかブラウン
-          borderRadius: "10px",
+          border: "2px solid #bfa094", // ←柔らかブラウン
+          borderRadius: "6px",
           padding: "18px 16px 16px",
-          background: "rgba(255,255,255,0.55)", // ←ふんわり白
+          background: "rgba(255,255,255,0.35)", // ←少し明るく
           boxSizing: "border-box",
-          backdropFilter: "blur(6px)",
         }}
       >
         <h1
@@ -45,6 +63,7 @@ export default function ReserveHistoryPage() {
             margin: "0 0 18px 0",
             textAlign: "center",
             fontSize: "18px",
+            fontWeight: 500,
             letterSpacing: "0.08em",
             color: "#6a4a3d",
           }}
@@ -52,15 +71,15 @@ export default function ReserveHistoryPage() {
           ご予約履歴
         </h1>
 
-        {/* ヘッダー */}
         <div
           style={{
             display: "grid",
             gridTemplateColumns: "92px 1fr 84px",
+            alignItems: "center",
             padding: "0 8px",
-            marginBottom: "10px",
+            marginBottom: "8px",
             fontSize: "12px",
-            color: "#a67c6b",
+            color: "#9c7c6c", // ←ほんのり優しく
           }}
         >
           <div style={{ textAlign: "center" }}>日付</div>
@@ -68,56 +87,55 @@ export default function ReserveHistoryPage() {
           <div style={{ textAlign: "center" }}>オプション</div>
         </div>
 
-        {/* リスト */}
         <div
           style={{
-            maxHeight: "430px",
+            height: "430px",
             overflowY: "auto",
+            paddingRight: "4px",
+            boxSizing: "border-box",
           }}
         >
           {historyList.map((item) => (
             <div
               key={item.id}
               style={{
-                background: "#fffaf7", // ←柔らか白
-                border: "1px solid #ead5cc",
-                borderRadius: "10px",
-                minHeight: "48px",
+                background: "#fffaf7", // ←ほんのり温かい白
+                border: "1.5px solid #d8c2b8",
+                borderRadius: "6px",
+                minHeight: "46px",
                 display: "grid",
                 gridTemplateColumns: "92px 1fr 84px",
                 alignItems: "center",
-                marginBottom: "8px",
+                marginBottom: "6px",
+                overflow: "hidden",
               }}
             >
-              {/* 日付 */}
               <div
                 style={{
                   textAlign: "center",
                   fontSize: "13px",
-                  borderRight: "1px solid #f0e0d8",
+                  borderRight: "1px solid #ead8d0",
                 }}
               >
                 {item.date}
               </div>
 
-              {/* コース */}
               <div
                 style={{
                   textAlign: "center",
                   fontSize: "15px",
                   fontWeight: 500,
-                  borderRight: "1px solid #f0e0d8",
+                  borderRight: "1px solid #ead8d0",
                 }}
               >
                 {item.course}
               </div>
 
-              {/* オプション */}
               <div
                 style={{
                   textAlign: "center",
-                  fontSize: "11px",
-                  color: "#a07c6c",
+                  fontSize: "10px",
+                  color: "#a68474",
                   whiteSpace: "pre-line",
                 }}
               >
