@@ -30,13 +30,43 @@ export default function ReserveHistoryPage() {
       course: "",
       option: "",
     },
+    {
+      id: 6,
+      date: "",
+      course: "",
+      option: "",
+    },
+    {
+      id: 7,
+      date: "",
+      course: "",
+      option: "",
+    },
+    {
+      id: 8,
+      date: "",
+      course: "",
+      option: "",
+    },
+    {
+      id: 9,
+      date: "",
+      course: "",
+      option: "",
+    },
+    {
+      id: 10,
+      date: "",
+      course: "",
+      option: "",
+    },
   ];
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        background: "#f9f3ef", // ←明るい生成りピンク
+        background: "#f6efe9",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
@@ -44,17 +74,17 @@ export default function ReserveHistoryPage() {
         boxSizing: "border-box",
         fontFamily:
           '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
-        color: "#5a3f33",
+        color: "#5f4a3f",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: "390px",
-          border: "2px solid #bfa094", // ←柔らかブラウン
+          border: "2px solid #6e5a50",
           borderRadius: "6px",
           padding: "18px 16px 16px",
-          background: "rgba(255,255,255,0.35)", // ←少し明るく
+          background: "rgba(255,255,255,0.18)",
           boxSizing: "border-box",
         }}
       >
@@ -65,7 +95,7 @@ export default function ReserveHistoryPage() {
             fontSize: "18px",
             fontWeight: 500,
             letterSpacing: "0.08em",
-            color: "#6a4a3d",
+            color: "#5f4a3f",
           }}
         >
           ご予約履歴
@@ -79,7 +109,7 @@ export default function ReserveHistoryPage() {
             padding: "0 8px",
             marginBottom: "8px",
             fontSize: "12px",
-            color: "#9c7c6c", // ←ほんのり優しく
+            color: "#5f4a3f",
           }}
         >
           <div style={{ textAlign: "center" }}>日付</div>
@@ -93,56 +123,99 @@ export default function ReserveHistoryPage() {
             overflowY: "auto",
             paddingRight: "4px",
             boxSizing: "border-box",
+            scrollbarWidth: "thin",
+            scrollbarColor: "#8b7a71 #f2ebe7",
           }}
         >
-          {historyList.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                background: "#fffaf7", // ←ほんのり温かい白
-                border: "1.5px solid #d8c2b8",
-                borderRadius: "6px",
-                minHeight: "46px",
-                display: "grid",
-                gridTemplateColumns: "92px 1fr 84px",
-                alignItems: "center",
-                marginBottom: "6px",
-                overflow: "hidden",
-              }}
-            >
-              <div
-                style={{
-                  textAlign: "center",
-                  fontSize: "13px",
-                  borderRight: "1px solid #ead8d0",
-                }}
-              >
-                {item.date}
-              </div>
+          <style>{`
+            .history-scroll::-webkit-scrollbar {
+              width: 10px;
+            }
+            .history-scroll::-webkit-scrollbar-track {
+              background: #f2ebe7;
+              border-radius: 999px;
+            }
+            .history-scroll::-webkit-scrollbar-thumb {
+              background: #8b7a71;
+              border-radius: 999px;
+              border: 2px solid #f2ebe7;
+            }
+          `}</style>
 
+          <div className="history-scroll">
+            {historyList.map((item) => (
               <div
+                key={item.id}
                 style={{
-                  textAlign: "center",
-                  fontSize: "15px",
-                  fontWeight: 500,
-                  borderRight: "1px solid #ead8d0",
+                  background: "#f7f7f7",
+                  border: "1.5px solid #9a8a80",
+                  borderRadius: "6px",
+                  minHeight: "46px",
+                  display: "grid",
+                  gridTemplateColumns: "92px 1fr 84px",
+                  alignItems: "center",
+                  marginBottom: "6px",
+                  overflow: "hidden",
                 }}
               >
-                {item.course}
-              </div>
+                <div
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "13px",
+                    color: "#5f4a3f",
+                    borderRight: "1px solid #ddd4cf",
+                    padding: "6px 4px",
+                    boxSizing: "border-box",
+                    textAlign: "center",
+                    lineHeight: 1.3,
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {item.date}
+                </div>
 
-              <div
-                style={{
-                  textAlign: "center",
-                  fontSize: "10px",
-                  color: "#a68474",
-                  whiteSpace: "pre-line",
-                }}
-              >
-                {item.option}
+                <div
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "15px",
+                    color: "#5f4a3f",
+                    borderRight: "1px solid #ddd4cf",
+                    padding: "6px 8px",
+                    boxSizing: "border-box",
+                    textAlign: "center",
+                    lineHeight: 1.35,
+                    fontWeight: 500,
+                  }}
+                >
+                  {item.course}
+                </div>
+
+                <div
+                  style={{
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "10px",
+                    color: "#7a675c",
+                    padding: "6px 6px",
+                    boxSizing: "border-box",
+                    textAlign: "center",
+                    lineHeight: 1.35,
+                    whiteSpace: "pre-line",
+                  }}
+                >
+                  {item.option}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </main>
