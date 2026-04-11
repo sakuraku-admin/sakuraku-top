@@ -147,7 +147,7 @@ export default function ReserveHistoryPage() {
               <div
                 key={item.id}
                 style={{
-                  background: "#f7f7f7",
+                  background: "#fffdfb",
                   border: "1.5px solid #9a8a80",
                   borderRadius: "6px",
                   minHeight: "46px",
