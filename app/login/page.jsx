@@ -193,8 +193,9 @@ const styles = {
     boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.05)",
   },
 
+  // ←①ここだけ変更
   loginButton: {
-    marginTop: "10px",
+    marginTop: "28px",
     width: "100%",
     height: "56px",
     border: "none",
@@ -208,12 +209,14 @@ const styles = {
     boxShadow: "0 10px 20px rgba(169, 109, 93, 0.28)",
   },
 
+  // ←②ここだけ変更
   helpArea: {
     marginTop: "5.8%",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     alignItems: "center",
-    gap: "12px",
+    justifyContent: "flex-start",
+    gap: "10px",
     width: "100%",
   },
 
@@ -222,7 +225,7 @@ const styles = {
     fontSize: "clamp(14px, 2.5vw, 16px)",
     lineHeight: 1.5,
     letterSpacing: "0.04em",
-    textAlign: "center",
+    textAlign: "left",
     textShadow: "0 1px 4px rgba(255,255,255,0.35)",
   },
 
