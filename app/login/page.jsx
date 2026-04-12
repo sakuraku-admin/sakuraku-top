@@ -194,7 +194,7 @@ const styles = {
   },
 
   loginButton: {
-    marginTop: "28px",
+    marginTop: "10px",
     width: "100%",
     height: "56px",
     border: "none",
@@ -211,9 +211,8 @@ const styles = {
   helpArea: {
     marginTop: "5.8%",
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "flex-start",
     gap: "12px",
     width: "100%",
   },
