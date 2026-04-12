@@ -193,7 +193,6 @@ const styles = {
     boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.05)",
   },
 
-  // ←①ここだけ変更
   loginButton: {
     marginTop: "28px",
     width: "100%",
@@ -209,14 +208,13 @@ const styles = {
     boxShadow: "0 10px 20px rgba(169, 109, 93, 0.28)",
   },
 
-  // ←②ここだけ変更
   helpArea: {
     marginTop: "5.8%",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-start",
-    gap: "10px",
+    gap: "12px",
     width: "100%",
   },
 
