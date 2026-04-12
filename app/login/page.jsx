@@ -132,7 +132,7 @@ const styles = {
   },
 
   title: {
-  fontSize: "22px",
+  fontSize: "26px",
   color: "#5a3a2e",
   fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
   letterSpacing: "0.08em",
