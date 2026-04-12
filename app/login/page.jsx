@@ -107,18 +107,18 @@ export default function LoginPage() {
       }}
     >
       <div
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "520px",
-          minHeight: "100vh",
-          backgroundImage: "url('/images/riroguin.png')",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center top",
-          backgroundSize: "100% auto",
-          aspectRatio: "9 / 16",
-        }}
-      >
+  style={{
+    position: "relative",
+    width: "100%",
+    maxWidth: "520px",
+    backgroundImage: "url('/images/riroguin.png')",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center top",
+    backgroundSize: "100% auto",
+    aspectRatio: "9 / 16",
+    margin: "0 auto",
+  }}
+>
         <form onSubmit={handleLogin}>
           <input
             type="email"
