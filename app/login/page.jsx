@@ -17,68 +17,59 @@ export default function LoginPage() {
 
   return (
     <main style={styles.page}>
-      <div style={styles.canvas}>
-        <img
-          src="/images/rirog.png"
-          alt="会員ログイン背景"
-          style={styles.backgroundImage}
-        />
+      <div style={styles.viewport}>
+        <div style={styles.phoneFrame}>
+          <div style={styles.background} />
 
-        <div style={styles.overlay}>
-          <h1 style={styles.title}>会員ログイン</h1>
+          <div style={styles.overlay}>
+            <h1 style={styles.title}>会員ログイン</h1>
 
-          <div style={styles.card}>
-            <div style={styles.formRow}>
-              <div style={styles.labelBlock}>
-                <div style={styles.subLabel}>（ご登録時の）</div>
-                <div style={styles.mainLabel}>メールアドレス</div>
-              </div>
+            <form style={styles.card} onSubmit={handleLogin}>
+              <p style={styles.subText}>（ご登録時の）</p>
 
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                aria-label="メールアドレス"
-                style={styles.input}
-              />
-            </div>
+              <label style={styles.label}>
+                <span style={styles.labelText}>メールアドレス</span>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={styles.input}
+                />
+              </label>
 
-            <div style={styles.formRow}>
-              <div style={styles.labelBlock}>
-                <div style={styles.mainLabel}>電話番号</div>
-                <div style={styles.mainLabel}>（下４桁）</div>
-              </div>
+              <label style={styles.label}>
+                <span style={styles.labelText}>電話番号（下4桁）</span>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={4}
+                  value={phoneLast4}
+                  onChange={(e) =>
+                    setPhoneLast4(e.target.value.replace(/[^0-9]/g, ""))
+                  }
+                  style={styles.input}
+                />
+              </label>
 
-              <input
-                type="text"
-                inputMode="numeric"
-                maxLength={4}
-                value={phoneLast4}
-                onChange={(e) =>
-                  setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))
-                }
-                aria-label="電話番号下4桁"
-                style={styles.input}
-              />
-            </div>
-
-            <div style={styles.loginButtonWrap}>
-              <button type="submit" onClick={handleLogin} style={styles.loginButton}>
+              {/* ←ここが調整ポイント */}
+              <button type="submit" style={styles.loginButton}>
                 ログイン
               </button>
+            </form>
+
+            {/* ←ここも調整 */}
+            <div style={styles.helpArea}>
+              <span style={styles.helpText}>
+                ※ログインできない場合→
+              </span>
+              <button
+                type="button"
+                onClick={handleResendMail}
+                style={styles.mailButton}
+              >
+                ✉メール再送
+              </button>
             </div>
-          </div>
-
-          <div style={styles.bottomRow}>
-            <div style={styles.helpText}>※ログインできない場合→</div>
-
-            <button
-              type="button"
-              onClick={handleResendMail}
-              style={styles.resendButton}
-            >
-              ✉ メール再送
-            </button>
           </div>
         </div>
       </div>
@@ -89,30 +80,36 @@ export default function LoginPage() {
 const styles = {
   page: {
     minHeight: "100vh",
+    background:
+      "linear-gradient(180deg, #f4ede6 0%, #efe3d7 45%, #eadccf 100%)",
     display: "flex",
     justifyContent: "center",
-    alignItems: "flex-start",
-    backgroundColor: "#e6b895",
-    padding: "0",
-    boxSizing: "border-box",
-    WebkitTextSizeAdjust: "100%",
+    alignItems: "center",
+    padding: "20px 12px",
   },
 
-  canvas: {
+  viewport: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+
+  phoneFrame: {
     position: "relative",
-    width: "100%",
-    maxWidth: "520px",
+    width: "min(92vw, 520px)",
     aspectRatio: "900 / 1600",
+    maxHeight: "96vh",
+    borderRadius: "28px",
     overflow: "hidden",
+    boxShadow: "0 18px 45px rgba(83, 57, 39, 0.22)",
   },
 
-  backgroundImage: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    display: "block",
-    userSelect: "none",
-    pointerEvents: "none",
+  background: {
+    position: "absolute",
+    inset: 0,
+    backgroundImage: "url('/images/rirog.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   },
 
   overlay: {
@@ -121,159 +118,91 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    boxSizing: "border-box",
-    paddingTop: "5.5%",
+    paddingTop: "16%",
+    paddingLeft: "7%",
+    paddingRight: "7%",
   },
 
   title: {
-    margin: 0,
-    color: "#1f120d",
-    fontSize: "clamp(28px, 5vw, 42px)",
-    lineHeight: 1.2,
-    fontWeight: "700",
-    letterSpacing: "0.08em",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+    color: "#5b3d2b",
+    fontSize: "clamp(26px, 4.8vw, 34px)",
+    fontWeight: 700,
+    letterSpacing: "0.12em",
   },
 
   card: {
-    width: "80%",
-    marginTop: "8.8%",
-    border: "2px solid rgba(84, 56, 42, 0.72)",
-    borderRadius: "26px",
-    background: "rgba(255, 250, 245, 0.22)",
-    boxShadow: "0 0 0 1px rgba(255,255,255,0.08) inset",
-    padding: "12% 7.5% 10%",
-    boxSizing: "border-box",
-  },
-
-  formRow: {
-    display: "grid",
-    gridTemplateColumns: "41% 59%",
-    alignItems: "center",
-    columnGap: "4%",
-    marginBottom: "22px",
-  },
-
-  labelBlock: {
+    marginTop: "15%",
+    width: "100%",
+    background: "rgba(255, 252, 248, 0.92)",
+    border: "1.5px solid rgba(140, 109, 86, 0.22)",
+    borderRadius: "28px",
+    padding: "9% 7%",
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#1f120d",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    textAlign: "center",
+    gap: "18px",
   },
 
-  subLabel: {
-    fontSize: "clamp(10px, 1.6vw, 14px)",
-    lineHeight: 1.2,
-    marginBottom: "6px",
-    whiteSpace: "nowrap",
+  subText: {
+    color: "#7a5a47",
+    fontSize: "14px",
   },
 
-  mainLabel: {
-    fontSize: "clamp(14px, 2.2vw, 21px)",
-    lineHeight: 1.25,
-    fontWeight: "700",
-    whiteSpace: "nowrap",
+  label: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+  },
+
+  labelText: {
+    color: "#5b3d2b",
+    fontSize: "16px",
+    fontWeight: 600,
   },
 
   input: {
-    width: "100%",
-    height: "56px",
+    height: "54px",
     borderRadius: "999px",
-    border: "2px solid rgba(95, 58, 42, 0.62)",
-    background: "rgba(255, 248, 242, 0.5)",
-    color: "#5a3a2c",
-    boxSizing: "border-box",
-    outline: "none",
-    padding: "0 16px",
+    border: "1.8px solid rgba(123, 89, 66, 0.28)",
+    padding: "0 18px",
     fontSize: "16px",
-    fontFamily:
-      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
-    appearance: "none",
-    WebkitAppearance: "none",
   },
 
-  loginButtonWrap: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: "10px",
-  },
-
+  // 🔥 ログインボタン下げた
   loginButton: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "36%",
-    minWidth: "120px",
+    marginTop: "28px", // ←ここ増やした
     height: "56px",
-    borderRadius: "22px",
-    background: "rgba(255, 244, 236, 0.36)",
-    color: "#5a3a2c",
-    border: "2px solid rgba(70, 40, 28, 0.85)",
-    boxSizing: "border-box",
-    fontSize: "clamp(16px, 2.2vw, 24px)",
-    fontWeight: "700",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    letterSpacing: "0.03em",
-    lineHeight: 1,
+    border: "none",
+    borderRadius: "999px",
+    background: "#b9806e",
+    color: "#fff",
+    fontSize: "18px",
+    fontWeight: 700,
     cursor: "pointer",
-    appearance: "none",
-    WebkitAppearance: "none",
-    WebkitTextFillColor: "#5a3a2c",
-    textDecoration: "none",
-    boxShadow:
-      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
-    padding: 0,
   },
 
-  bottomRow: {
-    width: "80%",
-    marginTop: "6.5%",
+  // 🔥 横並び＆左寄せ
+  helpArea: {
+    marginTop: "6%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    gap: "12px",
-    boxSizing: "border-box",
+    justifyContent: "flex-start", // ←左寄せ
+    gap: "10px", // ←→との間隔
+    width: "100%",
   },
 
   helpText: {
-    color: "#1f120d",
-    fontSize: "clamp(12px, 1.8vw, 16px)",
-    lineHeight: 1.3,
-    fontWeight: "700",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    whiteSpace: "nowrap",
+    color: "#6c4c39",
+    fontSize: "14px",
   },
 
-  resendButton: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    minWidth: "132px",
-    height: "38px",
-    padding: "0 14px",
-    borderRadius: "16px",
-    background: "rgba(255, 245, 238, 0.24)",
-    color: "#5a3a2c",
-    border: "1.5px solid rgba(90, 55, 40, 0.5)",
-    boxSizing: "border-box",
-    fontSize: "clamp(11px, 1.4vw, 13px)",
-    fontWeight: "700",
-    fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    lineHeight: 1,
+  mailButton: {
+    height: "42px",
+    padding: "0 18px",
+    borderRadius: "999px",
+    border: "1px solid rgba(122, 90, 71, 0.3)",
+    background: "rgba(255, 250, 245, 0.9)",
+    color: "#7a5a47",
+    fontSize: "14px",
     cursor: "pointer",
-    whiteSpace: "nowrap",
-    appearance: "none",
-    WebkitAppearance: "none",
-    WebkitTextFillColor: "#5a3a2c",
-    textDecoration: "none",
-    boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
   },
 };
