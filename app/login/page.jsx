@@ -33,14 +33,16 @@ export default function LoginPage() {
 
   const loginButtonStyle = {
     position: "absolute",
-    left: "49.5%",
+    left: "50%",
     top: "49.5%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "25%",
-    height: "12.5%",
+    width: "20%",
+    minWidth: "108px",
+    height: "4.6%",
+    minHeight: "42px",
     borderRadius: "18px",
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
@@ -62,8 +64,8 @@ export default function LoginPage() {
 
   const resendButtonStyle = {
     position: "absolute",
-    left: "82%",
-    top: "78.5%",
+    left: "78.5%",
+    top: "75.8%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
