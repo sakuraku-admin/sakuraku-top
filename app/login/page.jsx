@@ -19,7 +19,7 @@ export default function LoginPage() {
     <main style={styles.page}>
       <div style={styles.canvas}>
         <img
-          src="/images/riroguin.png"
+          src="/images/rirog.png"
           alt="会員ログイン背景"
           style={styles.backgroundImage}
         />
