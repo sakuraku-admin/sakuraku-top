@@ -15,11 +15,10 @@ export default function LoginPage() {
     console.log("メール再送", { email });
   };
 
-  const inputStyle = {
+  const inputBaseStyle = {
     position: "absolute",
-    left: "44.2%",
-    width: "38.5%",
-    height: "4.2%",
+    width: "47%",
+    height: "12%",
     borderRadius: "999px",
     border: "2px solid rgba(95, 58, 42, 0.62)",
     background: "rgba(255, 248, 242, 0.36)",
@@ -34,15 +33,15 @@ export default function LoginPage() {
 
   const loginButtonStyle = {
     position: "absolute",
-    left: "50%",
-    top: "23.5%",
+    left: "49.5%",
+    top: "49.5%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "20%",
+    width: "25%",
     minWidth: "108px",
-    height: "4.6%",
+    height: "12.5%",
     minHeight: "42px",
     borderRadius: "18px",
     background: "rgba(255, 244, 236, 0.24)",
@@ -63,17 +62,17 @@ export default function LoginPage() {
     cursor: "pointer",
   };
 
-  const subButtonStyle = {
+  const resendButtonStyle = {
     position: "absolute",
-    left: "68%",
-    top: "31.9%",
+    left: "82%",
+    top: "78.5%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "17%",
+    width: "28%",
     minWidth: "92px",
-    height: "2.8%",
+    height: "8.5%",
     minHeight: "28px",
     borderRadius: "14px",
     background: "rgba(255, 245, 238, 0.14)",
@@ -118,39 +117,74 @@ export default function LoginPage() {
         }}
       >
         <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            aria-label="メールアドレス"
+          {/* 透明レイヤー：白枠＋少し下まで含めた操作エリア */}
+          <div
             style={{
-              ...inputStyle,
-              top: "12.6%",
+              position: "absolute",
+              left: "11%",
+              top: "8.3%",
+              width: "79%",
+              height: "36%",
+              background: "transparent",
             }}
-          />
+          >
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              aria-label="メールアドレス"
+              style={{
+                ...inputBaseStyle,
+                left: "44.5%",
+                top: "16.5%",
+              }}
+            />
 
-          <input
-            type="text"
-            inputMode="numeric"
-            maxLength={4}
-            value={phoneLast4}
-            onChange={(e) =>
-              setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))
-            }
-            aria-label="電話番号下4桁"
-            style={{
-              ...inputStyle,
-              top: "18.1%",
-            }}
-          />
+            <input
+              type="text"
+              inputMode="numeric"
+              maxLength={4}
+              value={phoneLast4}
+              onChange={(e) =>
+                setPhoneLast4(e.target.value.replace(/\D/g, "").slice(0, 4))
+              }
+              aria-label="電話番号下4桁"
+              style={{
+                ...inputBaseStyle,
+                left: "44.5%",
+                top: "31.5%",
+              }}
+            />
 
-          <button type="submit" style={loginButtonStyle}>
-            ログイン
-          </button>
+            <button type="submit" style={loginButtonStyle}>
+              ログイン
+            </button>
 
-          <button type="button" onClick={handleResendMail} style={subButtonStyle}>
-            ✉ メール再送
-          </button>
+            <div
+              style={{
+                position: "absolute",
+                left: "36%",
+                top: "79%",
+                transform: "translateX(-50%)",
+                color: "#2f1208",
+                fontSize: "clamp(12px, 1.3vw, 16px)",
+                fontWeight: "700",
+                fontFamily:
+                  '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+                whiteSpace: "nowrap",
+              }}
+            >
+              ※ログインできない場合→
+            </div>
+
+            <button
+              type="button"
+              onClick={handleResendMail}
+              style={resendButtonStyle}
+            >
+              ✉ メール再送
+            </button>
+          </div>
         </form>
       </div>
     </main>
