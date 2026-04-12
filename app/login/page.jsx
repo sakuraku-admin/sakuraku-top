@@ -61,7 +61,7 @@ export default function LoginPage() {
             </form>
 
             <div style={styles.helpArea}>
-              <span style={styles.helpText}>※ログインできない場合 →</span>
+              <span style={styles.helpText}>※ログインできない場合  ↓</span>
               <button
                 type="button"
                 onClick={handleResendMail}
@@ -132,19 +132,17 @@ const styles = {
   },
 
   title: {
-    margin: 0,
-    color: "#5b3d2b",
-    fontSize: "clamp(26px, 4.8vw, 34px)",
-    fontWeight: 700,
-    letterSpacing: "0.12em",
-    textShadow: "0 2px 8px rgba(255,255,255,0.35)",
-    lineHeight: 1.2,
-  },
+  fontSize: "22px",
+  color: "#5a3a2e",
+  fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
+  letterSpacing: "0.08em",
+  marginBottom: "24px",
+},
 
   card: {
     marginTop: "15.5%",
     width: "100%",
-    background: "rgba(255, 252, 248, 0.92)",
+    background: "rgba(255, 255, 255, 0.78)",
     border: "1.5px solid rgba(140, 109, 86, 0.22)",
     borderRadius: "28px",
     boxShadow: "0 12px 30px rgba(91, 61, 43, 0.14)",
