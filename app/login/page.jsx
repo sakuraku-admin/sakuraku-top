@@ -101,7 +101,7 @@ export default function LoginPage() {
       style={{
         margin: 0,
         minHeight: "100vh",
-        backgroundColor: "#e6b895",
+        backgroundColor: "red",
         display: "flex",
         justifyContent: "center",
       }}
