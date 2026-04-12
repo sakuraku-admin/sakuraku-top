@@ -225,7 +225,7 @@ const styles = {
     fontSize: "clamp(14px, 2.5vw, 16px)",
     lineHeight: 1.5,
     letterSpacing: "0.04em",
-    textAlign: "left",
+    textAlign: "center",
     textShadow: "0 1px 4px rgba(255,255,255,0.35)",
   },
 
