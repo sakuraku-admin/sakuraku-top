@@ -35,7 +35,7 @@ export default function LoginPage() {
   const loginButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "24.3%", // ← 修正
+    top: "23.5%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -66,7 +66,7 @@ export default function LoginPage() {
   const subButtonStyle = {
     position: "absolute",
     left: "68%",
-    top: "32.8%", // ← 修正
+    top: "31.9%",
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -99,7 +99,7 @@ export default function LoginPage() {
       style={{
         margin: 0,
         minHeight: "100vh",
-        backgroundColor: "#e6b895", // ← 元に戻し済み
+        backgroundColor: "#e6b895",
         display: "flex",
         justifyContent: "center",
       }}
@@ -118,7 +118,6 @@ export default function LoginPage() {
         }}
       >
         <form onSubmit={handleLogin}>
-          {/* メール */}
           <input
             type="email"
             value={email}
@@ -126,11 +125,10 @@ export default function LoginPage() {
             aria-label="メールアドレス"
             style={{
               ...inputStyle,
-              top: "13.2%", // ← 修正
+              top: "12.6%",
             }}
           />
 
-          {/* 電話番号 */}
           <input
             type="text"
             inputMode="numeric"
@@ -142,16 +140,14 @@ export default function LoginPage() {
             aria-label="電話番号下4桁"
             style={{
               ...inputStyle,
-              top: "18.8%", // ← 修正
+              top: "18.1%",
             }}
           />
 
-          {/* ログイン */}
           <button type="submit" style={loginButtonStyle}>
             ログイン
           </button>
 
-          {/* メール再送 */}
           <button type="button" onClick={handleResendMail} style={subButtonStyle}>
             ✉ メール再送
           </button>
