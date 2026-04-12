@@ -35,7 +35,7 @@ export default function LoginPage() {
   const loginButtonStyle = {
     position: "absolute",
     left: "50%",
-    top: "27%",
+    top: "24.3%", // ← 修正
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -59,7 +59,6 @@ export default function LoginPage() {
     letterSpacing: "0.03em",
     boxShadow:
       "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
-    textShadow: "none",
     paddingBottom: "1px",
     cursor: "pointer",
   };
@@ -67,7 +66,7 @@ export default function LoginPage() {
   const subButtonStyle = {
     position: "absolute",
     left: "68%",
-    top: "36%",
+    top: "32.8%", // ← 修正
     transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
@@ -90,7 +89,6 @@ export default function LoginPage() {
     boxSizing: "border-box",
     letterSpacing: "0.01em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
-    textShadow: "none",
     paddingBottom: "1px",
     cursor: "pointer",
     whiteSpace: "nowrap",
@@ -101,36 +99,26 @@ export default function LoginPage() {
       style={{
         margin: 0,
         minHeight: "100vh",
-        backgroundColor: "red",
+        backgroundColor: "#e6b895", // ← 元に戻し済み
         display: "flex",
         justifyContent: "center",
       }}
     >
-    <div
-  style={{
-    position: "relative",
-    width: "100%",
-    maxWidth: "520px",
-    margin: "0 auto",
-  }}
->
-  <img
-    src="/images/riroguin.png"
-    alt="ログイン画面背景"
-    style={{
-      display: "block",
-      width: "100%",
-      height: "auto",
-    }}
-  />
-
-  <form
-    onSubmit={handleLogin}
-    style={{
-      position: "absolute",
-      inset: 0,
-    }}
-  >
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "520px",
+          backgroundImage: "url('/images/riroguin.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center top",
+          backgroundSize: "100% auto",
+          aspectRatio: "9 / 16",
+          margin: "0 auto",
+        }}
+      >
+        <form onSubmit={handleLogin}>
+          {/* メール */}
           <input
             type="email"
             value={email}
@@ -138,10 +126,11 @@ export default function LoginPage() {
             aria-label="メールアドレス"
             style={{
               ...inputStyle,
-              top: "15%",
+              top: "13.2%", // ← 修正
             }}
           />
 
+          {/* 電話番号 */}
           <input
             type="text"
             inputMode="numeric"
@@ -153,14 +142,16 @@ export default function LoginPage() {
             aria-label="電話番号下4桁"
             style={{
               ...inputStyle,
-              top: "21%",
+              top: "18.8%", // ← 修正
             }}
           />
 
+          {/* ログイン */}
           <button type="submit" style={loginButtonStyle}>
             ログイン
           </button>
 
+          {/* メール再送 */}
           <button type="button" onClick={handleResendMail} style={subButtonStyle}>
             ✉ メール再送
           </button>
