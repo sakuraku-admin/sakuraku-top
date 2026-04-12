@@ -40,9 +40,7 @@ export default function LoginPage() {
     alignItems: "center",
     justifyContent: "center",
     width: "25%",
-    minWidth: "108px",
     height: "12.5%",
-    minHeight: "42px",
     borderRadius: "18px",
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
@@ -71,9 +69,7 @@ export default function LoginPage() {
     alignItems: "center",
     justifyContent: "center",
     width: "28%",
-    minWidth: "92px",
     height: "8.5%",
-    minHeight: "28px",
     borderRadius: "14px",
     background: "rgba(255, 245, 238, 0.14)",
     backdropFilter: "blur(2px)",
@@ -117,7 +113,6 @@ export default function LoginPage() {
         }}
       >
         <form onSubmit={handleLogin}>
-          {/* 透明レイヤー：白枠＋少し下まで含めた操作エリア */}
           <div
             style={{
               position: "absolute",
@@ -159,23 +154,6 @@ export default function LoginPage() {
             <button type="submit" style={loginButtonStyle}>
               ログイン
             </button>
-
-            <div
-              style={{
-                position: "absolute",
-                left: "36%",
-                top: "79%",
-                transform: "translateX(-50%)",
-                color: "#2f1208",
-                fontSize: "clamp(12px, 1.3vw, 16px)",
-                fontWeight: "700",
-                fontFamily:
-                  '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-                whiteSpace: "nowrap",
-              }}
-            >
-              ※ログインできない場合→
-            </div>
 
             <button
               type="button"
