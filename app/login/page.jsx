@@ -29,6 +29,8 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder=""
+              autoComplete="email"
               style={styles.input}
             />
           </label>
@@ -37,10 +39,14 @@ export default function LoginPage() {
             <span style={styles.labelText}>電話番号（下4桁）</span>
             <input
               type="text"
+              inputMode="numeric"
+              maxLength={4}
               value={phoneLast4}
               onChange={(e) =>
                 setPhoneLast4(e.target.value.replace(/[^0-9]/g, ""))
               }
+              placeholder=""
+              autoComplete="one-time-code"
               style={styles.input}
             />
           </label>
@@ -66,7 +72,6 @@ export default function LoginPage() {
 }
 
 const styles = {
-  // ⭐全面木目
   page: {
     minHeight: "100vh",
     backgroundImage: "url('/images/mokume.png')",
@@ -75,8 +80,8 @@ const styles = {
     backgroundRepeat: "no-repeat",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    padding: "20px",
+    alignItems: "flex-start",
+    padding: "44px 20px 32px",
     boxSizing: "border-box",
   },
 
@@ -91,54 +96,80 @@ const styles = {
   title: {
     margin: 0,
     color: "#5b3d2b",
-    fontSize: "clamp(30px, 5vw, 36px)",
+    fontSize: "clamp(30px, 5.4vw, 38px)",
+    fontWeight: 600,
     fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
     letterSpacing: "0.12em",
-    marginBottom: "24px",
+    textShadow: "0 2px 8px rgba(255,255,255,0.35)",
+    lineHeight: 1.2,
+    marginBottom: "34px",
   },
 
   card: {
     width: "100%",
+    maxWidth: "390px",
     background: "rgba(255, 255, 255, 0.78)",
-    borderRadius: "28px",
-    padding: "24px 20px",
+    border: "1.5px solid rgba(140, 109, 86, 0.18)",
+    borderRadius: "30px",
+    boxShadow: "0 12px 30px rgba(91, 61, 43, 0.12)",
+    padding: "30px 24px 26px",
+    boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
-    gap: "16px",
+    gap: "18px",
+    backdropFilter: "blur(4px)",
   },
 
   subText: {
-    fontSize: "14px",
+    margin: "0 0 4px 0",
     color: "#7a5a47",
+    fontSize: "clamp(14px, 2.5vw, 17px)",
+    lineHeight: 1.4,
+    letterSpacing: "0.06em",
+    textAlign: "left",
   },
 
   label: {
     display: "flex",
     flexDirection: "column",
-    gap: "6px",
+    gap: "8px",
   },
 
   labelText: {
-    fontSize: "14px",
     color: "#5b3d2b",
+    fontSize: "clamp(15px, 2.8vw, 18px)",
+    fontWeight: 600,
+    letterSpacing: "0.04em",
+    lineHeight: 1.4,
   },
 
   input: {
-    height: "44px",
+    width: "100%",
+    height: "54px",
     borderRadius: "999px",
-    border: "1px solid rgba(90,58,46,0.2)",
-    padding: "0 16px",
+    border: "1.8px solid rgba(123, 89, 66, 0.20)",
+    background: "rgba(255, 255, 255, 0.92)",
+    padding: "0 18px",
+    fontSize: "16px",
+    color: "#4f3526",
+    boxSizing: "border-box",
+    outline: "none",
+    boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.04)",
   },
 
   loginButton: {
-    marginTop: "12px",
-    height: "48px",
-    borderRadius: "999px",
+    marginTop: "14px",
+    width: "100%",
+    height: "56px",
     border: "none",
+    borderRadius: "999px",
     background: "linear-gradient(180deg, #f29a8d 0%, #e48174 100%)",
-    color: "#fff",
-    fontSize: "16px",
-    fontWeight: "bold",
+    color: "#fffdfb",
+    fontSize: "clamp(17px, 3.1vw, 20px)",
+    fontWeight: 700,
+    letterSpacing: "0.1em",
+    cursor: "pointer",
+    boxShadow: "0 10px 20px rgba(228, 129, 116, 0.24)",
   },
 
   helpArea: {
@@ -147,19 +178,31 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     gap: "10px",
+    width: "100%",
   },
 
   helpText: {
-    fontSize: "13px",
     color: "#6c4c39",
+    fontSize: "clamp(14px, 2.5vw, 16px)",
+    lineHeight: 1.5,
+    letterSpacing: "0.04em",
+    textAlign: "center",
+    textShadow: "0 1px 4px rgba(255,255,255,0.35)",
   },
 
   mailButton: {
-    height: "40px",
-    padding: "0 20px",
+    minWidth: "230px",
+    maxWidth: "100%",
+    height: "48px",
+    padding: "0 26px",
     borderRadius: "999px",
-    border: "none",
-    background: "rgba(255, 255, 255, 0.85)",
-    color: "#5a3a2e",
+    border: "1.5px solid rgba(122, 90, 71, 0.18)",
+    background: "rgba(255, 255, 255, 0.82)",
+    color: "#7a5a47",
+    fontSize: "clamp(15px, 2.8vw, 17px)",
+    fontWeight: 600,
+    letterSpacing: "0.06em",
+    cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(91, 61, 43, 0.08)",
   },
 };
