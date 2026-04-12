@@ -106,20 +106,31 @@ export default function LoginPage() {
         justifyContent: "center",
       }}
     >
-      <div
+    <div
   style={{
     position: "relative",
     width: "100%",
     maxWidth: "520px",
-    backgroundImage: "url('/images/riroguin.png')",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center top",
-    backgroundSize: "100% auto",
-    aspectRatio: "9 / 16",
     margin: "0 auto",
   }}
 >
-        <form onSubmit={handleLogin}>
+  <img
+    src="/images/riroguin.png"
+    alt="ログイン画面背景"
+    style={{
+      display: "block",
+      width: "100%",
+      height: "auto",
+    }}
+  />
+
+  <form
+    onSubmit={handleLogin}
+    style={{
+      position: "absolute",
+      inset: 0,
+    }}
+  >
           <input
             type="email"
             value={email}
