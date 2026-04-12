@@ -33,6 +33,8 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
+                  placeholder=""
+                  autoComplete="email"
                   style={styles.input}
                 />
               </label>
@@ -47,21 +49,19 @@ export default function LoginPage() {
                   onChange={(e) =>
                     setPhoneLast4(e.target.value.replace(/[^0-9]/g, ""))
                   }
+                  placeholder=""
+                  autoComplete="one-time-code"
                   style={styles.input}
                 />
               </label>
 
-              {/* ←ここが調整ポイント */}
               <button type="submit" style={styles.loginButton}>
                 ログイン
               </button>
             </form>
 
-            {/* ←ここも調整 */}
             <div style={styles.helpArea}>
-              <span style={styles.helpText}>
-                ※ログインできない場合→
-              </span>
+              <span style={styles.helpText}>※ログインできない場合 →</span>
               <button
                 type="button"
                 onClick={handleResendMail}
@@ -86,12 +86,14 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: "20px 12px",
+    boxSizing: "border-box",
   },
 
   viewport: {
     width: "100%",
     display: "flex",
     justifyContent: "center",
+    alignItems: "center",
   },
 
   phoneFrame: {
@@ -102,6 +104,7 @@ const styles = {
     borderRadius: "28px",
     overflow: "hidden",
     boxShadow: "0 18px 45px rgba(83, 57, 39, 0.22)",
+    backgroundColor: "#d8c2ae",
   },
 
   background: {
@@ -110,6 +113,8 @@ const styles = {
     backgroundImage: "url('/images/rirog.png')",
     backgroundSize: "cover",
     backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    transform: "scale(1.01)",
   },
 
   overlay: {
@@ -118,33 +123,46 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    paddingTop: "16%",
-    paddingLeft: "7%",
-    paddingRight: "7%",
+    paddingTop: "16.8%",
+    paddingLeft: "7.5%",
+    paddingRight: "7.5%",
+    boxSizing: "border-box",
+    background:
+      "linear-gradient(180deg, rgba(255,248,242,0.06) 0%, rgba(255,248,242,0.02) 100%)",
   },
 
   title: {
+    margin: 0,
     color: "#5b3d2b",
     fontSize: "clamp(26px, 4.8vw, 34px)",
     fontWeight: 700,
     letterSpacing: "0.12em",
+    textShadow: "0 2px 8px rgba(255,255,255,0.35)",
+    lineHeight: 1.2,
   },
 
   card: {
-    marginTop: "15%",
+    marginTop: "15.5%",
     width: "100%",
     background: "rgba(255, 252, 248, 0.92)",
     border: "1.5px solid rgba(140, 109, 86, 0.22)",
     borderRadius: "28px",
-    padding: "9% 7%",
+    boxShadow: "0 12px 30px rgba(91, 61, 43, 0.14)",
+    padding: "9.5% 7.2% 8.5%",
+    boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
     gap: "18px",
+    backdropFilter: "blur(4px)",
   },
 
   subText: {
+    margin: "0 0 2px 0",
     color: "#7a5a47",
-    fontSize: "14px",
+    fontSize: "clamp(14px, 2.5vw, 17px)",
+    lineHeight: 1.4,
+    letterSpacing: "0.06em",
+    textAlign: "left",
   },
 
   label: {
@@ -155,54 +173,72 @@ const styles = {
 
   labelText: {
     color: "#5b3d2b",
-    fontSize: "16px",
+    fontSize: "clamp(15px, 2.8vw, 18px)",
     fontWeight: 600,
+    letterSpacing: "0.04em",
+    lineHeight: 1.4,
   },
 
   input: {
+    width: "100%",
     height: "54px",
     borderRadius: "999px",
     border: "1.8px solid rgba(123, 89, 66, 0.28)",
+    background: "rgba(255, 255, 255, 0.96)",
     padding: "0 18px",
     fontSize: "16px",
+    color: "#4f3526",
+    boxSizing: "border-box",
+    outline: "none",
+    boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.05)",
   },
 
-  // 🔥 ログインボタン下げた
   loginButton: {
-    marginTop: "28px", // ←ここ増やした
+    marginTop: "10px",
+    width: "100%",
     height: "56px",
     border: "none",
     borderRadius: "999px",
-    background: "#b9806e",
-    color: "#fff",
-    fontSize: "18px",
+    background: "linear-gradient(180deg, #b9806e 0%, #a96d5d 100%)",
+    color: "#fffdfb",
+    fontSize: "clamp(17px, 3.1vw, 20px)",
     fontWeight: 700,
+    letterSpacing: "0.1em",
     cursor: "pointer",
+    boxShadow: "0 10px 20px rgba(169, 109, 93, 0.28)",
   },
 
-  // 🔥 横並び＆左寄せ
   helpArea: {
-    marginTop: "6%",
+    marginTop: "5.8%",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "flex-start", // ←左寄せ
-    gap: "10px", // ←→との間隔
+    gap: "12px",
     width: "100%",
   },
 
   helpText: {
     color: "#6c4c39",
-    fontSize: "14px",
+    fontSize: "clamp(14px, 2.5vw, 16px)",
+    lineHeight: 1.5,
+    letterSpacing: "0.04em",
+    textAlign: "center",
+    textShadow: "0 1px 4px rgba(255,255,255,0.35)",
   },
 
   mailButton: {
-    height: "42px",
-    padding: "0 18px",
+    minWidth: "220px",
+    maxWidth: "100%",
+    height: "48px",
+    padding: "0 26px",
     borderRadius: "999px",
-    border: "1px solid rgba(122, 90, 71, 0.3)",
+    border: "1.5px solid rgba(122, 90, 71, 0.24)",
     background: "rgba(255, 250, 245, 0.9)",
     color: "#7a5a47",
-    fontSize: "14px",
+    fontSize: "clamp(15px, 2.8vw, 17px)",
+    fontWeight: 600,
+    letterSpacing: "0.06em",
     cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(91, 61, 43, 0.1)",
   },
 };
