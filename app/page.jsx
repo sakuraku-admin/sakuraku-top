@@ -68,7 +68,7 @@ export default function Home() {
           width: "100%",
           maxWidth: "560px",
           minHeight: "100vh",
-          backgroundImage: "url('/images/newtop2.png')",
+          backgroundImage: "url('/images/newtop.png')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center top",
           backgroundSize: "cover",
