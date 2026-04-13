@@ -422,14 +422,14 @@ const styles = {
 
   title: {
     position: "absolute",
-    top: "0.9%",
+    top: "0.2%",
     left: "50%",
     transform: "translateX(-50%)",
     width: "80%",
     textAlign: "center",
     fontSize: "clamp(28px, 4.6vw, 42px)",
     lineHeight: 1.2,
-    letterSpacing: "0.12em",
+    letterSpacing: "0.06em",
     color: "#2f2018",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
@@ -444,8 +444,8 @@ const styles = {
     width: "72.8%",
     height: "86.2%",
     borderRadius: "22px",
-    border: "1px solid rgba(255, 255, 255, 0.52)",
-    background: "rgba(255, 255, 255, 0.08)",
+    border: "1px solid rgba(255, 255, 255, 0.7)",
+    background: "rgba(255, 255, 255, 0.14)",
     boxSizing: "border-box",
     pointerEvents: "none",
     zIndex: 1,
