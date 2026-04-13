@@ -1,36 +1,29 @@
 export default function Home() {
   const mainButtonStyle = {
-    position: "absolute",
-    left: "50%",
-    top: "40.8%",
-    transform: "translateX(-50%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "36%",
+    width: "38%",
     minWidth: "190px",
-    height: "5.2%",
+    height: "5.4%",
     minHeight: "58px",
     borderRadius: "20px",
     background: "rgba(255, 244, 236, 0.24)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#5a3a2c", // ← ダークブラウン
+    color: "#5a3a2c",
     textDecoration: "none",
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
     fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
     border: "1.5px solid rgba(95, 58, 42, 0.62)",
     boxSizing: "border-box",
     letterSpacing: "0.06em",
     boxShadow:
       "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
-
-    // ← 主役だけ白縁
     textShadow:
       "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.6)",
-
     paddingBottom: "2px",
   };
 
@@ -46,20 +39,17 @@ export default function Home() {
     background: "rgba(255, 245, 238, 0.14)",
     backdropFilter: "blur(2px)",
     WebkitBackdropFilter: "blur(2px)",
-    color: "#5a3a2c", // ← 統一
+    color: "#5a3a2c",
     textDecoration: "none",
     fontSize: "clamp(14px, 1.3vw, 20px)",
     fontWeight: "700",
     fontFamily:
-      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
     border: "1.5px solid rgba(90, 55, 40, 0.5)",
     boxSizing: "border-box",
     letterSpacing: "0.03em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
-
-    // ← 下はシンプル
     textShadow: "none",
-
     paddingBottom: "1px",
   };
 
@@ -68,55 +58,84 @@ export default function Home() {
       style={{
         margin: 0,
         minHeight: "100vh",
-        backgroundColor: "#e6b895",
         display: "flex",
         justifyContent: "center",
+        backgroundColor: "#f3ede8",
+        padding: "0",
       }}
     >
       <div
         style={{
           position: "relative",
           width: "100%",
-          maxWidth: "520px",
+          maxWidth: "560px",
           minHeight: "100vh",
-          backgroundImage: "url('/images/top-visual.png')",
+          backgroundImage: "url('/images/newtop.png')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center top",
-          backgroundSize: "100% auto",
-          aspectRatio: "9 / 16",
+          backgroundSize: "cover",
+          aspectRatio: "2000 / 3500",
+          overflow: "hidden",
         }}
       >
-        {/* 予約する */}
-        <a href="/reserve" style={mainButtonStyle}>
-          予約する
-        </a>
-
-        {/* 下ボタン */}
-        <a
-          href="/confirm"
+        {/* 透明レイヤー */}
+        <div
           style={{
-            ...subButtonStyle,
             position: "absolute",
-            left: "35%",
-            top: "50.5%",
-            transform: "translateX(-50%)",
+            inset: 0,
+            background: "rgba(255,255,255,0.01)",
+          }}
+        />
+
+        {/* ボタン配置レイヤー */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
           }}
         >
-          予約確認
-        </a>
+          {/* 予約する */}
+          <a
+            href="/reserve"
+            style={{
+              ...mainButtonStyle,
+              position: "absolute",
+              left: "50%",
+              top: "41.8%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            予約する
+          </a>
 
-        <a
-          href="/info"
-          style={{
-            ...subButtonStyle,
-            position: "absolute",
-            left: "65%",
-            top: "50.5%",
-            transform: "translateX(-50%)",
-          }}
-        >
-          店舗情報
-        </a>
+          {/* 予約確認 */}
+          <a
+            href="/confirm"
+            style={{
+              ...subButtonStyle,
+              position: "absolute",
+              left: "35%",
+              top: "50.9%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            予約確認
+          </a>
+
+          {/* 店舗情報 */}
+          <a
+            href="/info"
+            style={{
+              ...subButtonStyle,
+              position: "absolute",
+              left: "65%",
+              top: "50.9%",
+              transform: "translateX(-50%)",
+            }}
+          >
+            店舗情報
+          </a>
+        </div>
       </div>
     </main>
   );
