@@ -17,11 +17,11 @@ export default function Home() {
     fontWeight: "700",
     fontFamily:
       '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    border: "1.5px solid rgba(95, 58, 42, 0.62)",
+    border: "1.5px solid rgba(95, 58, 42, 0.4)",
     boxSizing: "border-box",
     letterSpacing: "0.06em",
     boxShadow:
-      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
+      "0 3px 8px rgba(80, 45, 35, 0.12), inset 0 1px 0 rgba(255,255,255,0.28)",
     textShadow:
       "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.6)",
     paddingBottom: "2px",
