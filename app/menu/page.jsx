@@ -178,12 +178,6 @@ export default function MenuPage() {
     <>
       <div style={styles.page}>
         <div style={styles.canvas}>
-          <img
-            src="/images/menu-bg.png"
-            alt="コースメニュー背景"
-            style={styles.backgroundImage}
-          />
-
           <div style={styles.scrollArea}>
             <div style={styles.scrollInner}>
               <button
@@ -407,7 +401,10 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
-    backgroundColor: "#efe8e2",
+    backgroundImage: 'url("/images/mokume.png")',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
     padding: "24px 12px 40px",
     boxSizing: "border-box",
   },
@@ -418,15 +415,6 @@ const styles = {
     maxWidth: "560px",
     aspectRatio: "900 / 1600",
     overflow: "hidden",
-  },
-
-  backgroundImage: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    display: "block",
-    userSelect: "none",
-    pointerEvents: "none",
   },
 
   scrollArea: {
