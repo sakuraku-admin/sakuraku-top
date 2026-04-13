@@ -29,6 +29,8 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder=""
+              autoComplete="email"
               style={styles.input}
             />
           </label>
@@ -43,6 +45,8 @@ export default function LoginPage() {
               onChange={(e) =>
                 setPhoneLast4(e.target.value.replace(/[^0-9]/g, ""))
               }
+              placeholder=""
+              autoComplete="one-time-code"
               style={styles.input}
             />
           </label>
@@ -78,6 +82,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "flex-start",
     padding: "44px 20px 32px",
+    boxSizing: "border-box",
   },
 
   overlay: {
@@ -94,35 +99,35 @@ const styles = {
     fontSize: "clamp(30px, 5.4vw, 38px)",
     fontWeight: 600,
     fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
-    letterSpacing: "0.06em",
-    textShadow: "0 2px 10px rgba(255,255,255,0.4)",
+    letterSpacing: "0.08em",
+    textShadow: "0 2px 8px rgba(255,255,255,0.35)",
+    lineHeight: 1.2,
     marginBottom: "34px",
   },
 
-  // ★ここがガッツリ変更
   card: {
     width: "100%",
     maxWidth: "390px",
-
-    background: "rgba(255, 255, 255, 0.28)", // ←かなり下げる
-    border: "1px solid rgba(255,255,255,0.35)",
-
+    background: "rgba(255, 255, 255, 0.34)",
+    border: "1.2px solid rgba(255, 255, 255, 0.34)",
     borderRadius: "30px",
+    boxShadow: "0 12px 30px rgba(91, 61, 43, 0.10)",
     padding: "30px 24px 26px",
-
+    boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
     gap: "18px",
-
-    backdropFilter: "blur(14px)", // ←かなり強く
+    backdropFilter: "blur(14px)",
     WebkitBackdropFilter: "blur(14px)",
-
-    boxShadow: "0 10px 25px rgba(91, 61, 43, 0.08)",
   },
 
   subText: {
-    color: "#6e4c39",
+    margin: "0 0 4px 0",
+    color: "#7a5a47",
     fontSize: "clamp(14px, 2.5vw, 17px)",
+    lineHeight: 1.4,
+    letterSpacing: "0.06em",
+    textAlign: "left",
   },
 
   label: {
@@ -135,53 +140,72 @@ const styles = {
     color: "#5b3d2b",
     fontSize: "clamp(15px, 2.8vw, 18px)",
     fontWeight: 600,
+    letterSpacing: "0.04em",
+    lineHeight: 1.4,
   },
 
   input: {
+    width: "100%",
     height: "54px",
     borderRadius: "999px",
-    border: "1px solid rgba(255,255,255,0.5)",
-    background: "rgba(255, 255, 255, 0.65)", // ←ここも透明寄り
+    border: "1.4px solid rgba(255, 255, 255, 0.42)",
+    background: "rgba(255, 255, 255, 0.58)",
     padding: "0 18px",
     fontSize: "16px",
     color: "#4f3526",
+    boxSizing: "border-box",
+    outline: "none",
+    boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.05)",
   },
 
   loginButton: {
     marginTop: "14px",
+    width: "100%",
     height: "56px",
     border: "none",
     borderRadius: "999px",
     background: "linear-gradient(180deg, #f29a8d 0%, #e48174 100%)",
-    color: "#fff",
+    color: "#fffdfb",
     fontSize: "clamp(17px, 3.1vw, 20px)",
     fontWeight: 700,
     letterSpacing: "0.1em",
+    cursor: "pointer",
     boxShadow: "0 10px 20px rgba(228, 129, 116, 0.24)",
   },
 
   helpArea: {
-    marginTop: "26px",
+    marginTop: "24px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "12px",
+    gap: "10px",
+    width: "100%",
   },
 
   helpText: {
     color: "#6c4c39",
     fontSize: "clamp(14px, 2.5vw, 16px)",
+    lineHeight: 1.5,
+    letterSpacing: "0.04em",
+    textAlign: "center",
+    textShadow: "0 1px 4px rgba(255,255,255,0.35)",
   },
 
-  // ★こっちも合わせる
   mailButton: {
+    minWidth: "230px",
+    maxWidth: "100%",
     height: "48px",
     padding: "0 26px",
     borderRadius: "999px",
-    border: "1px solid rgba(255,255,255,0.35)",
-    background: "rgba(255, 255, 255, 0.25)", // ←かなり透明
+    border: "1.2px solid rgba(255, 255, 255, 0.34)",
+    background: "rgba(255, 255, 255, 0.28)",
     color: "#7a5a47",
     fontSize: "clamp(15px, 2.8vw, 17px)",
+    fontWeight: 600,
+    letterSpacing: "0.06em",
+    cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(91, 61, 43, 0.08)",
     backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
   },
 };
