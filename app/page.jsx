@@ -17,11 +17,11 @@ export default function Home() {
     fontWeight: "700",
     fontFamily:
       '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
-    border: "1.5px solid rgba(95, 58, 42, 0.4)",
+    border: "1.5px solid rgba(95, 58, 42, 0.62)",
     boxSizing: "border-box",
     letterSpacing: "0.06em",
     boxShadow:
-      "0 3px 8px rgba(80, 45, 35, 0.12), inset 0 1px 0 rgba(255,255,255,0.28)",
+      "0 5px 12px rgba(80, 45, 35, 0.16), inset 0 1px 0 rgba(255,255,255,0.28)",
     textShadow:
       "0 0 0 #fff, 0 0 6px rgba(255,255,255,0.9), 0 0 10px rgba(255,255,255,0.6)",
     paddingBottom: "2px",
@@ -59,7 +59,10 @@ export default function Home() {
         minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
-        backgroundColor: "#f3ede8",
+        backgroundImage: "url('/images/mokume.png')",
+        backgroundRepeat: "repeat",
+        backgroundPosition: "center top",
+        backgroundSize: "cover",
       }}
     >
       <div
@@ -68,14 +71,27 @@ export default function Home() {
           width: "100%",
           maxWidth: "560px",
           minHeight: "100vh",
-          backgroundImage: "url('/images/newtop.png')",
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "center top",
-          backgroundSize: "cover",
           aspectRatio: "2000 / 3500",
           overflow: "hidden",
         }}
       >
+        {/* ショップカード画像 */}
+        <img
+          src="/images/top1.png"
+          alt="さく楽 トップカード"
+          style={{
+            position: "absolute",
+            top: "5.2%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: "86%",
+            height: "auto",
+            display: "block",
+            pointerEvents: "none",
+            userSelect: "none",
+          }}
+        />
+
         {/* 透明レイヤー */}
         <div
           style={{
@@ -91,7 +107,7 @@ export default function Home() {
             inset: 0,
           }}
         >
-          {/* 予約する（上に移動） */}
+          {/* 予約する */}
           <a
             href="/reserve"
             style={{
@@ -105,7 +121,7 @@ export default function Home() {
             予約する
           </a>
 
-          {/* 予約確認（下＆間隔広げ） */}
+          {/* 予約確認 */}
           <a
             href="/confirm"
             style={{
