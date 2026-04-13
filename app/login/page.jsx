@@ -29,7 +29,6 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder=""
               autoComplete="email"
               style={styles.input}
             />
@@ -45,7 +44,6 @@ export default function LoginPage() {
               onChange={(e) =>
                 setPhoneLast4(e.target.value.replace(/[^0-9]/g, ""))
               }
-              placeholder=""
               autoComplete="one-time-code"
               style={styles.input}
             />
@@ -99,25 +97,27 @@ const styles = {
     fontSize: "clamp(30px, 5.4vw, 38px)",
     fontWeight: 600,
     fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
-    letterSpacing: "0.12em",
+    letterSpacing: "0.08em",
     textShadow: "0 2px 8px rgba(255,255,255,0.35)",
     lineHeight: 1.2,
     marginBottom: "34px",
   },
 
+  // ★ここが今回のメイン調整
   card: {
     width: "100%",
     maxWidth: "390px",
-    background: "rgba(255, 255, 255, 0.78)",
-    border: "1.5px solid rgba(140, 109, 86, 0.18)",
+    background: "rgba(255, 255, 255, 0.6)", // ←透明感バランス
+    border: "1.2px solid rgba(140, 109, 86, 0.22)",
     borderRadius: "30px",
-    boxShadow: "0 12px 30px rgba(91, 61, 43, 0.12)",
+    boxShadow: "0 12px 28px rgba(91, 61, 43, 0.10)",
     padding: "30px 24px 26px",
     boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
     gap: "18px",
-    backdropFilter: "blur(4px)",
+    backdropFilter: "blur(8px)", // ←すりガラス感
+    WebkitBackdropFilter: "blur(8px)",
   },
 
   subText: {
@@ -147,14 +147,14 @@ const styles = {
     width: "100%",
     height: "54px",
     borderRadius: "999px",
-    border: "1.8px solid rgba(123, 89, 66, 0.20)",
-    background: "rgba(255, 255, 255, 0.92)",
+    border: "1.6px solid rgba(123, 89, 66, 0.22)",
+    background: "rgba(255, 255, 255, 0.85)",
     padding: "0 18px",
     fontSize: "16px",
     color: "#4f3526",
     boxSizing: "border-box",
     outline: "none",
-    boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.04)",
+    boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.05)",
   },
 
   loginButton: {
@@ -173,36 +173,35 @@ const styles = {
   },
 
   helpArea: {
-    marginTop: "24px",
+    marginTop: "26px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "10px",
+    gap: "12px",
     width: "100%",
   },
 
   helpText: {
     color: "#6c4c39",
     fontSize: "clamp(14px, 2.5vw, 16px)",
-    lineHeight: 1.5,
     letterSpacing: "0.04em",
-    textAlign: "center",
     textShadow: "0 1px 4px rgba(255,255,255,0.35)",
   },
 
+  // ★ここも統一
   mailButton: {
     minWidth: "230px",
-    maxWidth: "100%",
     height: "48px",
     padding: "0 26px",
     borderRadius: "999px",
-    border: "1.5px solid rgba(122, 90, 71, 0.18)",
-    background: "rgba(255, 255, 255, 0.82)",
+    border: "1.2px solid rgba(122, 90, 71, 0.22)",
+    background: "rgba(255, 255, 255, 0.55)", // ←カードに合わせた
     color: "#7a5a47",
     fontSize: "clamp(15px, 2.8vw, 17px)",
     fontWeight: 600,
     letterSpacing: "0.06em",
     cursor: "pointer",
-    boxShadow: "0 8px 18px rgba(91, 61, 43, 0.08)",
+    boxShadow: "0 6px 14px rgba(91, 61, 43, 0.08)",
+    backdropFilter: "blur(6px)",
   },
 };
