@@ -16,7 +16,7 @@ export default function Home() {
     fontSize: "clamp(20px, 2vw, 30px)",
     fontWeight: "700",
     fontFamily:
-      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
     border: "1.5px solid rgba(95, 58, 42, 0.62)",
     boxSizing: "border-box",
     letterSpacing: "0.06em",
@@ -31,10 +31,10 @@ export default function Home() {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "22%",
-    minWidth: "122px",
-    height: "3.9%",
-    minHeight: "46px",
+    width: "24%",
+    minWidth: "130px",
+    height: "4.2%",
+    minHeight: "48px",
     borderRadius: "18px",
     background: "rgba(255, 245, 238, 0.14)",
     backdropFilter: "blur(2px)",
@@ -44,12 +44,11 @@ export default function Home() {
     fontSize: "clamp(14px, 1.3vw, 20px)",
     fontWeight: "700",
     fontFamily:
-      '"Yu Gothic", "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif',
+      '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
     border: "1.5px solid rgba(90, 55, 40, 0.5)",
     boxSizing: "border-box",
     letterSpacing: "0.03em",
     boxShadow: "0 4px 10px rgba(80, 45, 35, 0.12)",
-    textShadow: "none",
     paddingBottom: "1px",
   };
 
@@ -61,7 +60,6 @@ export default function Home() {
         display: "flex",
         justifyContent: "center",
         backgroundColor: "#f3ede8",
-        padding: "0",
       }}
     >
       <div
@@ -83,39 +81,38 @@ export default function Home() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(255,255,255,0.01)",
           }}
         />
 
-        {/* ボタン配置レイヤー */}
+        {/* ボタンレイヤー */}
         <div
           style={{
             position: "absolute",
             inset: 0,
           }}
         >
-          {/* 予約する */}
+          {/* 予約する（上に移動） */}
           <a
             href="/reserve"
             style={{
               ...mainButtonStyle,
               position: "absolute",
               left: "50%",
-              top: "41.8%",
+              top: "38.5%",
               transform: "translateX(-50%)",
             }}
           >
             予約する
           </a>
 
-          {/* 予約確認 */}
+          {/* 予約確認（下＆間隔広げ） */}
           <a
             href="/confirm"
             style={{
               ...subButtonStyle,
               position: "absolute",
-              left: "35%",
-              top: "50.9%",
+              left: "30%",
+              top: "49.5%",
               transform: "translateX(-50%)",
             }}
           >
@@ -128,8 +125,8 @@ export default function Home() {
             style={{
               ...subButtonStyle,
               position: "absolute",
-              left: "65%",
-              top: "50.9%",
+              left: "70%",
+              top: "49.5%",
               transform: "translateX(-50%)",
             }}
           >
