@@ -3,60 +3,36 @@
 import { useMemo, useState } from "react";
 
 export default function OptionMenuPage() {
-  const [selectedNone, setSelectedNone] = useState(false);
   const [selectedMag, setSelectedMag] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
 
   const totalPrice = useMemo(() => {
-    if (selectedNone) return 0;
-
     return (
       (selectedMag ? 1000 : 0) +
-      (selectedShape === "shape-1" ? 2000 : 0) +
-      (selectedShape === "shape-2" ? 3500 : 0) +
-      (selectedShape === "shape-3" ? 5000 : 0) +
+      (selectedShape === "shape-30" ? 3000 : 0) +
+      (selectedShape === "shape-60" ? 5000 : 0) +
       (selectedHead ? 3000 : 0)
     );
-  }, [selectedNone, selectedMag, selectedShape, selectedHead]);
+  }, [selectedMag, selectedShape, selectedHead]);
 
   const totalMinutes = useMemo(() => {
-    if (selectedNone) return 0;
-
     return (
-      (selectedShape === "shape-1" ? 20 : 0) +
-      (selectedShape === "shape-2" ? 40 : 0) +
-      (selectedShape === "shape-3" ? 60 : 0) +
+      (selectedShape === "shape-30" ? 30 : 0) +
+      (selectedShape === "shape-60" ? 60 : 0) +
       (selectedHead ? 30 : 0)
     );
-  }, [selectedNone, selectedShape, selectedHead]);
-
-  const handleNoneSelect = () => {
-    setSelectedNone((prev) => {
-      const next = !prev;
-
-      if (next) {
-        setSelectedMag(false);
-        setSelectedShape(null);
-        setSelectedHead(false);
-      }
-
-      return next;
-    });
-  };
+  }, [selectedShape, selectedHead]);
 
   const handleMagSelect = () => {
-    setSelectedNone(false);
     setSelectedMag((prev) => !prev);
   };
 
   const handleShapeSelect = (id) => {
-    setSelectedNone(false);
     setSelectedShape((prev) => (prev === id ? null : id));
   };
 
   const handleHeadSelect = () => {
-    setSelectedNone(false);
     setSelectedHead((prev) => !prev);
   };
 
@@ -104,12 +80,8 @@ export default function OptionMenuPage() {
               オプションを追加せず、この内容のまま次へ進みます。
             </p>
 
-            <button
-              type="button"
-              onClick={handleNoneSelect}
-              style={optionButtonStyle(selectedNone)}
-            >
-              {selectedNone ? "選択中" : "選択する"}
+            <button type="button" style={styles.skipButton}>
+              このまま次へ進む
             </button>
           </section>
 
@@ -138,52 +110,35 @@ export default function OptionMenuPage() {
 
             <div style={styles.choiceCard}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>1部位　2000円</div>
-                <div style={styles.choiceTime}>約20分</div>
+                <div style={styles.choiceName}>30分　3000円</div>
+                <div style={styles.choiceTime}>約30分</div>
               </div>
               <p style={styles.choiceDescription}>
-                気になる箇所をピンポイントで！
+                気になる箇所を集中的に。
               </p>
               <button
                 type="button"
-                onClick={() => handleShapeSelect("shape-1")}
-                style={optionButtonStyle(selectedShape === "shape-1")}
+                onClick={() => handleShapeSelect("shape-30")}
+                style={optionButtonStyle(selectedShape === "shape-30")}
               >
-                {selectedShape === "shape-1" ? "選択中" : "選択する"}
-              </button>
-            </div>
-
-            <div style={styles.choiceCard}>
-              <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>2部位　3500円</div>
-                <div style={styles.choiceTime}>約40分</div>
-              </div>
-              <p style={styles.choiceDescription}>
-                お腹+気になる部位、がオススメです。
-              </p>
-              <button
-                type="button"
-                onClick={() => handleShapeSelect("shape-2")}
-                style={optionButtonStyle(selectedShape === "shape-2")}
-              >
-                {selectedShape === "shape-2" ? "選択中" : "選択する"}
+                {selectedShape === "shape-30" ? "選択中" : "選択する"}
               </button>
             </div>
 
             <div style={styles.choiceCardLast}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>3部位　5000円</div>
+                <div style={styles.choiceName}>60分　5000円</div>
                 <div style={styles.choiceTime}>約60分</div>
               </div>
               <p style={styles.choiceDescription}>
-                60分しっかり流したい方へ。
+                全身しっかり流したい方におすすめ。
               </p>
               <button
                 type="button"
-                onClick={() => handleShapeSelect("shape-3")}
-                style={optionButtonStyle(selectedShape === "shape-3")}
+                onClick={() => handleShapeSelect("shape-60")}
+                style={optionButtonStyle(selectedShape === "shape-60")}
               >
-                {selectedShape === "shape-3" ? "選択中" : "選択する"}
+                {selectedShape === "shape-60" ? "選択中" : "選択する"}
               </button>
             </div>
           </section>
@@ -212,18 +167,14 @@ export default function OptionMenuPage() {
             <h3 style={styles.summaryTitle}>選択中のオプション</h3>
 
             <div style={styles.summaryList}>
-              {selectedNone || selectedMag || selectedShape || selectedHead ? (
+              {selectedMag || selectedShape || selectedHead ? (
                 <>
-                  {selectedNone && <div>・オプションなし</div>}
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
-                  {selectedShape === "shape-1" && (
-                    <div>・巡りシェイプケア（1部位）</div>
+                  {selectedShape === "shape-30" && (
+                    <div>・巡りシェイプケア（30分）</div>
                   )}
-                  {selectedShape === "shape-2" && (
-                    <div>・巡りシェイプケア（2部位）</div>
-                  )}
-                  {selectedShape === "shape-3" && (
-                    <div>・巡りシェイプケア（3部位）</div>
+                  {selectedShape === "shape-60" && (
+                    <div>・巡りシェイプケア（60分）</div>
                   )}
                   {selectedHead && (
                     <div>・頭部解放（頭蓋筋膜リリース）</div>
@@ -476,5 +427,21 @@ const styles = {
       "linear-gradient(180deg, rgba(242, 144, 130, 0.98) 0%, rgba(230, 117, 104, 0.98) 100%)",
     cursor: "pointer",
     boxShadow: "0 8px 18px rgba(224, 123, 111, 0.24)",
+  },
+
+  skipButton: {
+    width: "100%",
+    border: "none",
+    borderRadius: "999px",
+    padding: "14px 16px",
+    marginTop: "4px",
+    fontSize: "15px",
+    fontWeight: 700,
+    letterSpacing: "0.06em",
+    color: "#fffaf7",
+    background:
+      "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
+    cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
   },
 };
