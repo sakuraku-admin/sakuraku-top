@@ -126,6 +126,12 @@ function isStartMarkedAvailable(dateKey, time, mockAvailability) {
   return dayStarts.includes(time);
 }
 
+// ★ 当日判定
+function isToday(dateKey) {
+  const todayKey = formatDateKey(new Date());
+  return dateKey === todayKey;
+}
+
 export default function ReserveDateTimePage() {
   const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
   const [selected, setSelected] = useState(null);
@@ -147,6 +153,7 @@ export default function ReserveDateTimePage() {
 
   const handleSelect = (dateKey, time) => {
     const isReservable =
+      !isToday(dateKey) &&
       isStartMarkedAvailable(dateKey, time, mockAvailability) &&
       canReserveAt(time, TREATMENT_MINUTES);
 
@@ -277,6 +284,7 @@ export default function ReserveDateTimePage() {
                     <tr key={`row-${time}`}>
                       {weekDates.map((date) => {
                         const dateKey = formatDateKey(date);
+
                         const markedAvailable = isStartMarkedAvailable(
                           dateKey,
                           time,
@@ -286,8 +294,13 @@ export default function ReserveDateTimePage() {
                           time,
                           TREATMENT_MINUTES
                         );
+
+                        // ★ 当日は空きがあっても全部✕
                         const isReservable =
-                          markedAvailable && withinBusinessHours;
+                          !isToday(dateKey) &&
+                          markedAvailable &&
+                          withinBusinessHours;
+
                         const isSelected =
                           selected?.dateKey === dateKey &&
                           selected?.time === time;
@@ -617,11 +630,12 @@ const styles = {
     background: "#f1ebe6",
   },
 
+  // ★ ここだけ大きく
   slotButton: {
-    width: "34px",
-    height: "34px",
+    width: "42px",
+    height: "42px",
     borderRadius: "999px",
-    fontSize: "1.12rem",
+    fontSize: "1.38rem",
     fontWeight: 700,
     border: "none",
     background: "transparent",
@@ -645,12 +659,12 @@ const styles = {
   slotSelected: {
     color: "#df7e98",
     boxShadow: "none",
-    transform: "scale(1.03)",
+    transform: "scale(1.08)",
   },
 
   slotUnavailableMark: {
     color: "#9d918a",
-    fontSize: "0.92rem",
+    fontSize: "0.96rem",
     fontWeight: 700,
     lineHeight: 1,
     display: "flex",
