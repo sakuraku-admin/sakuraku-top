@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -151,8 +151,6 @@ export default function ReserveDateTimePage() {
   const timeSlots = useMemo(() => generateTimeSlots(), []);
   const mockAvailability = useMemo(() => buildMockAvailability(), []);
 
-  const scrollDatesRef = useRef(null);
-
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
@@ -256,7 +254,7 @@ export default function ReserveDateTimePage() {
               </table>
             </div>
 
-            <div style={styles.dateScroll} ref={scrollDatesRef}>
+            <div style={styles.dateScroll}>
               <table style={styles.dateTable}>
                 <thead>
                   <tr>
@@ -338,15 +336,16 @@ export default function ReserveDateTimePage() {
                                 onClick={() => handleSelect(dateKey, time)}
                                 style={{
                                   ...styles.slotButton,
-                                  ...styles.slotAvailable,
-                                  ...(isSelected ? styles.slotSelected : {}),
+                                  ...(isSelected
+                                    ? styles.slotSelected
+                                    : styles.slotAvailable),
                                 }}
                                 title={`施術終了 ${minutesToTimeString(
                                   timeStringToMinutes(time) +
                                     TREATMENT_MINUTES
                                 )} / 枠確保 ${blockedEndTime}まで`}
                               >
-                                ◎
+                                {isSelected ? "●" : "○"}
                               </button>
                             ) : (
                               <div style={styles.slotUnavailableMark}>✕</div>
@@ -429,7 +428,6 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "4px",
-    minHeight: "unset",
     boxSizing: "border-box",
   },
 
@@ -659,32 +657,29 @@ const styles = {
   },
 
   slotButton: {
-    width: "32px",
-    height: "32px",
+    width: "28px",
+    height: "28px",
     borderRadius: "999px",
-    fontSize: "0.92rem",
+    fontSize: "1.02rem",
     fontWeight: 700,
-    border: "2px solid transparent",
+    border: "none",
     background: "transparent",
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    transition: "all 0.18s ease",
     padding: 0,
+    lineHeight: 1,
   },
 
   slotAvailable: {
-    color: "#dc6f87",
-    borderColor: "rgba(220, 111, 135, 0.28)",
-    background: "rgba(255, 244, 247, 0.96)",
+    color: "#e2a3b4",
+    boxShadow: "none",
+    transform: "none",
   },
 
   slotSelected: {
-    color: "#fffafc",
-    borderColor: "#d96f8b",
-    background:
-      "linear-gradient(180deg, rgba(232, 133, 159, 1) 0%, rgba(218, 103, 136, 1) 100%)",
-    boxShadow:
-      "0 0 0 4px rgba(231, 142, 168, 0.26), 0 6px 12px rgba(214, 107, 139, 0.28)",
-    transform: "scale(1.06)",
+    color: "#e07f98",
+    boxShadow: "none",
+    transform: "scale(1.03)",
   },
 
   slotUnavailableMark: {
