@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -40,9 +40,16 @@ function formatJapaneseDate(date) {
   };
 }
 
-function formatSelectedDate(dateKey, time) {
-  const [year, month, day] = dateKey.split("-");
-  return `${year}年${Number(month)}月${Number(day)}日 ${time}`;
+function formatRangeLabel(startDate, endDate) {
+  return `${startDate.getMonth() + 1}/${startDate.getDate()} ～ ${
+    endDate.getMonth() + 1
+  }/${endDate.getDate()}`;
+}
+
+function formatSelectedDateShort(dateKey, time) {
+  if (!dateKey || !time) return "未選択";
+  const [, month, day] = dateKey.split("-");
+  return `${Number(month)}/${Number(day)} ${time}～`;
 }
 
 function generateTimeSlots() {
@@ -144,6 +151,8 @@ export default function ReserveDateTimePage() {
   const timeSlots = useMemo(() => generateTimeSlots(), []);
   const mockAvailability = useMemo(() => buildMockAvailability(), []);
 
+  const scrollDatesRef = useRef(null);
+
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
@@ -166,120 +175,131 @@ export default function ReserveDateTimePage() {
     setSelected({ dateKey, time });
   };
 
+  const currentRangeLabel = formatRangeLabel(weekDates[0], weekDates[6]);
+  const selectedLabel = formatSelectedDateShort(
+    selected?.dateKey,
+    selected?.time
+  );
+
   return (
     <main style={styles.page}>
       <div style={styles.container}>
-        <section style={styles.headerCard}>
-          <h1 style={styles.title}>ご希望の日時をお選びください</h1>
-          <p style={styles.subText}>◎予約可能、✕予約不可</p>
+        <h1 style={styles.title}>ご希望の日時をお選びください</h1>
 
-          <div style={styles.infoGrid}>
-            <div style={styles.infoBox}>
-              <span style={styles.infoLabel}>選択メニュー</span>
-              <span style={styles.infoValue}>{MENU_NAME}</span>
-            </div>
-
-            <div style={styles.infoBox}>
-              <span style={styles.infoLabel}>所要時間</span>
-              <span style={styles.infoValue}>{TREATMENT_MINUTES}分</span>
-            </div>
+        <section style={styles.infoCard}>
+          <div style={styles.infoMiniBox}>
+            <span style={styles.infoLabel}>選択メニュー</span>
+            <span style={styles.infoValue}>{MENU_NAME}</span>
           </div>
 
-          {selected && (
-            <div style={styles.selectedBox}>
-              選択中：
-              <strong style={styles.selectedStrong}>
-                {formatSelectedDate(selected.dateKey, selected.time)}
-              </strong>
-            </div>
-          )}
+          <div style={styles.infoMiniBox}>
+            <span style={styles.infoLabel}>所要時間</span>
+            <span style={styles.infoValue}>{TREATMENT_MINUTES}分</span>
+          </div>
         </section>
 
-        <section style={styles.weekBar}>
-          <div style={styles.weekCenter}>
-            {weekDates[0].getMonth() + 1}月{weekDates[0].getDate()}日〜
-            {weekDates[6].getMonth() + 1}月{weekDates[6].getDate()}日
-          </div>
+        <section style={styles.calendarInfoCard}>
+          <div style={styles.rangeText}>{currentRangeLabel}</div>
 
           <div style={styles.weekButtonRow}>
             <button onClick={handlePrevWeek} style={styles.weekButton}>
-              ← 前の1週間
+              ← 前の週
             </button>
 
             <button onClick={handleNextWeek} style={styles.weekButton}>
-              次の1週間 →
+              次の週 →
             </button>
+          </div>
+
+          <div style={styles.selectedBox}>
+            選択中：<strong style={styles.selectedStrong}>{selectedLabel}</strong>
           </div>
         </section>
 
-        <section style={styles.tableScroll}>
-          <div style={styles.tableWrap}>
-            <table style={styles.table}>
-              <thead>
-                <tr>
-                  <th style={styles.timeHead}>時間</th>
-                  {weekDates.map((date) => {
-                    const jp = formatJapaneseDate(date);
-                    const isSat = date.getDay() === 6;
-                    const isSun = date.getDay() === 0;
+        <section style={styles.calendarCard}>
+          <div style={styles.calendarShell}>
+            <div style={styles.timeColumn}>
+              <table style={styles.fixedTable}>
+                <thead>
+                  <tr>
+                    <th style={styles.timeHead}>時間</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {timeSlots.map((time) => {
+                    const label = getTimeLabelParts(time);
 
                     return (
-                      <th key={formatDateKey(date)} style={styles.dateHead}>
-                        <div
+                      <tr key={`time-${time}`}>
+                        <td
                           style={{
-                            ...styles.dateTop,
-                            color: isSun
-                              ? "#d87088"
-                              : isSat
-                              ? "#6e78d8"
-                              : "#5a3a2c",
+                            ...styles.timeCell,
+                            ...(label.isHalf
+                              ? styles.timeCellHalf
+                              : styles.timeCellHour),
                           }}
                         >
-                          {jp.month}/{jp.day}
-                        </div>
-                        <div
-                          style={{
-                            ...styles.dateBottom,
-                            color: isSun
-                              ? "#d87088"
-                              : isSat
-                              ? "#6e78d8"
-                              : "#5a3a2c",
-                          }}
-                        >
-                          ({jp.week})
-                        </div>
-                      </th>
+                          {label.isHalf ? (
+                            <div style={styles.halfTimeWrap}>
+                              <span style={styles.halfTimeHourSpacer}>00</span>
+                              <span style={styles.halfTimeColon}>:</span>
+                              <span style={styles.halfTimeMinute}>30</span>
+                            </div>
+                          ) : (
+                            time
+                          )}
+                        </td>
+                      </tr>
                     );
                   })}
-                </tr>
-              </thead>
+                </tbody>
+              </table>
+            </div>
 
-              <tbody>
-                {timeSlots.map((time) => {
-                  const label = getTimeLabelParts(time);
+            <div style={styles.dateScroll} ref={scrollDatesRef}>
+              <table style={styles.dateTable}>
+                <thead>
+                  <tr>
+                    {weekDates.map((date) => {
+                      const jp = formatJapaneseDate(date);
+                      const isSat = date.getDay() === 6;
+                      const isSun = date.getDay() === 0;
 
-                  return (
-                    <tr key={time}>
-                      <td
-                        style={{
-                          ...styles.timeCell,
-                          ...(label.isHalf
-                            ? styles.timeCellHalf
-                            : styles.timeCellHour),
-                        }}
-                      >
-                        {label.isHalf ? (
-                          <div style={styles.halfTimeWrap}>
-                            <span style={styles.halfTimeHourSpacer}>00</span>
-                            <span style={styles.halfTimeColon}>:</span>
-                            <span style={styles.halfTimeMinute}>30</span>
+                      return (
+                        <th key={formatDateKey(date)} style={styles.dateHead}>
+                          <div
+                            style={{
+                              ...styles.dateTop,
+                              color: isSun
+                                ? "#d87088"
+                                : isSat
+                                ? "#6e78d8"
+                                : "#5a3a2c",
+                            }}
+                          >
+                            {jp.month}/{jp.day}
                           </div>
-                        ) : (
-                          time
-                        )}
-                      </td>
+                          <div
+                            style={{
+                              ...styles.dateBottom,
+                              color: isSun
+                                ? "#d87088"
+                                : isSat
+                                ? "#6e78d8"
+                                : "#5a3a2c",
+                            }}
+                          >
+                            ({jp.week})
+                          </div>
+                        </th>
+                      );
+                    })}
+                  </tr>
+                </thead>
 
+                <tbody>
+                  {timeSlots.map((time) => (
+                    <tr key={`row-${time}`}>
                       {weekDates.map((date) => {
                         const dateKey = formatDateKey(date);
                         const markedAvailable = isStartMarkedAvailable(
@@ -335,10 +355,10 @@ export default function ReserveDateTimePage() {
                         );
                       })}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </section>
 
@@ -365,7 +385,7 @@ const styles = {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    padding: "36px 20px 56px",
+    padding: "28px 18px 56px",
     boxSizing: "border-box",
   },
 
@@ -375,105 +395,80 @@ const styles = {
     margin: "0 auto",
   },
 
-  headerCard: {
-    background: "rgba(255,255,255,0.74)",
-    border: "1px solid rgba(140, 104, 84, 0.16)",
-    borderRadius: "24px",
-    padding: "22px 16px 18px",
-    boxShadow: "0 8px 24px rgba(90, 58, 44, 0.08)",
-    backdropFilter: "blur(10px)",
-    WebkitBackdropFilter: "blur(10px)",
-  },
-
   title: {
-    margin: 0,
-    fontSize: "clamp(1.1rem, 5vw, 1.35rem)",
-    fontWeight: 700,
-    color: "#5a3a2c",
+    margin: "0 0 14px 0",
     textAlign: "center",
-    letterSpacing: "0.04em",
-    lineHeight: 1.5,
+    color: "#5a3a2c",
+    fontSize: "clamp(1.15rem, 5.4vw, 1.5rem)",
+    lineHeight: 1.45,
+    letterSpacing: "0.03em",
+    fontWeight: 700,
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    textShadow: "0 1px 6px rgba(255,255,255,0.28)",
   },
 
-  subText: {
-    margin: "10px 0 0",
-    textAlign: "center",
-    color: "#7b6257",
-    fontSize: "0.96rem",
-  },
-
-  infoGrid: {
+  infoCard: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     gap: "10px",
-    marginTop: "18px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
+    borderRadius: "20px",
+    padding: "10px",
+    boxSizing: "border-box",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
   },
 
-  infoBox: {
-    background: "rgba(255, 248, 244, 0.95)",
-    border: "1px solid rgba(170, 130, 109, 0.16)",
-    borderRadius: "18px",
-    padding: "12px 12px",
+  infoMiniBox: {
+    background: "rgba(255, 250, 247, 0.72)",
+    border: "1px solid rgba(170, 130, 109, 0.12)",
+    borderRadius: "14px",
+    padding: "8px 10px",
     display: "flex",
     flexDirection: "column",
-    gap: "6px",
+    gap: "4px",
+    minHeight: "unset",
+    boxSizing: "border-box",
   },
 
   infoLabel: {
-    fontSize: "0.8rem",
+    fontSize: "0.72rem",
     color: "#9c7f72",
+    lineHeight: 1.4,
   },
 
   infoValue: {
-    fontSize: "0.95rem",
+    fontSize: "0.88rem",
     color: "#5a3a2c",
     fontWeight: 700,
     lineHeight: 1.4,
   },
 
-  selectedBox: {
-    marginTop: "16px",
-    padding: "12px 14px",
-    borderRadius: "16px",
-    background: "rgba(255, 243, 245, 0.95)",
-    color: "#7a4552",
-    fontSize: "0.95rem",
-    textAlign: "center",
-    border: "1px solid rgba(214, 120, 144, 0.18)",
-    lineHeight: 1.6,
-  },
-
-  selectedStrong: {
-    marginLeft: "6px",
-  },
-
-  weekBar: {
-    marginTop: "18px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "stretch",
-    gap: "12px",
-    background: "rgba(255,255,255,0.68)",
+  calendarInfoCard: {
+    marginTop: "12px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
     borderRadius: "20px",
-    padding: "14px 12px",
-    border: "1px solid rgba(140, 104, 84, 0.12)",
+    padding: "12px 12px 10px",
+    boxSizing: "border-box",
     backdropFilter: "blur(8px)",
     WebkitBackdropFilter: "blur(8px)",
   },
 
-  weekCenter: {
-    color: "#5a3a2c",
-    fontWeight: 700,
-    fontSize: "1rem",
+  rangeText: {
     textAlign: "center",
-    lineHeight: 1.5,
+    color: "#5a3a2c",
+    fontSize: "1rem",
+    fontWeight: 700,
+    lineHeight: 1.4,
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   weekButtonRow: {
+    marginTop: "10px",
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     gap: "10px",
@@ -482,103 +477,145 @@ const styles = {
   weekButton: {
     border: "none",
     borderRadius: "999px",
-    padding: "11px 10px",
+    padding: "10px 8px",
     background:
       "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
     color: "#fffaf7",
     fontWeight: 700,
     cursor: "pointer",
-    fontSize: "0.92rem",
+    fontSize: "0.84rem",
     whiteSpace: "nowrap",
     boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
   },
 
-  tableScroll: {
-    marginTop: "16px",
-    overflowX: "auto",
-    overflowY: "hidden",
-    WebkitOverflowScrolling: "touch",
-    background: "rgba(255,255,255,0.54)",
-    borderRadius: "24px",
+  selectedBox: {
+    marginTop: "10px",
+    padding: "10px 12px",
+    borderRadius: "14px",
+    background: "rgba(255, 228, 235, 0.82)",
+    color: "#92515f",
+    fontSize: "0.88rem",
+    textAlign: "center",
+    border: "1px solid rgba(226, 142, 164, 0.30)",
+    lineHeight: 1.5,
+  },
+
+  selectedStrong: {
+    color: "#b44f69",
+  },
+
+  calendarCard: {
+    marginTop: "12px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
+    borderRadius: "22px",
     padding: "8px",
-    border: "1px solid rgba(140, 104, 84, 0.1)",
+    boxSizing: "border-box",
     backdropFilter: "blur(8px)",
     WebkitBackdropFilter: "blur(8px)",
   },
 
-  tableWrap: {
-    minWidth: "560px",
-  },
-
-  table: {
-    width: "100%",
-    borderCollapse: "separate",
-    borderSpacing: 0,
+  calendarShell: {
+    display: "flex",
+    alignItems: "stretch",
+    gap: 0,
     overflow: "hidden",
     borderRadius: "18px",
+    background: "#fffdfa",
+    border: "1px solid #ece1d8",
+  },
+
+  timeColumn: {
+    flex: "0 0 54px",
+    width: "54px",
+    background: "#faf5f0",
+    borderRight: "1px solid #ece1d8",
+    position: "relative",
+    zIndex: 2,
+  },
+
+  fixedTable: {
+    width: "54px",
+    borderCollapse: "collapse",
+    tableLayout: "fixed",
+    background: "#faf5f0",
+  },
+
+  dateScroll: {
+    overflowX: "auto",
+    overflowY: "hidden",
+    WebkitOverflowScrolling: "touch",
+    flex: 1,
+  },
+
+  dateTable: {
+    borderCollapse: "collapse",
+    tableLayout: "fixed",
+    minWidth: "420px",
     background: "#fffdfa",
   },
 
   timeHead: {
-    position: "sticky",
-    left: 0,
-    zIndex: 5,
+    width: "54px",
+    minWidth: "54px",
+    height: "68px",
     background: "#f4ece5",
     color: "#5a3a2c",
     fontWeight: 700,
-    minWidth: "62px",
-    width: "62px",
-    borderBottom: "1px solid #e6d8cf",
-    borderRight: "1px solid #e6d8cf",
-    padding: "12px 4px",
     textAlign: "center",
-    fontSize: "0.9rem",
-    boxShadow: "2px 0 0 #e6d8cf",
+    fontSize: "0.86rem",
+    borderBottom: "1px solid #e6d8cf",
+    padding: 0,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   dateHead: {
+    width: "60px",
+    minWidth: "60px",
+    height: "68px",
     background: "#fdf7f2",
     borderBottom: "1px solid #e6d8cf",
-    padding: "10px 4px",
-    minWidth: "66px",
+    borderLeft: "1px solid #f0e6de",
+    padding: "6px 2px",
     textAlign: "center",
+    boxSizing: "border-box",
   },
 
   dateTop: {
-    fontSize: "0.88rem",
+    fontSize: "0.82rem",
     fontWeight: 700,
     lineHeight: 1.2,
   },
 
   dateBottom: {
     marginTop: "4px",
-    fontSize: "0.78rem",
+    fontSize: "0.74rem",
     fontWeight: 700,
+    lineHeight: 1.2,
   },
 
   timeCell: {
-    position: "sticky",
-    left: 0,
-    zIndex: 4,
+    width: "54px",
+    minWidth: "54px",
+    height: "54px",
     background: "#faf5f0",
     color: "#5a3a2c",
     fontWeight: 700,
     textAlign: "center",
     borderBottom: "1px solid #eee2d9",
-    borderRight: "1px solid #eee2d9",
-    padding: "12px 4px",
-    minWidth: "62px",
-    width: "62px",
-    boxShadow: "2px 0 0 #eee2d9",
+    padding: 0,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   timeCellHour: {
-    fontSize: "0.9rem",
-    letterSpacing: "0.02em",
+    fontSize: "0.82rem",
+    letterSpacing: "0.01em",
   },
 
   timeCellHalf: {
-    fontSize: "0.84rem",
+    fontSize: "0.78rem",
     color: "#8f786d",
   },
 
@@ -603,10 +640,14 @@ const styles = {
   },
 
   slotCell: {
+    width: "60px",
+    minWidth: "60px",
+    height: "54px",
     borderBottom: "1px solid #eee2d9",
     borderLeft: "1px solid #f2e8e1",
     textAlign: "center",
-    padding: "5px 2px",
+    padding: 0,
+    boxSizing: "border-box",
   },
 
   slotCellAvailable: {
@@ -618,39 +659,44 @@ const styles = {
   },
 
   slotButton: {
-    width: "34px",
-    height: "34px",
+    width: "32px",
+    height: "32px",
     borderRadius: "999px",
-    fontSize: "0.96rem",
+    fontSize: "0.92rem",
     fontWeight: 700,
     border: "2px solid transparent",
     background: "transparent",
     cursor: "pointer",
     transition: "all 0.2s ease",
+    padding: 0,
   },
 
   slotAvailable: {
     color: "#dc6f87",
-    borderColor: "rgba(220, 111, 135, 0.25)",
-    background: "rgba(255, 244, 247, 0.95)",
+    borderColor: "rgba(220, 111, 135, 0.28)",
+    background: "rgba(255, 244, 247, 0.96)",
   },
 
   slotSelected: {
-    boxShadow: "0 0 0 3px rgba(220, 111, 135, 0.18)",
-    transform: "scale(1.04)",
-    background: "rgba(255, 233, 238, 1)",
+    color: "#fffafc",
+    borderColor: "#d96f8b",
+    background:
+      "linear-gradient(180deg, rgba(232, 133, 159, 1) 0%, rgba(218, 103, 136, 1) 100%)",
+    boxShadow:
+      "0 0 0 4px rgba(231, 142, 168, 0.26), 0 6px 12px rgba(214, 107, 139, 0.28)",
+    transform: "scale(1.06)",
   },
 
   slotUnavailableMark: {
     color: "#9d918a",
-    fontSize: "0.96rem",
+    fontSize: "0.92rem",
     fontWeight: 700,
     lineHeight: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "34px",
-    height: "34px",
+    width: "32px",
+    height: "32px",
     margin: "0 auto",
     userSelect: "none",
   },
