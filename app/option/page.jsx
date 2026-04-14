@@ -77,7 +77,7 @@ export default function OptionMenuPage() {
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・オプションなし</h2>
             <p style={styles.description}>
-              整体コースのみご希望の方↓
+              整体コースのみご予約の方はこちら↓
             </p>
 
             <button type="button" style={styles.skipButton}>
@@ -131,7 +131,7 @@ export default function OptionMenuPage() {
                 <div style={styles.choiceTime}>約60分</div>
               </div>
               <p style={styles.choiceDescription}>
-                全身しっかり流したい方におすすめ。
+                ☆ 全身しっかり流したい方におすすめ。
               </p>
               <button
                 type="button"
