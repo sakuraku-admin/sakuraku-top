@@ -196,18 +196,20 @@ export default function ReserveDateTimePage() {
         </section>
 
         <section style={styles.weekBar}>
-          <button onClick={handlePrevWeek} style={styles.weekButton}>
-            ← 前の1週間
-          </button>
-
           <div style={styles.weekCenter}>
             {weekDates[0].getMonth() + 1}月{weekDates[0].getDate()}日〜
             {weekDates[6].getMonth() + 1}月{weekDates[6].getDate()}日
           </div>
 
-          <button onClick={handleNextWeek} style={styles.weekButton}>
-            次の1週間 →
-          </button>
+          <div style={styles.weekButtonRow}>
+            <button onClick={handlePrevWeek} style={styles.weekButton}>
+              ← 前の1週間
+            </button>
+
+            <button onClick={handleNextWeek} style={styles.weekButton}>
+              次の1週間 →
+            </button>
+          </div>
         </section>
 
         <section style={styles.tableScroll}>
@@ -367,16 +369,20 @@ export default function ReserveDateTimePage() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background:
-      "linear-gradient(180deg, #f8f2ec 0%, #f4ebe3 45%, #efe4da 100%)",
-    padding: "24px 12px 56px",
+    backgroundImage: "url('/images/mokume.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    padding: "36px 20px 56px",
     boxSizing: "border-box",
   },
+
   container: {
     width: "100%",
-    maxWidth: "980px",
+    maxWidth: "400px",
     margin: "0 auto",
   },
+
   headerCard: {
     background: "rgba(255,255,255,0.74)",
     border: "1px solid rgba(140, 104, 84, 0.16)",
@@ -384,46 +390,57 @@ const styles = {
     padding: "22px 16px 18px",
     boxShadow: "0 8px 24px rgba(90, 58, 44, 0.08)",
     backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
   },
+
   title: {
     margin: 0,
-    fontSize: "1.35rem",
+    fontSize: "clamp(1.1rem, 5vw, 1.35rem)",
     fontWeight: 700,
     color: "#5a3a2c",
     textAlign: "center",
     letterSpacing: "0.04em",
+    lineHeight: 1.5,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
+
   subText: {
     margin: "10px 0 0",
     textAlign: "center",
     color: "#7b6257",
     fontSize: "0.96rem",
   },
+
   infoGrid: {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gap: "12px",
+    gap: "10px",
     marginTop: "18px",
   },
+
   infoBox: {
     background: "rgba(255, 248, 244, 0.95)",
     border: "1px solid rgba(170, 130, 109, 0.16)",
     borderRadius: "18px",
-    padding: "12px 14px",
+    padding: "12px 12px",
     display: "flex",
     flexDirection: "column",
     gap: "6px",
   },
+
   infoLabel: {
     fontSize: "0.8rem",
     color: "#9c7f72",
   },
+
   infoValue: {
-    fontSize: "1rem",
+    fontSize: "0.95rem",
     color: "#5a3a2c",
     fontWeight: 700,
     lineHeight: 1.4,
   },
+
   selectedBox: {
     marginTop: "16px",
     padding: "12px 14px",
@@ -433,49 +450,71 @@ const styles = {
     fontSize: "0.95rem",
     textAlign: "center",
     border: "1px solid rgba(214, 120, 144, 0.18)",
+    lineHeight: 1.6,
   },
+
   selectedStrong: {
     marginLeft: "6px",
   },
+
   weekBar: {
     marginTop: "18px",
     display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: "10px",
-    flexWrap: "wrap",
+    flexDirection: "column",
+    alignItems: "stretch",
+    gap: "12px",
     background: "rgba(255,255,255,0.68)",
     borderRadius: "20px",
-    padding: "12px",
+    padding: "14px 12px",
     border: "1px solid rgba(140, 104, 84, 0.12)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
   },
+
+  weekCenter: {
+    color: "#5a3a2c",
+    fontWeight: 700,
+    fontSize: "1rem",
+    textAlign: "center",
+    lineHeight: 1.5,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  weekButtonRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "10px",
+  },
+
   weekButton: {
     border: "none",
     borderRadius: "999px",
-    padding: "10px 14px",
+    padding: "11px 10px",
     background: "#8b6b5c",
     color: "#fffaf6",
     fontWeight: 700,
     cursor: "pointer",
     fontSize: "0.92rem",
+    whiteSpace: "nowrap",
   },
-  weekCenter: {
-    color: "#5a3a2c",
-    fontWeight: 700,
-    fontSize: "0.98rem",
-  },
+
   tableScroll: {
     marginTop: "16px",
     overflowX: "auto",
     WebkitOverflowScrolling: "touch",
     background: "rgba(255,255,255,0.54)",
     borderRadius: "24px",
-    padding: "10px",
+    padding: "8px",
     border: "1px solid rgba(140, 104, 84, 0.1)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
   },
+
   tableWrap: {
-    minWidth: "760px",
+    minWidth: "620px",
   },
+
   table: {
     width: "100%",
     borderCollapse: "separate",
@@ -484,6 +523,7 @@ const styles = {
     borderRadius: "18px",
     background: "#fffdfa",
   },
+
   timeHead: {
     position: "sticky",
     left: 0,
@@ -491,28 +531,33 @@ const styles = {
     background: "#f4ece5",
     color: "#5a3a2c",
     fontWeight: 700,
-    minWidth: "84px",
+    minWidth: "68px",
     borderBottom: "1px solid #e6d8cf",
-    padding: "12px 8px",
+    padding: "12px 6px",
     textAlign: "center",
+    fontSize: "0.92rem",
   },
+
   dateHead: {
     background: "#fdf7f2",
     borderBottom: "1px solid #e6d8cf",
-    padding: "10px 6px",
-    minWidth: "92px",
+    padding: "10px 4px",
+    minWidth: "74px",
     textAlign: "center",
   },
+
   dateTop: {
-    fontSize: "0.96rem",
+    fontSize: "0.92rem",
     fontWeight: 700,
     lineHeight: 1.2,
   },
+
   dateBottom: {
     marginTop: "4px",
-    fontSize: "0.85rem",
+    fontSize: "0.8rem",
     fontWeight: 700,
   },
+
   timeCell: {
     position: "sticky",
     left: 0,
@@ -522,17 +567,20 @@ const styles = {
     fontWeight: 700,
     textAlign: "center",
     borderBottom: "1px solid #eee2d9",
-    padding: "12px 6px",
-    minWidth: "84px",
+    padding: "12px 4px",
+    minWidth: "68px",
   },
+
   timeCellHour: {
-    fontSize: "0.96rem",
+    fontSize: "0.92rem",
     letterSpacing: "0.02em",
   },
+
   timeCellHalf: {
-    fontSize: "0.9rem",
+    fontSize: "0.86rem",
     color: "#8f786d",
   },
+
   halfTimeWrap: {
     display: "inline-grid",
     gridTemplateColumns: "auto auto auto",
@@ -540,79 +588,95 @@ const styles = {
     justifyContent: "center",
     fontVariantNumeric: "tabular-nums",
   },
+
   halfTimeHourSpacer: {
     visibility: "hidden",
   },
+
   halfTimeColon: {
     color: "transparent",
   },
+
   halfTimeMinute: {
     color: "#8f786d",
   },
+
   slotCell: {
     borderBottom: "1px solid #eee2d9",
     borderLeft: "1px solid #f2e8e1",
     textAlign: "center",
-    padding: "8px 4px",
+    padding: "6px 2px",
   },
+
   slotCellAvailable: {
     background: "#fffdfa",
   },
+
   slotCellUnavailable: {
     background: "#f1ebe6",
   },
+
   slotButton: {
-    width: "44px",
-    height: "44px",
+    width: "38px",
+    height: "38px",
     borderRadius: "999px",
-    fontSize: "1.15rem",
+    fontSize: "1rem",
     fontWeight: 700,
     border: "2px solid transparent",
     background: "transparent",
     cursor: "pointer",
     transition: "all 0.2s ease",
   },
+
   slotAvailable: {
     color: "#dc6f87",
     borderColor: "rgba(220, 111, 135, 0.25)",
     background: "rgba(255, 244, 247, 0.95)",
   },
+
   slotSelected: {
     boxShadow: "0 0 0 3px rgba(220, 111, 135, 0.18)",
     transform: "scale(1.04)",
     background: "rgba(255, 233, 238, 1)",
   },
+
   slotUnavailableMark: {
     color: "#9d918a",
-    fontSize: "1.08rem",
+    fontSize: "1rem",
     fontWeight: 700,
     lineHeight: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "44px",
-    height: "44px",
+    width: "38px",
+    height: "38px",
     margin: "0 auto",
     userSelect: "none",
   },
+
   noteCard: {
     marginTop: "16px",
     background: "rgba(255,255,255,0.72)",
     borderRadius: "18px",
     padding: "14px 16px",
     border: "1px solid rgba(140, 104, 84, 0.1)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
   },
+
   noteText: {
     margin: 0,
     color: "#7b6257",
     lineHeight: 1.7,
-    fontSize: "0.9rem",
+    fontSize: "0.88rem",
   },
+
   bottomButtonWrap: {
     marginTop: "20px",
     display: "flex",
     justifyContent: "center",
   },
+
   nextButton: {
     border: "none",
     borderRadius: "999px",
@@ -624,6 +688,7 @@ const styles = {
     cursor: "pointer",
     boxShadow: "0 8px 18px rgba(217, 139, 154, 0.24)",
   },
+
   nextButtonDisabled: {
     background: "#ccbdb7",
     cursor: "not-allowed",
