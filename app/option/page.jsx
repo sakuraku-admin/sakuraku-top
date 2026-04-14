@@ -77,7 +77,7 @@ export default function OptionMenuPage() {
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・オプションなし</h2>
             <p style={styles.description}>
-              オプションを追加せず、この内容のまま次へ進みます。
+              整体コースのみご希望の方↓
             </p>
 
             <button type="button" style={styles.skipButton}>
