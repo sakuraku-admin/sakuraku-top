@@ -105,7 +105,7 @@ export default function OptionMenuPage() {
             <h2 style={styles.sectionTitle}>・巡りシェイプケア</h2>
             <p style={styles.description}>
               冷え、むくみ、セルライトなどの気になる箇所を、
-              温めたマグバームとオイルでしっかり流して柔らかくスッキリ整えます。
+              マグバームとホットオイルでしっかり流して柔らかく整えます。
             </p>
 
             <div style={styles.choiceCard}>
