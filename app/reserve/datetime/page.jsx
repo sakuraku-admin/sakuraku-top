@@ -72,24 +72,6 @@ function minutesToTimeString(totalMinutes) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
-function getTimeLabelParts(time) {
-  const [hour, minute] = time.split(":");
-
-  if (minute === "00") {
-    return {
-      hour,
-      minute: "00",
-      isHalf: false,
-    };
-  }
-
-  return {
-    hour: "",
-    minute: "30",
-    isHalf: true,
-  };
-}
-
 function buildMockAvailability() {
   const today = new Date();
   const data = {};
@@ -225,24 +207,19 @@ export default function ReserveDateTimePage() {
                 </thead>
                 <tbody>
                   {timeSlots.map((time) => {
-                    const label = getTimeLabelParts(time);
+                    const [hour, minute] = time.split(":");
+                    const isHalf = minute === "30";
 
                     return (
                       <tr key={`time-${time}`}>
                         <td
                           style={{
                             ...styles.timeCell,
-                            ...(label.isHalf
-                              ? styles.timeCellHalf
-                              : styles.timeCellHour),
+                            ...(isHalf ? styles.timeCellHalf : styles.timeCellHour),
                           }}
                         >
-                          {label.isHalf ? (
-                            <div style={styles.halfTimeWrap}>
-                              <span style={styles.halfTimeHourSpacer}>00</span>
-                              <span style={styles.halfTimeColon}>:</span>
-                              <span style={styles.halfTimeMinute}>30</span>
-                            </div>
+                          {isHalf ? (
+                            <span style={styles.halfMinute}>30</span>
                           ) : (
                             time
                           )}
@@ -345,7 +322,7 @@ export default function ReserveDateTimePage() {
                                     TREATMENT_MINUTES
                                 )} / 枠確保 ${blockedEndTime}まで`}
                               >
-                                {isSelected ? "●" : "○"}
+                                {isSelected ? "●" : "◎"}
                               </button>
                             ) : (
                               <div style={styles.slotUnavailableMark}>✕</div>
@@ -617,23 +594,7 @@ const styles = {
     color: "#8f786d",
   },
 
-  halfTimeWrap: {
-    display: "inline-grid",
-    gridTemplateColumns: "auto auto auto",
-    alignItems: "center",
-    justifyContent: "center",
-    fontVariantNumeric: "tabular-nums",
-  },
-
-  halfTimeHourSpacer: {
-    visibility: "hidden",
-  },
-
-  halfTimeColon: {
-    color: "transparent",
-  },
-
-  halfTimeMinute: {
+  halfMinute: {
     color: "#8f786d",
   },
 
@@ -657,10 +618,10 @@ const styles = {
   },
 
   slotButton: {
-    width: "28px",
-    height: "28px",
+    width: "34px",
+    height: "34px",
     borderRadius: "999px",
-    fontSize: "1.02rem",
+    fontSize: "1.12rem",
     fontWeight: 700,
     border: "none",
     background: "transparent",
@@ -668,6 +629,11 @@ const styles = {
     transition: "all 0.18s ease",
     padding: 0,
     lineHeight: 1,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   slotAvailable: {
@@ -677,7 +643,7 @@ const styles = {
   },
 
   slotSelected: {
-    color: "#e07f98",
+    color: "#df7e98",
     boxShadow: "none",
     transform: "scale(1.03)",
   },
