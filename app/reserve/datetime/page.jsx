@@ -342,14 +342,6 @@ export default function ReserveDateTimePage() {
           </div>
         </section>
 
-        <section style={styles.noteCard}>
-          <p style={styles.noteText}>
-            ※施術時間が20:00までに収まる枠のみご予約いただけます。
-            <br />
-            ※準備時間は一律60分で設定し、20:00以降にかかる準備時間は切り捨てています。
-          </p>
-        </section>
-
         <div style={styles.bottomButtonWrap}>
           <button
             style={{
@@ -491,17 +483,20 @@ const styles = {
     border: "none",
     borderRadius: "999px",
     padding: "11px 10px",
-    background: "#8b6b5c",
-    color: "#fffaf6",
+    background:
+      "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
+    color: "#fffaf7",
     fontWeight: 700,
     cursor: "pointer",
     fontSize: "0.92rem",
     whiteSpace: "nowrap",
+    boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
   },
 
   tableScroll: {
     marginTop: "16px",
     overflowX: "auto",
+    overflowY: "hidden",
     WebkitOverflowScrolling: "touch",
     background: "rgba(255,255,255,0.54)",
     borderRadius: "24px",
@@ -512,7 +507,7 @@ const styles = {
   },
 
   tableWrap: {
-    minWidth: "620px",
+    minWidth: "560px",
   },
 
   table: {
@@ -527,57 +522,63 @@ const styles = {
   timeHead: {
     position: "sticky",
     left: 0,
-    zIndex: 3,
+    zIndex: 5,
     background: "#f4ece5",
     color: "#5a3a2c",
     fontWeight: 700,
-    minWidth: "68px",
+    minWidth: "62px",
+    width: "62px",
     borderBottom: "1px solid #e6d8cf",
-    padding: "12px 6px",
+    borderRight: "1px solid #e6d8cf",
+    padding: "12px 4px",
     textAlign: "center",
-    fontSize: "0.92rem",
+    fontSize: "0.9rem",
+    boxShadow: "2px 0 0 #e6d8cf",
   },
 
   dateHead: {
     background: "#fdf7f2",
     borderBottom: "1px solid #e6d8cf",
     padding: "10px 4px",
-    minWidth: "74px",
+    minWidth: "66px",
     textAlign: "center",
   },
 
   dateTop: {
-    fontSize: "0.92rem",
+    fontSize: "0.88rem",
     fontWeight: 700,
     lineHeight: 1.2,
   },
 
   dateBottom: {
     marginTop: "4px",
-    fontSize: "0.8rem",
+    fontSize: "0.78rem",
     fontWeight: 700,
   },
 
   timeCell: {
     position: "sticky",
     left: 0,
-    zIndex: 2,
+    zIndex: 4,
     background: "#faf5f0",
     color: "#5a3a2c",
     fontWeight: 700,
     textAlign: "center",
     borderBottom: "1px solid #eee2d9",
+    borderRight: "1px solid #eee2d9",
     padding: "12px 4px",
-    minWidth: "68px",
+    minWidth: "62px",
+    width: "62px",
+    boxShadow: "2px 0 0 #eee2d9",
   },
 
   timeCellHour: {
-    fontSize: "0.92rem",
+    fontSize: "0.9rem",
     letterSpacing: "0.02em",
   },
 
   timeCellHalf: {
-    fontSize: "0.86rem",
+    fontSize: "0.84rem",
     color: "#8f786d",
   },
 
@@ -605,7 +606,7 @@ const styles = {
     borderBottom: "1px solid #eee2d9",
     borderLeft: "1px solid #f2e8e1",
     textAlign: "center",
-    padding: "6px 2px",
+    padding: "5px 2px",
   },
 
   slotCellAvailable: {
@@ -617,10 +618,10 @@ const styles = {
   },
 
   slotButton: {
-    width: "38px",
-    height: "38px",
+    width: "34px",
+    height: "34px",
     borderRadius: "999px",
-    fontSize: "1rem",
+    fontSize: "0.96rem",
     fontWeight: 700,
     border: "2px solid transparent",
     background: "transparent",
@@ -642,37 +643,20 @@ const styles = {
 
   slotUnavailableMark: {
     color: "#9d918a",
-    fontSize: "1rem",
+    fontSize: "0.96rem",
     fontWeight: 700,
     lineHeight: 1,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    width: "38px",
-    height: "38px",
+    width: "34px",
+    height: "34px",
     margin: "0 auto",
     userSelect: "none",
   },
 
-  noteCard: {
-    marginTop: "16px",
-    background: "rgba(255,255,255,0.72)",
-    borderRadius: "18px",
-    padding: "14px 16px",
-    border: "1px solid rgba(140, 104, 84, 0.1)",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
-  },
-
-  noteText: {
-    margin: 0,
-    color: "#7b6257",
-    lineHeight: 1.7,
-    fontSize: "0.88rem",
-  },
-
   bottomButtonWrap: {
-    marginTop: "20px",
+    marginTop: "22px",
     display: "flex",
     justifyContent: "center",
   },
