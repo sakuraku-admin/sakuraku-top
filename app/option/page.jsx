@@ -3,11 +3,14 @@
 import { useMemo, useState } from "react";
 
 export default function OptionMenuPage() {
+  const [selectedNone, setSelectedNone] = useState(false);
   const [selectedMag, setSelectedMag] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
 
   const totalPrice = useMemo(() => {
+    if (selectedNone) return 0;
+
     return (
       (selectedMag ? 1000 : 0) +
       (selectedShape === "shape-1" ? 2000 : 0) +
@@ -15,26 +18,45 @@ export default function OptionMenuPage() {
       (selectedShape === "shape-3" ? 5000 : 0) +
       (selectedHead ? 3000 : 0)
     );
-  }, [selectedMag, selectedShape, selectedHead]);
+  }, [selectedNone, selectedMag, selectedShape, selectedHead]);
 
   const totalMinutes = useMemo(() => {
+    if (selectedNone) return 0;
+
     return (
       (selectedShape === "shape-1" ? 20 : 0) +
       (selectedShape === "shape-2" ? 40 : 0) +
       (selectedShape === "shape-3" ? 60 : 0) +
       (selectedHead ? 30 : 0)
     );
-  }, [selectedShape, selectedHead]);
+  }, [selectedNone, selectedShape, selectedHead]);
+
+  const handleNoneSelect = () => {
+    setSelectedNone((prev) => {
+      const next = !prev;
+
+      if (next) {
+        setSelectedMag(false);
+        setSelectedShape(null);
+        setSelectedHead(false);
+      }
+
+      return next;
+    });
+  };
 
   const handleMagSelect = () => {
+    setSelectedNone(false);
     setSelectedMag((prev) => !prev);
   };
 
   const handleShapeSelect = (id) => {
+    setSelectedNone(false);
     setSelectedShape((prev) => (prev === id ? null : id));
   };
 
   const handleHeadSelect = () => {
+    setSelectedNone(false);
     setSelectedHead((prev) => !prev);
   };
 
@@ -75,6 +97,21 @@ export default function OptionMenuPage() {
               ご希望のオプションをお選びいただけます。
             </p>
           </div>
+
+          <section style={styles.block}>
+            <h2 style={styles.sectionTitle}>・オプションなし</h2>
+            <p style={styles.description}>
+              オプションを追加せず、この内容のまま次へ進みます。
+            </p>
+
+            <button
+              type="button"
+              onClick={handleNoneSelect}
+              style={optionButtonStyle(selectedNone)}
+            >
+              {selectedNone ? "選択中" : "選択する"}
+            </button>
+          </section>
 
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・マグクリーム（塗布）</h2>
@@ -175,8 +212,9 @@ export default function OptionMenuPage() {
             <h3 style={styles.summaryTitle}>選択中のオプション</h3>
 
             <div style={styles.summaryList}>
-              {selectedMag || selectedShape || selectedHead ? (
+              {selectedNone || selectedMag || selectedShape || selectedHead ? (
                 <>
+                  {selectedNone && <div>・オプションなし</div>}
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
                   {selectedShape === "shape-1" && (
                     <div>・巡りシェイプケア（1部位）</div>
