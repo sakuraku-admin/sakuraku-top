@@ -112,13 +112,13 @@ const styles = {
   },
 
   nameBar: {
-    background: "rgba(255, 255, 255, 0.34)",
+    background: "rgba(255, 255, 255, 0.18)",
     borderRadius: "14px",
     padding: "8px 16px 9px",
     color: "#7a5f59",
     fontSize: "0.96rem",
     letterSpacing: "0.06em",
-    border: "1px solid rgba(255,255,255,0.48)",
+    border: "1px solid rgba(255,255,255,0.4)",
     boxShadow:
       "inset 0 1px 0 rgba(255,255,255,0.55), 0 3px 10px rgba(214, 190, 180, 0.05)",
     backdropFilter: "blur(8px)",
