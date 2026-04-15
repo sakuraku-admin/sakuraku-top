@@ -4,16 +4,10 @@ export default function ReserveConfirmPage() {
   const customerName = "〇〇　〇〇";
   const menuName = "整体コース";
   const menuTime = "60分";
-  const options = ["巡りシェイプ1部位", "頭部解放"];
+  const options = ["マグクリーム", "巡りシェイプケア30分", "頭部解放"];
   const totalTime = "90分";
   const reserveDate = "2026/4/17(金)";
   const reserveTime = "11:00〜12:30";
-
-  const isShinseiCourse = menuName.includes("深整");
-
-  const timeNote = isShinseiCourse
-    ? "※施術時間とは別に、お茶やお着替え等のお時間をご用意しております"
-    : "※施術時間にはお着替え等のお時間も含まれております";
 
   return (
     <main style={styles.page}>
@@ -33,19 +27,21 @@ export default function ReserveConfirmPage() {
           <div style={styles.divider} />
 
           <div style={styles.optionSection}>
-            <div style={styles.label}>オプション</div>
+            <div style={styles.optionLabel}>オプション</div>
             <div style={styles.optionList}>
               {options.length > 0 ? (
                 options.map((option) => (
-                  <div key={option} style={styles.optionItem}>
+                  <span key={option} style={styles.optionItem}>
                     {option}
-                  </div>
+                  </span>
                 ))
               ) : (
-                <div style={styles.optionItem}>なし</div>
+                <span style={styles.optionItem}>なし</span>
               )}
             </div>
           </div>
+
+          <div style={styles.dividerBelowOption} />
 
           <div style={styles.dateSection}>
             <div style={styles.dateLabel}>ご予約日時</div>
@@ -53,8 +49,6 @@ export default function ReserveConfirmPage() {
               {reserveDate}　{reserveTime}
             </div>
           </div>
-
-          <div style={styles.noteInline}>{timeNote}</div>
 
           <img
             src="/images/tea-confirm.png"
@@ -87,7 +81,7 @@ const styles = {
     backgroundRepeat: "no-repeat",
     display: "flex",
     justifyContent: "center",
-    padding: "20px 16px 30px",
+    padding: "20px 16px 34px",
     boxSizing: "border-box",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
@@ -98,46 +92,47 @@ const styles = {
     maxWidth: "400px",
     display: "flex",
     flexDirection: "column",
-    gap: "10px",
+    gap: "12px",
   },
 
   titleBar: {
     background:
-      "linear-gradient(180deg, rgba(206, 221, 213, 0.96) 0%, rgba(194, 213, 205, 0.96) 100%)",
-    borderRadius: "20px",
+      "linear-gradient(180deg, rgba(197, 229, 215, 0.96) 0%, rgba(183, 220, 204, 0.96) 100%)",
+    borderRadius: "22px",
     textAlign: "center",
-    padding: "13px 12px 14px",
-    color: "#4f4036",
+    padding: "14px 14px 15px",
+    color: "#514136",
     fontSize: "1.38rem",
-    fontWeight: 600,
+    fontWeight: 700,
     letterSpacing: "0.04em",
-    boxShadow: "0 6px 18px rgba(118, 145, 136, 0.14)",
-    border: "1px solid rgba(255,255,255,0.42)",
+    boxShadow: "0 6px 16px rgba(122, 164, 145, 0.14)",
+    border: "1px solid rgba(255,255,255,0.5)",
     backdropFilter: "blur(8px)",
     WebkitBackdropFilter: "blur(8px)",
   },
 
   nameBar: {
-    background: "rgba(247, 235, 239, 0.78)",
+    background: "rgba(255, 255, 255, 0.34)",
     borderRadius: "14px",
-    padding: "9px 14px",
-    color: "#7a5a5a",
-    fontSize: "0.98rem",
+    padding: "8px 16px 9px",
+    color: "#7a5f59",
+    fontSize: "0.96rem",
     letterSpacing: "0.06em",
+    border: "1px solid rgba(255,255,255,0.48)",
     boxShadow:
-      "inset 0 1px 0 rgba(255,255,255,0.72), 0 4px 12px rgba(231, 191, 203, 0.08)",
-    backdropFilter: "blur(10px)",
-    WebkitBackdropFilter: "blur(10px)",
+      "inset 0 1px 0 rgba(255,255,255,0.55), 0 3px 10px rgba(214, 190, 180, 0.05)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
   },
 
   mainCard: {
     position: "relative",
-    background: "rgba(248, 244, 240, 0.88)",
-    borderRadius: "24px",
-    padding: "16px 16px 72px",
+    background: "rgba(247, 242, 237, 0.9)",
+    borderRadius: "26px",
+    padding: "22px 18px 72px",
     boxSizing: "border-box",
     boxShadow: "0 10px 24px rgba(135, 102, 90, 0.08)",
-    border: "1px solid rgba(255,255,255,0.40)",
+    border: "1px solid rgba(255,255,255,0.42)",
     backdropFilter: "blur(10px)",
     WebkitBackdropFilter: "blur(10px)",
     overflow: "hidden",
@@ -146,12 +141,13 @@ const styles = {
   courseRow: {
     display: "flex",
     flexDirection: "column",
-    gap: "8px",
+    alignItems: "center",
+    gap: "6px",
   },
 
   courseName: {
-    color: "#5b3b2f",
-    fontSize: "1.55rem",
+    color: "#5c3d31",
+    fontSize: "1.62rem",
     fontWeight: 700,
     lineHeight: 1.35,
     letterSpacing: "0.05em",
@@ -159,7 +155,7 @@ const styles = {
   },
 
   totalTime: {
-    color: "#7c6256",
+    color: "#81685b",
     fontSize: "0.98rem",
     lineHeight: 1.5,
     textAlign: "center",
@@ -168,55 +164,72 @@ const styles = {
   divider: {
     height: "1px",
     background: "rgba(211, 182, 168, 0.72)",
-    margin: "12px 0 12px",
+    margin: "14px 0 10px",
   },
 
   optionSection: {
-    display: "grid",
-    gridTemplateColumns: "70px 1fr",
-    columnGap: "8px",
-    alignItems: "start",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "6px",
+    padding: "4px 2px 2px",
+    textAlign: "center",
   },
 
-  label: {
-    color: "#9a7567",
-    fontSize: "0.88rem",
-    lineHeight: 1.75,
-    letterSpacing: "0.03em",
+  optionLabel: {
+    color: "#7b584b",
+    fontSize: "1rem",
+    fontWeight: 700,
+    lineHeight: 1.4,
+    letterSpacing: "0.08em",
   },
 
   optionList: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    columnGap: "12px",
+    rowGap: "4px",
+    maxWidth: "100%",
     color: "#735244",
-    fontSize: "0.96rem",
-    lineHeight: 1.75,
-    letterSpacing: "0.02em",
+    fontSize: "0.82rem",
+    lineHeight: 1.65,
+    letterSpacing: "0.01em",
   },
 
   optionItem: {
-    whiteSpace: "pre-wrap",
+    whiteSpace: "nowrap",
+  },
+
+  dividerBelowOption: {
+    height: "1px",
+    background: "rgba(211, 182, 168, 0.72)",
+    margin: "10px 0 18px",
   },
 
   dateSection: {
-    marginTop: "14px",
-    background: "rgba(239, 205, 216, 0.74)",
-    borderRadius: "18px",
-    padding: "11px 18px 12px",
+    width: "82%",
+    margin: "0 auto",
+    background: "rgba(239, 205, 216, 0.76)",
+    borderRadius: "20px",
+    padding: "12px 16px 13px",
+    textAlign: "center",
     boxShadow:
-      "inset 0 1px 0 rgba(255,255,255,0.62), 0 4px 12px rgba(225, 176, 192, 0.10)",
-    width: "calc(100% - 96px)",
-    minWidth: "0",
+      "inset 0 1px 0 rgba(255,255,255,0.62), 0 4px 12px rgba(225, 176, 192, 0.08)",
   },
 
   dateLabel: {
-    color: "#8c6570",
-    fontSize: "0.86rem",
-    marginBottom: "4px",
-    letterSpacing: "0.03em",
+    color: "#8a6671",
+    fontSize: "0.9rem",
+    marginBottom: "6px",
+    letterSpacing: "0.04em",
   },
 
   dateValue: {
-    color: "#6a4337",
-    fontSize: "1.02rem",
+    color: "#674033",
+    fontSize: "1.06rem",
     fontWeight: 700,
     lineHeight: 1.55,
     letterSpacing: "0.01em",
@@ -224,20 +237,11 @@ const styles = {
     wordBreak: "keep-all",
   },
 
-  noteInline: {
-    marginTop: "8px",
-    color: "#8b7268",
-    fontSize: "0.76rem",
-    lineHeight: 1.75,
-    letterSpacing: "0.01em",
-    paddingRight: "98px",
-  },
-
   teaImage: {
     position: "absolute",
     right: "14px",
-    bottom: "16px",
-    width: "96px",
+    bottom: "14px",
+    width: "98px",
     opacity: 0.34,
     filter:
       "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
@@ -256,13 +260,13 @@ const styles = {
     letterSpacing: "0.03em",
     padding: "16px 16px",
     cursor: "pointer",
-    boxShadow: "0 8px 18px rgba(228, 138, 122, 0.20)",
+    boxShadow: "0 8px 18px rgba(228, 138, 122, 0.18)",
   },
 
   attentionArea: {
-    padding: "0 4px",
-    color: "#8f766a",
-    fontSize: "0.76rem",
+    padding: "2px 4px 0",
+    color: "#90796f",
+    fontSize: "0.74rem",
     lineHeight: 1.8,
     letterSpacing: "0.01em",
   },
