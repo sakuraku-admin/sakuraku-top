@@ -2,7 +2,7 @@
 
 export default function ReserveConfirmPage() {
   const customerName = "〇〇　〇〇";
-  const menuName = "整体コース"; // ←「深整コース」にすると案内文が切り替わります
+  const menuName = "整体コース";
   const menuTime = "60分";
   const options = ["巡りシェイプ1部位", "頭部解放"];
   const totalTime = "90分";
@@ -16,235 +16,252 @@ export default function ReserveConfirmPage() {
     : "※施術時間にはお着替え等のお時間も含まれております";
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#e9e4de",
-        display: "flex",
-        justifyContent: "center",
-        padding: "8px 10px",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "640px",
-          background: "#f7f4f0",
-          borderRadius: "28px",
-          padding: "8px 16px 22px",
-          boxSizing: "border-box",
-          boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
-        }}
-      >
-        <div
-          style={{
-            background: "#dcc5b0",
-            borderRadius: "20px",
-            textAlign: "center",
-            padding: "16px 12px",
-            color: "#4f3428",
-            fontSize: "28px",
-            fontWeight: 500,
-            letterSpacing: "0.04em",
-            fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-            marginBottom: "18px",
-          }}
-        >
-          ご予約内容の確認
-        </div>
+    <main style={styles.page}>
+      <div style={styles.container}>
+        <div style={styles.titleBar}>ご予約内容の確認</div>
 
-        <div
-          style={{
-            background: "rgba(246, 231, 236, 0.72)",
-            borderRadius: "16px",
-            padding: "12px 16px",
-            color: "#7a5a5a",
-            fontSize: "22px",
-            letterSpacing: "0.08em",
-            fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-            marginBottom: "16px",
-            boxShadow:
-              "inset 0 1px 0 rgba(255,255,255,0.74), 0 6px 18px rgba(231, 191, 203, 0.14)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
-          }}
-        >
-          {customerName} 様
-        </div>
+        <div style={styles.nameBar}>{customerName} 様</div>
 
-        <section
-          style={{
-            position: "relative",
-            background: "#e9e3de",
-            borderRadius: "22px",
-            padding: "18px 18px 22px",
-            boxSizing: "border-box",
-            overflow: "hidden",
-          }}
-        >
-          <div
-            style={{
-              border: "2px solid #dba18f",
-              borderRadius: "24px",
-              background: "#f4f0ec",
-              padding: "24px 22px 22px",
-              boxShadow: "0 2px 8px rgba(178, 132, 117, 0.10)",
-              marginBottom: "26px",
-            }}
-          >
-            <div
-              style={{
-                textAlign: "center",
-                color: "#5b3b2f",
-                fontSize: "30px",
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                marginBottom: "22px",
-              }}
-            >
+        <section style={styles.mainCard}>
+          <div style={styles.courseRow}>
+            <div style={styles.courseName}>
               {menuName}　{menuTime}
             </div>
+            <div style={styles.totalTime}>所要時間：{totalTime}</div>
+          </div>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "5.2em 1fr",
-                columnGap: "0.2em",
-                alignItems: "start",
-                color: "#946e63",
-                fontSize: "17px",
-                lineHeight: 1.9,
-                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                letterSpacing: "0.03em",
-              }}
-            >
-              <div style={{ whiteSpace: "nowrap" }}>オプション：</div>
-              <div>
-                {options.map((option) => (
-                  <div key={option}>{option}</div>
-                ))}
-              </div>
+          <div style={styles.divider} />
+
+          <div style={styles.optionSection}>
+            <div style={styles.label}>オプション</div>
+            <div style={styles.optionList}>
+              {options.length > 0 ? (
+                options.map((option) => (
+                  <div key={option} style={styles.optionItem}>
+                    {option}
+                  </div>
+                ))
+              ) : (
+                <div style={styles.optionItem}>なし</div>
+              )}
             </div>
           </div>
 
-          <div
-            style={{
-              position: "relative",
-              zIndex: 2,
-              color: "#5f4033",
-              fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-            }}
-          >
-            <div
-              style={{
-                fontSize: "17px",
-                letterSpacing: "0.04em",
-                marginBottom: "18px",
-              }}
-            >
-              所要時間： {totalTime}
-            </div>
-
-            <div
-              style={{
-                display: "inline-block",
-                fontSize: "20px",
-                fontWeight: 700,
-                letterSpacing: "0.03em",
-                lineHeight: 1.7,
-                color: "#6a4337",
-                background: "rgba(238, 204, 214, 0.62)",
-                padding: "8px 16px 10px",
-                borderRadius: "999px",
-                boxShadow:
-                  "inset 0 1px 0 rgba(255,255,255,0.62), 0 4px 12px rgba(225, 176, 192, 0.14)",
-                whiteSpace: "nowrap",
-                maxWidth: "calc(100% - 140px)",
-              }}
-            >
-              ご予約日時：{reserveDate}　{reserveTime}
-            </div>
-
-            <div
-              style={{
-                marginTop: "10px",
-                color: isShinseiCourse ? "#7f554f" : "#8b7268",
-                fontSize: isShinseiCourse ? "14px" : "13px",
-                lineHeight: isShinseiCourse ? 2.0 : 1.9,
-                letterSpacing: "0.01em",
-                fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-                background: isShinseiCourse
-                  ? "rgba(243, 225, 230, 0.24)"
-                  : "transparent",
-                display: "inline-block",
-                padding: isShinseiCourse ? "4px 10px 6px" : "0",
-                borderRadius: isShinseiCourse ? "999px" : "0",
-                boxShadow: isShinseiCourse
-                  ? "inset 0 1px 0 rgba(255,255,255,0.42)"
-                  : "none",
-              }}
-            >
-              {timeNote}
+          <div style={styles.dateSection}>
+            <div style={styles.dateLabel}>ご予約日時</div>
+            <div style={styles.dateValue}>
+              {reserveDate}　{reserveTime}
             </div>
           </div>
+
+          <div style={styles.noteInline}>{timeNote}</div>
 
           <img
             src="/images/tea-confirm.png"
             alt=""
-            style={{
-              position: "absolute",
-              right: "20px",
-              bottom: "18px",
-              width: "122px",
-              opacity: 0.3,
-              filter:
-                "brightness(1.1) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
-              mixBlendMode: "normal",
-              pointerEvents: "none",
-              userSelect: "none",
-            }}
+            style={styles.teaImage}
           />
         </section>
 
-        <div
-          style={{
-            marginTop: "14px",
-            padding: "0 6px",
-            color: "#8f766a",
-            fontSize: "13px",
-            lineHeight: 1.95,
-            letterSpacing: "0.01em",
-            fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-          }}
-        >
+        <div style={styles.attentionArea}>
           <div>※ご予約当日のご変更・キャンセル等はLINEにてうけたまわります。</div>
           <div>
             ※当サロンは完全入れ替え制になりますので、なるべくご予約時間ちょうどを目安にお越しいただけますと幸いです。
           </div>
         </div>
 
-        <button
-          type="button"
-          style={{
-            width: "100%",
-            marginTop: "18px",
-            border: "none",
-            borderRadius: "999px",
-            background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
-            color: "#fffdfb",
-            fontSize: "22px",
-            fontWeight: 700,
-            letterSpacing: "0.03em",
-            padding: "18px 16px",
-            cursor: "pointer",
-            boxShadow: "0 8px 18px rgba(210, 140, 160, 0.18)",
-          }}
-        >
+        <button type="button" style={styles.reserveButton}>
           この内容で予約する
         </button>
       </div>
     </main>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    backgroundImage: "url('/images/mokume.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    justifyContent: "center",
+    padding: "26px 18px 42px",
+    boxSizing: "border-box",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
+  },
+
+  container: {
+    width: "100%",
+    maxWidth: "400px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+  },
+
+  titleBar: {
+    background: "linear-gradient(180deg, #c8d4c8 0%, #b8c7b7 100%)",
+    borderRadius: "20px",
+    textAlign: "center",
+    padding: "14px 12px 15px",
+    color: "#4d4036",
+    fontSize: "1.45rem",
+    fontWeight: 600,
+    letterSpacing: "0.04em",
+    boxShadow: "0 6px 18px rgba(92, 104, 90, 0.14)",
+    border: "1px solid rgba(255,255,255,0.34)",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  },
+
+  nameBar: {
+    background: "rgba(247, 235, 239, 0.78)",
+    borderRadius: "16px",
+    padding: "12px 16px",
+    color: "#7a5a5a",
+    fontSize: "1.08rem",
+    letterSpacing: "0.08em",
+    boxShadow:
+      "inset 0 1px 0 rgba(255,255,255,0.72), 0 5px 16px rgba(231, 191, 203, 0.10)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+  },
+
+  mainCard: {
+    position: "relative",
+    background: "rgba(248, 244, 240, 0.86)",
+    borderRadius: "24px",
+    padding: "18px 18px 86px",
+    boxSizing: "border-box",
+    boxShadow: "0 10px 26px rgba(135, 102, 90, 0.08)",
+    border: "1px solid rgba(255,255,255,0.36)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+    overflow: "hidden",
+  },
+
+  courseRow: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  courseName: {
+    color: "#5b3b2f",
+    fontSize: "1.75rem",
+    fontWeight: 700,
+    lineHeight: 1.45,
+    letterSpacing: "0.06em",
+    textAlign: "center",
+  },
+
+  totalTime: {
+    color: "#7c6256",
+    fontSize: "1rem",
+    lineHeight: 1.6,
+    textAlign: "center",
+  },
+
+  divider: {
+    height: "1px",
+    background: "rgba(211, 182, 168, 0.7)",
+    margin: "16px 0 14px",
+  },
+
+  optionSection: {
+    display: "grid",
+    gridTemplateColumns: "78px 1fr",
+    columnGap: "8px",
+    alignItems: "start",
+  },
+
+  label: {
+    color: "#9a7567",
+    fontSize: "0.92rem",
+    lineHeight: 1.8,
+    letterSpacing: "0.03em",
+  },
+
+  optionList: {
+    color: "#735244",
+    fontSize: "1rem",
+    lineHeight: 1.9,
+    letterSpacing: "0.02em",
+  },
+
+  optionItem: {
+    whiteSpace: "pre-wrap",
+  },
+
+  dateSection: {
+    marginTop: "18px",
+    background: "rgba(239, 205, 216, 0.72)",
+    borderRadius: "18px",
+    padding: "12px 16px 13px",
+    boxShadow:
+      "inset 0 1px 0 rgba(255,255,255,0.6), 0 4px 12px rgba(225, 176, 192, 0.12)",
+    maxWidth: "calc(100% - 88px)",
+  },
+
+  dateLabel: {
+    color: "#8c6570",
+    fontSize: "0.9rem",
+    marginBottom: "4px",
+    letterSpacing: "0.03em",
+  },
+
+  dateValue: {
+    color: "#6a4337",
+    fontSize: "1.18rem",
+    fontWeight: 700,
+    lineHeight: 1.6,
+    letterSpacing: "0.02em",
+    whiteSpace: "nowrap",
+  },
+
+  noteInline: {
+    marginTop: "10px",
+    color: isNaN ? "#8b7268" : "#8b7268",
+    fontSize: "0.8rem",
+    lineHeight: 1.8,
+    letterSpacing: "0.01em",
+    paddingRight: "108px",
+  },
+
+  teaImage: {
+    position: "absolute",
+    right: "16px",
+    bottom: "18px",
+    width: "110px",
+    opacity: 0.34,
+    filter:
+      "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
+    pointerEvents: "none",
+    userSelect: "none",
+  },
+
+  attentionArea: {
+    padding: "2px 6px 0",
+    color: "#8f766a",
+    fontSize: "0.82rem",
+    lineHeight: 1.95,
+    letterSpacing: "0.01em",
+  },
+
+  reserveButton: {
+    width: "100%",
+    marginTop: "6px",
+    border: "none",
+    borderRadius: "999px",
+    background: "linear-gradient(180deg, #eea08f 0%, #e48a7a 100%)",
+    color: "#fffdfb",
+    fontSize: "1.28rem",
+    fontWeight: 700,
+    letterSpacing: "0.03em",
+    padding: "18px 16px",
+    cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(228, 138, 122, 0.22)",
+  },
+};
