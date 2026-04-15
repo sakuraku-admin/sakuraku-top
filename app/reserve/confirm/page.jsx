@@ -112,18 +112,21 @@ const styles = {
   },
 
   nameBar: {
-    background: "rgba(255, 255, 255, 0.18)",
-    borderRadius: "14px",
-    padding: "8px 16px 9px",
-    color: "#7a5f59",
-    fontSize: "0.96rem",
-    letterSpacing: "0.06em",
-    border: "1px solid rgba(255,255,255,0.4)",
-    boxShadow:
-      "inset 0 1px 0 rgba(255,255,255,0.55), 0 3px 10px rgba(214, 190, 180, 0.05)",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
-  },
+  background: "rgba(255, 255, 255, 0.08)", // ←かなり薄く
+  borderRadius: "14px",
+  padding: "8px 16px 9px",
+  color: "#6f5550",
+  fontSize: "0.96rem",
+  letterSpacing: "0.06em",
+
+  border: "1px solid rgba(255,255,255,0.25)",
+
+  backdropFilter: "blur(6px)", // ←弱めるのがポイント
+  WebkitBackdropFilter: "blur(6px)",
+
+  boxShadow:
+    "inset 0 1px 0 rgba(255,255,255,0.35)",
+},
 
   mainCard: {
     position: "relative",
