@@ -14,7 +14,7 @@ export default function ReserveConfirmPage() {
       <div style={styles.container}>
         <div style={styles.titleBar}>ご予約内容の確認</div>
 
-        <div style={styles.nameBar}>{customerName} 様</div>
+        <div style={styles.nameText}>{customerName} 様</div>
 
         <section style={styles.mainCard}>
           <div style={styles.courseRow}>
@@ -92,7 +92,7 @@ const styles = {
     maxWidth: "400px",
     display: "flex",
     flexDirection: "column",
-    gap: "12px",
+    gap: "10px",
   },
 
   titleBar: {
@@ -106,33 +106,27 @@ const styles = {
     fontWeight: 700,
     letterSpacing: "0.04em",
     boxShadow: "0 6px 16px rgba(122, 164, 145, 0.14)",
-    border: "1px solid rgba(255,255,255,0.5)",
     backdropFilter: "blur(8px)",
     WebkitBackdropFilter: "blur(8px)",
   },
 
-  nameBar: {
-  background: "rgba(255, 255, 255, 0.08)", // ←かなり薄く
-  borderRadius: "14px",
-  padding: "8px 16px 9px",
-  color: "#6f5550",
-  fontSize: "0.96rem",
-  letterSpacing: "0.06em",
-
-  border: "1px solid rgba(255,255,255,0.25)",
-
-  backdropFilter: "blur(6px)", // ←弱めるのがポイント
-  WebkitBackdropFilter: "blur(6px)",
-
-  boxShadow:
-    "inset 0 1px 0 rgba(255,255,255,0.35)",
-},
+  nameText: {
+    color: "#6e5750",
+    fontSize: "0.96rem",
+    fontWeight: 400,
+    letterSpacing: "0.08em",
+    lineHeight: 1.5,
+    paddingLeft: "14px",
+    marginTop: "2px",
+    marginBottom: "4px",
+    textAlign: "left",
+  },
 
   mainCard: {
     position: "relative",
     background: "rgba(247, 242, 237, 0.9)",
     borderRadius: "26px",
-    padding: "22px 18px 72px",
+    padding: "20px 18px 72px",
     boxSizing: "border-box",
     boxShadow: "0 10px 24px rgba(135, 102, 90, 0.08)",
     border: "1px solid rgba(255,255,255,0.42)",
