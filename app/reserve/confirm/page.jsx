@@ -62,7 +62,7 @@ export default function ReserveConfirmPage() {
         </button>
 
         <div style={styles.attentionArea}>
-          <div>※ご予約当日のご変更・キャンセル等はLINEにてうけたまわります。</div>
+          <div>※ご予約当日のご変更・キャンセル等はLINEにて承ります。</div>
           <div>
             ※当サロンは完全入れ替え制になりますので、なるべくご予約時間ちょうどを目安にお越しいただけますと幸いです。
           </div>
