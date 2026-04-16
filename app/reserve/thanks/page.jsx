@@ -45,7 +45,8 @@ export default function ThanksPage() {
               )}
 
               <div style={styles.note}>
-                ご不明な点がありましたらお気軽にLINEからお問い合わせください
+                <div>ご不明な点がありましたら</div>
+                <div>お気軽にLINEでお問合せください</div>
               </div>
             </div>
 
@@ -77,7 +78,8 @@ const styles = {
     backgroundRepeat: "no-repeat",
     display: "flex",
     justifyContent: "center",
-    padding: "22px 16px 34px",
+    alignItems: "flex-start",
+    padding: "18px 16px 24px",
     boxSizing: "border-box",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
@@ -86,10 +88,13 @@ const styles = {
   container: {
     width: "100%",
     maxWidth: "400px",
-    background: "#f5efe8",
+    background: "rgba(255, 255, 255, 0.55)",
+    border: "1px solid rgba(255,255,255,0.4)",
     borderRadius: "28px",
-    padding: "14px 16px 18px",
-    boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
+    padding: "14px 16px 16px",
+    boxShadow: "0 8px 18px rgba(91, 61, 43, 0.06)",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
     textAlign: "center",
     boxSizing: "border-box",
   },
@@ -186,7 +191,7 @@ const styles = {
     fontSize: "0.77rem",
     lineHeight: 1.85,
     marginTop: "12px",
-    padding: "0 8px",
+    padding: "0 70px 0 8px",
     textAlign: "center",
   },
 
