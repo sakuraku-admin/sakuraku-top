@@ -12,7 +12,7 @@ export default function ReserveConfirmPage() {
   return (
     <main style={styles.page}>
       <div style={styles.container}>
-        <div style={styles.titleBar}>ご予約内容の確認</div>
+        <div style={styles.titleText}>ご予約内容の確認</div>
 
         <div style={styles.nameText}>{customerName} 様</div>
 
@@ -49,12 +49,6 @@ export default function ReserveConfirmPage() {
               {reserveDate}　{reserveTime}
             </div>
           </div>
-
-          <img
-            src="/images/tea-confirm.png"
-            alt=""
-            style={styles.teaImage}
-          />
         </section>
 
         <button type="button" style={styles.reserveButton}>
@@ -81,7 +75,7 @@ const styles = {
     backgroundRepeat: "no-repeat",
     display: "flex",
     justifyContent: "center",
-    padding: "20px 16px 34px",
+    padding: "22px 16px 34px",
     boxSizing: "border-box",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
@@ -95,19 +89,15 @@ const styles = {
     gap: "10px",
   },
 
-  titleBar: {
-    background:
-      "linear-gradient(180deg, rgba(197, 229, 215, 0.96) 0%, rgba(183, 220, 204, 0.96) 100%)",
-    borderRadius: "22px",
+  titleText: {
     textAlign: "center",
-    padding: "14px 14px 15px",
-    color: "#514136",
-    fontSize: "1.38rem",
-    fontWeight: 700,
-    letterSpacing: "0.04em",
-    boxShadow: "0 6px 16px rgba(122, 164, 145, 0.14)",
-    backdropFilter: "blur(8px)",
-    WebkitBackdropFilter: "blur(8px)",
+    color: "#6f5046",
+    fontSize: "1.42rem",
+    fontWeight: 500,
+    letterSpacing: "0.08em",
+    lineHeight: 1.5,
+    marginTop: "2px",
+    marginBottom: "2px",
   },
 
   nameText: {
@@ -117,8 +107,8 @@ const styles = {
     letterSpacing: "0.08em",
     lineHeight: 1.5,
     paddingLeft: "14px",
-    marginTop: "2px",
-    marginBottom: "4px",
+    marginTop: "0",
+    marginBottom: "2px",
     textAlign: "left",
   },
 
@@ -126,7 +116,7 @@ const styles = {
     position: "relative",
     background: "rgba(247, 242, 237, 0.9)",
     borderRadius: "26px",
-    padding: "20px 18px 72px",
+    padding: "20px 18px 30px",
     boxSizing: "border-box",
     boxShadow: "0 10px 24px rgba(135, 102, 90, 0.08)",
     border: "1px solid rgba(255,255,255,0.42)",
@@ -232,18 +222,6 @@ const styles = {
     letterSpacing: "0.01em",
     whiteSpace: "normal",
     wordBreak: "keep-all",
-  },
-
-  teaImage: {
-    position: "absolute",
-    right: "14px",
-    bottom: "14px",
-    width: "98px",
-    opacity: 0.34,
-    filter:
-      "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
-    pointerEvents: "none",
-    userSelect: "none",
   },
 
   reserveButton: {
