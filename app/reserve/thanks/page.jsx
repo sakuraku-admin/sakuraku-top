@@ -21,36 +21,40 @@ export default function ThanksPage() {
         </div>
 
         <section style={styles.infoCard}>
-          <div style={styles.datePillWrap}>
-            <div style={styles.dateLabel}>ご予約日時</div>
-            <div style={styles.dateValue}>
-              {reserveDate}　{reserveTime}
-            </div>
-          </div>
-
-          <div style={styles.subInfo}>
-            <div>
-              {menuName}（{menuTime}）
-            </div>
-
-            {hasOptions && (
-              <div style={styles.optionBlock}>
-                {options.map((option) => (
-                  <div key={option}>{option}</div>
-                ))}
+          <div style={styles.pinkCard}>
+            <div style={styles.datePill}>
+              <div style={styles.dateLabel}>ご予約日時</div>
+              <div style={styles.dateValue}>
+                {reserveDate}　{reserveTime}
               </div>
-            )}
-          </div>
+            </div>
 
-          <div style={styles.note}>
-            ご不明な点がありましたらお気軽にLINEからお問合せください
-          </div>
+            <div style={styles.subInfo}>
+              <div style={styles.menuText}>
+                {menuName}（{menuTime}）
+              </div>
 
-          <img
-            src="/images/tea-confirm.png"
-            alt=""
-            style={styles.teaImage}
-          />
+              {hasOptions && (
+                <div style={styles.optionBlock}>
+                  {options.map((option) => (
+                    <div key={option} style={styles.optionItem}>
+                      {option}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div style={styles.note}>
+                ご不明な点がありましたらお気軽にLINEからお問い合わせください
+              </div>
+            </div>
+
+            <img
+              src="/images/tea-confirm.png"
+              alt=""
+              style={styles.teaImage}
+            />
+          </div>
         </section>
 
         <button
@@ -82,7 +86,7 @@ const styles = {
   container: {
     width: "100%",
     maxWidth: "400px",
-    background: "rgba(248, 245, 240, 0.94)",
+    background: "#f5efe8",
     borderRadius: "28px",
     padding: "14px 16px 18px",
     boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
@@ -106,29 +110,33 @@ const styles = {
     color: "#7a5a5a",
     fontSize: "0.97rem",
     lineHeight: 1.9,
-    marginBottom: "14px",
+    marginBottom: "16px",
     padding: "0 6px",
     textAlign: "center",
   },
 
   infoCard: {
+    marginBottom: "14px",
+  },
+
+  pinkCard: {
     position: "relative",
-    background: "#f2e7df",
+    width: "100%",
+    background: "#efd6dc",
     borderRadius: "22px",
     padding: "16px 14px 18px",
-    marginBottom: "14px",
     boxSizing: "border-box",
     overflow: "hidden",
     textAlign: "center",
   },
 
-  datePillWrap: {
+  datePill: {
     width: "100%",
     maxWidth: "286px",
-    margin: "0 auto 12px",
+    margin: "0 auto 14px",
     background: "#ffffff",
     borderRadius: "999px",
-    padding: "10px 16px 11px",
+    padding: "10px 16px 12px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
     boxSizing: "border-box",
     textAlign: "center",
@@ -155,9 +163,13 @@ const styles = {
   subInfo: {
     color: "#9a857d",
     fontSize: "0.77rem",
-    lineHeight: 1.7,
+    lineHeight: 1.8,
     textAlign: "center",
-    padding: "0 12px",
+    padding: "0 14px",
+  },
+
+  menuText: {
+    textAlign: "center",
   },
 
   optionBlock: {
@@ -165,12 +177,16 @@ const styles = {
     textAlign: "center",
   },
 
+  optionItem: {
+    textAlign: "center",
+  },
+
   note: {
     color: "#8b7268",
     fontSize: "0.77rem",
-    lineHeight: 1.8,
-    marginTop: "10px",
-    padding: "0 12px 0",
+    lineHeight: 1.85,
+    marginTop: "12px",
+    padding: "0 8px",
     textAlign: "center",
   },
 
