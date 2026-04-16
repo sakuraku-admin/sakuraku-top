@@ -10,119 +10,41 @@ export default function ThanksPage() {
   const hasOptions = options && options.length > 0;
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#e9e4de",
-        display: "flex",
-        justifyContent: "center",
-        padding: "16px 12px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "640px",
-          background: "#f7f4f0",
-          borderRadius: "28px",
-          padding: "28px 16px 36px",
-          boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
-          textAlign: "center",
-        }}
-      >
-        {/* タイトル */}
-        <div
-          style={{
-            background: "linear-gradient(180deg, #cfe6df 0%, #c4ddd7 100%)",
-            borderRadius: "20px",
-            padding: "16px",
-            color: "#3e4c47",
-            fontSize: "28px",
-            fontFamily: '"Hiragino Mincho ProN", serif',
-            marginBottom: "22px",
-          }}
-        >
-          ご予約ありがとうございます
-        </div>
+    <main style={styles.page}>
+      <div style={styles.container}>
+        <div style={styles.titleBar}>ご予約ありがとうございます</div>
 
-        {/* メッセージ */}
-        <div
-          style={{
-            color: "#7a5a5a",
-            fontSize: "16px",
-            lineHeight: 1.9,
-            marginBottom: "22px",
-            fontFamily: '"Hiragino Mincho ProN", serif',
-          }}
-        >
-          ご予約を承りました。<br />
+        <div style={styles.message}>
+          ご予約を承りました。
+          <br />
           ご来店を心よりお待ちしております🌸
         </div>
 
-        {/* ピンク背景エリア */}
-        <section
-          style={{
-            background: "#efd6dc",
-            borderRadius: "22px",
-            padding: "26px 16px",
-            marginBottom: "18px",
-          }}
-        >
-          {/* 白の日時 */}
-          <div
-            style={{
-              display: "inline-block",
-              background: "#ffffff",
-              borderRadius: "999px",
-              padding: "12px 20px",
-              fontSize: "22px",
-              fontWeight: 500,
-fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
-              color: "#6a4337",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-              marginBottom: "18px",
-            }}
-          >
+        <section style={styles.infoCard}>
+          <div style={styles.datePill}>
             ご予約日時：{reserveDate}　{reserveTime}
           </div>
 
-          {/* 下の情報（薄く） */}
-          <div
-            style={{
-              color: "#9a857d",
-              fontSize: "13px",
-              lineHeight: 1.8,
-              textAlign: "center",
-            }}
-          >
-            {menuName}（{menuTime}）<br />
+          <div style={styles.subInfo}>
+            {menuName}（{menuTime}）
+            <br />
             {hasOptions && `オプション：${options.join("　")}`}
           </div>
 
-          <div
-            style={{
-              color: "#8b7268",
-              fontSize: "13px",
-              marginTop: "12px",
-            }}
-          >
+          <div style={styles.note}>
             ご不明な点がありましたらお気軽にLINEからお問合せください
           </div>
+
+          <img
+            src="/images/tea-confirm.png"
+            alt=""
+            style={styles.teaImage}
+          />
         </section>
 
-        {/* ボタン */}
         <button
           onClick={() => (window.location.href = "/")}
-          style={{
-            width: "100%",
-            border: "none",
-            borderRadius: "999px",
-            background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
-            color: "#fff",
-            fontSize: "22px",
-            padding: "18px",
-            cursor: "pointer",
-          }}
+          style={styles.backButton}
         >
           トップへ戻る
         </button>
@@ -130,3 +52,114 @@ fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", serif',
     </main>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    backgroundImage: "url('/images/mokume.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    justifyContent: "center",
+    padding: "22px 16px 34px",
+    boxSizing: "border-box",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
+  },
+
+  container: {
+    width: "100%",
+    maxWidth: "400px",
+    background: "rgba(247, 244, 240, 0.92)",
+    borderRadius: "28px",
+    padding: "20px 16px 28px",
+    boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
+    textAlign: "center",
+    boxSizing: "border-box",
+  },
+
+  titleBar: {
+    background: "linear-gradient(180deg, #cfe6df 0%, #c4ddd7 100%)",
+    borderRadius: "20px",
+    padding: "16px 14px",
+    color: "#3e4c47",
+    fontSize: "1.42rem",
+    lineHeight: 1.5,
+    marginBottom: "18px",
+    letterSpacing: "0.04em",
+  },
+
+  message: {
+    color: "#7a5a5a",
+    fontSize: "1rem",
+    lineHeight: 1.9,
+    marginBottom: "18px",
+    padding: "0 6px",
+  },
+
+  infoCard: {
+    position: "relative",
+    background: "#efd6dc",
+    borderRadius: "22px",
+    padding: "24px 14px 72px",
+    marginBottom: "18px",
+    boxSizing: "border-box",
+    overflow: "hidden",
+  },
+
+  datePill: {
+    display: "inline-block",
+    maxWidth: "100%",
+    background: "#ffffff",
+    borderRadius: "999px",
+    padding: "12px 18px",
+    fontSize: "1.02rem",
+    fontWeight: 500,
+    color: "#6a4337",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+    marginBottom: "16px",
+    lineHeight: 1.7,
+    wordBreak: "keep-all",
+  },
+
+  subInfo: {
+    color: "#9a857d",
+    fontSize: "0.8rem",
+    lineHeight: 1.85,
+    textAlign: "center",
+    padding: "0 6px",
+  },
+
+  note: {
+    color: "#8b7268",
+    fontSize: "0.8rem",
+    lineHeight: 1.8,
+    marginTop: "12px",
+    padding: "0 8px",
+  },
+
+  teaImage: {
+    position: "absolute",
+    right: "12px",
+    bottom: "10px",
+    width: "96px",
+    opacity: 0.34,
+    filter:
+      "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
+    pointerEvents: "none",
+    userSelect: "none",
+  },
+
+  backButton: {
+    width: "100%",
+    border: "none",
+    borderRadius: "999px",
+    background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
+    color: "#fff",
+    fontSize: "1.18rem",
+    padding: "16px",
+    cursor: "pointer",
+    letterSpacing: "0.03em",
+  },
+};
