@@ -21,14 +21,25 @@ export default function ThanksPage() {
         </div>
 
         <section style={styles.infoCard}>
-          <div style={styles.datePill}>
-            ご予約日時：{reserveDate}　{reserveTime}
+          <div style={styles.datePillWrap}>
+            <div style={styles.dateLabel}>ご予約日時</div>
+            <div style={styles.dateValue}>
+              {reserveDate}　{reserveTime}
+            </div>
           </div>
 
           <div style={styles.subInfo}>
-            {menuName}（{menuTime}）
-            <br />
-            {hasOptions && `オプション：${options.join("　")}`}
+            <div>
+              {menuName}（{menuTime}）
+            </div>
+
+            {hasOptions && (
+              <div style={styles.optionBlock}>
+                {options.map((option) => (
+                  <div key={option}>{option}</div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div style={styles.note}>
@@ -71,9 +82,9 @@ const styles = {
   container: {
     width: "100%",
     maxWidth: "400px",
-    background: "rgba(247, 244, 240, 0.92)",
+    background: "rgba(248, 245, 240, 0.94)",
     borderRadius: "28px",
-    padding: "20px 16px 28px",
+    padding: "14px 16px 18px",
     boxShadow: "0 8px 24px rgba(135, 102, 90, 0.06)",
     textAlign: "center",
     boxSizing: "border-box",
@@ -82,68 +93,92 @@ const styles = {
   titleBar: {
     background: "linear-gradient(180deg, #cfe6df 0%, #c4ddd7 100%)",
     borderRadius: "20px",
-    padding: "16px 14px",
+    padding: "14px 14px",
     color: "#3e4c47",
-    fontSize: "1.42rem",
+    fontSize: "1.32rem",
     lineHeight: 1.5,
-    marginBottom: "18px",
+    marginBottom: "14px",
     letterSpacing: "0.04em",
+    textAlign: "center",
   },
 
   message: {
     color: "#7a5a5a",
-    fontSize: "1rem",
+    fontSize: "0.97rem",
     lineHeight: 1.9,
-    marginBottom: "18px",
+    marginBottom: "14px",
     padding: "0 6px",
+    textAlign: "center",
   },
 
   infoCard: {
     position: "relative",
-    background: "#efd6dc",
+    background: "#f2e7df",
     borderRadius: "22px",
-    padding: "24px 14px 72px",
-    marginBottom: "18px",
+    padding: "16px 14px 18px",
+    marginBottom: "14px",
     boxSizing: "border-box",
     overflow: "hidden",
+    textAlign: "center",
   },
 
-  datePill: {
-    display: "inline-block",
-    maxWidth: "100%",
+  datePillWrap: {
+    width: "100%",
+    maxWidth: "286px",
+    margin: "0 auto 12px",
     background: "#ffffff",
     borderRadius: "999px",
-    padding: "12px 18px",
-    fontSize: "1.02rem",
-    fontWeight: 500,
-    color: "#6a4337",
+    padding: "10px 16px 11px",
     boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    marginBottom: "16px",
+    boxSizing: "border-box",
+    textAlign: "center",
+  },
+
+  dateLabel: {
+    color: "#8a6671",
+    fontSize: "0.88rem",
+    lineHeight: 1.4,
+    letterSpacing: "0.03em",
+    marginBottom: "4px",
+    textAlign: "center",
+  },
+
+  dateValue: {
+    color: "#6a4337",
+    fontSize: "1rem",
+    fontWeight: 500,
     lineHeight: 1.7,
     wordBreak: "keep-all",
+    textAlign: "center",
   },
 
   subInfo: {
     color: "#9a857d",
-    fontSize: "0.8rem",
-    lineHeight: 1.85,
+    fontSize: "0.77rem",
+    lineHeight: 1.7,
     textAlign: "center",
-    padding: "0 6px",
+    padding: "0 12px",
+  },
+
+  optionBlock: {
+    marginTop: "4px",
+    textAlign: "center",
   },
 
   note: {
     color: "#8b7268",
-    fontSize: "0.8rem",
+    fontSize: "0.77rem",
     lineHeight: 1.8,
-    marginTop: "12px",
-    padding: "0 8px",
+    marginTop: "10px",
+    padding: "0 12px 0",
+    textAlign: "center",
   },
 
   teaImage: {
     position: "absolute",
     right: "12px",
     bottom: "10px",
-    width: "96px",
+    width: "84px",
     opacity: 0.34,
     filter:
       "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
