@@ -113,7 +113,7 @@ const styles = {
 
   message: {
     color: "#7a5a5a",
-    fontSize: "1.02rem", // ←少し大きく
+    fontSize: "0.97rem",
     lineHeight: 1.9,
     marginBottom: "16px",
     padding: "0 6px",
@@ -124,11 +124,10 @@ const styles = {
     marginBottom: "14px",
   },
 
-  // ★ここ：ピンクを明るく
   pinkCard: {
     position: "relative",
     width: "100%",
-    background: "#f3dde3", // ←明るめピンク
+    background: "#e5b8c8",
     borderRadius: "22px",
     padding: "16px 14px 18px",
     boxSizing: "border-box",
@@ -150,18 +149,22 @@ const styles = {
 
   dateLabel: {
     color: "#8a6671",
-    fontSize: "0.9rem",
+    fontSize: "0.88rem",
+    lineHeight: 1.4,
+    letterSpacing: "0.03em",
     marginBottom: "4px",
+    textAlign: "center",
   },
 
   dateValue: {
     color: "#6a4337",
-    fontSize: "1.05rem",
+    fontSize: "1rem",
     fontWeight: 500,
     lineHeight: 1.7,
+    wordBreak: "keep-all",
+    textAlign: "center",
   },
 
-  // ★ここ：文字を白＆少し大きく
   subInfo: {
     color: "#ffffff",
     fontSize: "0.9rem",
@@ -183,11 +186,10 @@ const styles = {
     textAlign: "center",
   },
 
-  // ★ここ：補足だけ少しトーン落とす
   note: {
-    color: "rgba(255,255,255,0.85)",
-    fontSize: "0.8rem",
-    lineHeight: 1.8,
+    color: "#8b7268",
+    fontSize: "0.77rem",
+    lineHeight: 1.85,
     marginTop: "12px",
     padding: "0 70px 0 8px",
     textAlign: "center",
@@ -199,7 +201,10 @@ const styles = {
     bottom: "10px",
     width: "84px",
     opacity: 0.34,
+    filter:
+      "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
     pointerEvents: "none",
+    userSelect: "none",
   },
 
   backButton: {
@@ -211,5 +216,6 @@ const styles = {
     fontSize: "1.18rem",
     padding: "16px",
     cursor: "pointer",
+    letterSpacing: "0.03em",
   },
 };
