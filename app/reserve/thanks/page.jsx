@@ -105,10 +105,7 @@ const styles = {
     padding: "14px 14px",
     color: "#3e4c47",
     fontSize: "1.32rem",
-    lineHeight: 1.5,
     marginBottom: "14px",
-    letterSpacing: "0.04em",
-    textAlign: "center",
   },
 
   message: {
@@ -116,12 +113,6 @@ const styles = {
     fontSize: "0.97rem",
     lineHeight: 1.9,
     marginBottom: "16px",
-    padding: "0 6px",
-    textAlign: "center",
-  },
-
-  infoCard: {
-    marginBottom: "14px",
   },
 
   pinkCard: {
@@ -130,69 +121,43 @@ const styles = {
     background: "#e5b8c8",
     borderRadius: "22px",
     padding: "16px 14px 18px",
-    boxSizing: "border-box",
-    overflow: "hidden",
-    textAlign: "center",
   },
 
   datePill: {
-    width: "100%",
     maxWidth: "286px",
     margin: "0 auto 14px",
     background: "#ffffff",
     borderRadius: "999px",
-    padding: "10px 16px 12px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    boxSizing: "border-box",
-    textAlign: "center",
+    padding: "10px 16px",
   },
 
   dateLabel: {
     color: "#8a6671",
     fontSize: "0.88rem",
-    lineHeight: 1.4,
-    letterSpacing: "0.03em",
-    marginBottom: "4px",
-    textAlign: "center",
   },
 
   dateValue: {
     color: "#6a4337",
     fontSize: "1rem",
-    fontWeight: 500,
-    lineHeight: 1.7,
-    wordBreak: "keep-all",
-    textAlign: "center",
   },
 
+  // ⭐ここが今回の核心
   subInfo: {
-    color: "#ffffff",
+    color: "#8f6f66", // ←ミルクティーブラウン
     fontSize: "0.9rem",
     lineHeight: 1.9,
-    textAlign: "center",
-    padding: "0 14px",
-  },
-
-  menuText: {
-    textAlign: "center",
   },
 
   optionBlock: {
     marginTop: "6px",
-    textAlign: "center",
   },
 
-  optionItem: {
-    textAlign: "center",
-  },
-
+  // 補足は少し薄く
   note: {
-    color: "#8b7268",
+    color: "#9f857c",
     fontSize: "0.77rem",
-    lineHeight: 1.85,
     marginTop: "12px",
     padding: "0 70px 0 8px",
-    textAlign: "center",
   },
 
   teaImage: {
@@ -201,21 +166,14 @@ const styles = {
     bottom: "10px",
     width: "84px",
     opacity: 0.34,
-    filter:
-      "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
-    pointerEvents: "none",
-    userSelect: "none",
   },
 
   backButton: {
     width: "100%",
-    border: "none",
     borderRadius: "999px",
     background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
     color: "#fff",
     fontSize: "1.18rem",
     padding: "16px",
-    cursor: "pointer",
-    letterSpacing: "0.03em",
   },
 };
