@@ -85,22 +85,22 @@ const styles = {
       '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
   },
 
+  // ★ここ変更（ベージュ）
   container: {
     width: "100%",
     maxWidth: "400px",
-    background: "rgba(255, 255, 255, 0.55)",
+    background: "#FDDCC3",
     border: "1px solid rgba(255,255,255,0.4)",
     borderRadius: "28px",
     padding: "14px 16px 16px",
     boxShadow: "0 8px 18px rgba(91, 61, 43, 0.06)",
-    backdropFilter: "blur(10px)",
-    WebkitBackdropFilter: "blur(10px)",
     textAlign: "center",
     boxSizing: "border-box",
   },
 
+  // ★ここ変更（グリーン）
   titleBar: {
-    background: "linear-gradient(180deg, #cfe6df 0%, #c4ddd7 100%)",
+    background: "#C1EDCC",
     borderRadius: "20px",
     padding: "14px 14px",
     color: "#3e4c47",
@@ -115,10 +115,11 @@ const styles = {
     marginBottom: "16px",
   },
 
+  // ★ここ変更（ピンク）
   pinkCard: {
     position: "relative",
     width: "100%",
-    background: "#e5b8c8",
+    background: "#FFCFD2",
     borderRadius: "22px",
     padding: "16px 14px 18px",
   },
@@ -141,9 +142,8 @@ const styles = {
     fontSize: "1rem",
   },
 
-  // ⭐ここが今回の核心
   subInfo: {
-    color: "#8f6f66", // ←ミルクティーブラウン
+    color: "#ffffff",
     fontSize: "0.9rem",
     lineHeight: 1.9,
   },
@@ -152,9 +152,8 @@ const styles = {
     marginTop: "6px",
   },
 
-  // 補足は少し薄く
   note: {
-    color: "#9f857c",
+    color: "#8b7268",
     fontSize: "0.77rem",
     marginTop: "12px",
     padding: "0 70px 0 8px",
