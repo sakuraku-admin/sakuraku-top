@@ -85,7 +85,6 @@ const styles = {
       '"Hiragino Mincho ProN", "Yu Mincho", "Hiragino Kaku Gothic ProN", "Yu Gothic", serif',
   },
 
-  // ★ここ変更（ベージュ）
   container: {
     width: "100%",
     maxWidth: "400px",
@@ -98,7 +97,6 @@ const styles = {
     boxSizing: "border-box",
   },
 
-  // ★ここ変更（グリーン）
   titleBar: {
     background: "#C1EDCC",
     borderRadius: "20px",
@@ -106,6 +104,8 @@ const styles = {
     color: "#3e4c47",
     fontSize: "1.32rem",
     marginBottom: "14px",
+    letterSpacing: "0.04em",
+    lineHeight: 1.5,
   },
 
   message: {
@@ -115,13 +115,19 @@ const styles = {
     marginBottom: "16px",
   },
 
-  // ★ここ変更（ピンク）
+  infoCard: {
+    marginBottom: "14px",
+  },
+
   pinkCard: {
     position: "relative",
     width: "100%",
     background: "#FFCFD2",
     borderRadius: "22px",
     padding: "16px 14px 18px",
+    boxSizing: "border-box",
+    overflow: "hidden",
+    textAlign: "center",
   },
 
   datePill: {
@@ -129,34 +135,55 @@ const styles = {
     margin: "0 auto 14px",
     background: "#ffffff",
     borderRadius: "999px",
-    padding: "10px 16px",
+    padding: "10px 16px 12px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+    boxSizing: "border-box",
   },
 
   dateLabel: {
     color: "#8a6671",
     fontSize: "0.88rem",
+    lineHeight: 1.4,
+    letterSpacing: "0.03em",
+    marginBottom: "4px",
   },
 
   dateValue: {
     color: "#6a4337",
     fontSize: "1rem",
+    fontWeight: 500,
+    lineHeight: 1.7,
+    wordBreak: "keep-all",
   },
 
   subInfo: {
     color: "#ffffff",
     fontSize: "0.9rem",
     lineHeight: 1.9,
+    padding: "0 14px",
+    textAlign: "center",
+  },
+
+  menuText: {
+    textAlign: "center",
   },
 
   optionBlock: {
     marginTop: "6px",
+    textAlign: "center",
+  },
+
+  optionItem: {
+    textAlign: "center",
   },
 
   note: {
     color: "#8b7268",
     fontSize: "0.77rem",
+    lineHeight: 1.85,
     marginTop: "12px",
     padding: "0 70px 0 8px",
+    textAlign: "center",
   },
 
   teaImage: {
@@ -165,14 +192,21 @@ const styles = {
     bottom: "10px",
     width: "84px",
     opacity: 0.34,
+    filter:
+      "brightness(1.08) contrast(0.96) saturate(0.95) drop-shadow(0 1px 2px rgba(255,255,255,0.6))",
+    pointerEvents: "none",
+    userSelect: "none",
   },
 
   backButton: {
     width: "100%",
+    border: "none",
     borderRadius: "999px",
     background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
     color: "#fff",
     fontSize: "1.18rem",
     padding: "16px",
+    cursor: "pointer",
+    letterSpacing: "0.03em",
   },
 };
