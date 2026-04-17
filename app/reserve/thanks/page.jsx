@@ -90,7 +90,7 @@ const styles = {
   container: {
     width: "100%",
     maxWidth: "400px",
-    background: "#FDDCC3",
+    background: "#FFF5EC",
     border: "1px solid rgba(255,255,255,0.4)",
     borderRadius: "28px",
     padding: "14px 16px 16px",
