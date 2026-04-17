@@ -122,16 +122,16 @@ const styles = {
   },
 
   pinkCard: {
-    position: "relative",
-    width: "100%",
-    background: "#FFCFD2",
-    borderRadius: "22px",
-    padding: "16px 14px 14px",
-    boxSizing: "border-box",
-    overflow: "hidden",
-    textAlign: "center",
-    marginBottom: "8px",
-  },
+  position: "relative",
+  width: "100%",
+  background: "linear-gradient(to bottom, #FFCFD2 70%, rgba(255, 207, 210, 0) 100%)",
+  borderRadius: "22px",
+  padding: "16px 14px 14px",
+  boxSizing: "border-box",
+  overflow: "hidden",
+  textAlign: "center",
+  marginBottom: "8px",
+},
 
   datePill: {
     maxWidth: "286px",
