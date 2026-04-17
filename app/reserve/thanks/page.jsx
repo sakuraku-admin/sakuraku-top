@@ -46,16 +46,18 @@ export default function ThanksPage() {
             </div>
           </div>
 
-          <div style={styles.note}>
-            <div>ご不明な点がありましたら</div>
-            <div>お気軽にLINEでお問合せください</div>
-          </div>
+          <div style={styles.noteArea}>
+            <div style={styles.note}>
+              <div>ご不明な点がありましたら</div>
+              <div>お気軽にLINEでお問合せください</div>
+            </div>
 
-          <img
-            src="/images/tea-confirm.png"
-            alt=""
-            style={styles.teaImage}
-          />
+            <img
+              src="/images/tea-confirm.png"
+              alt=""
+              style={styles.teaImage}
+            />
+          </div>
         </section>
 
         <button
@@ -116,9 +118,7 @@ const styles = {
   },
 
   infoCard: {
-    position: "relative",
     marginBottom: "14px",
-    paddingBottom: "74px",
   },
 
   pinkCard: {
@@ -130,7 +130,7 @@ const styles = {
     boxSizing: "border-box",
     overflow: "hidden",
     textAlign: "center",
-    marginBottom: "10px",
+    marginBottom: "8px",
   },
 
   datePill: {
@@ -182,6 +182,11 @@ const styles = {
     marginTop: "2px",
   },
 
+  noteArea: {
+    position: "relative",
+    minHeight: "62px",
+  },
+
   note: {
     color: "#8b7268",
     fontSize: "0.77rem",
@@ -194,7 +199,7 @@ const styles = {
   teaImage: {
     position: "absolute",
     right: "12px",
-    bottom: "6px",
+    bottom: "0",
     width: "84px",
     opacity: 0.34,
     filter:
