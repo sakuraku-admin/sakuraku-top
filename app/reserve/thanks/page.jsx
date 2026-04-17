@@ -21,14 +21,14 @@ export default function ThanksPage() {
         </div>
 
         <section style={styles.infoCard}>
-          <div style={styles.datePill}>
-            <div style={styles.dateLabel}>ご予約日時</div>
-            <div style={styles.dateValue}>
-              {reserveDate}　{reserveTime}
-            </div>
-          </div>
-
           <div style={styles.pinkCard}>
+            <div style={styles.datePill}>
+              <div style={styles.dateLabel}>ご予約日時</div>
+              <div style={styles.dateValue}>
+                {reserveDate}　{reserveTime}
+              </div>
+            </div>
+
             <div style={styles.subInfo}>
               <div style={styles.menuText}>
                 {menuName}（{menuTime}）
@@ -43,19 +43,19 @@ export default function ThanksPage() {
                   ))}
                 </div>
               )}
+
+              <div style={styles.note}>
+                <div>ご不明な点がありましたら</div>
+                <div>お気軽にLINEでお問合せください</div>
+              </div>
             </div>
-          </div>
 
-          <div style={styles.note}>
-            <div>ご不明な点がありましたら</div>
-            <div>お気軽にLINEでお問合せください</div>
+            <img
+              src="/images/tea-confirm.png"
+              alt=""
+              style={styles.teaImage}
+            />
           </div>
-
-          <img
-            src="/images/tea-confirm.png"
-            alt=""
-            style={styles.teaImage}
-          />
         </section>
 
         <button
@@ -97,8 +97,9 @@ const styles = {
     boxSizing: "border-box",
   },
 
+  // ★薄く調整
   titleBar: {
-    background: "#D2F2DA",
+    background: "#D8F5DE",
     borderRadius: "20px",
     padding: "14px 14px",
     color: "#3e4c47",
@@ -116,9 +117,19 @@ const styles = {
   },
 
   infoCard: {
-    position: "relative",
     marginBottom: "14px",
-    paddingBottom: "78px",
+  },
+
+  // ★ここだけ調整（下を縮める）
+  pinkCard: {
+    position: "relative",
+    width: "100%",
+    background: "#FFCFD2",
+    borderRadius: "22px",
+    padding: "16px 14px 6px", // ← 下だけ縮めた
+    boxSizing: "border-box",
+    overflow: "hidden",
+    textAlign: "center",
   },
 
   datePill: {
@@ -147,18 +158,9 @@ const styles = {
     wordBreak: "keep-all",
   },
 
-  pinkCard: {
-    width: "100%",
-    background: "#FFCFD2",
-    borderRadius: "22px",
-    padding: "16px 14px 18px",
-    boxSizing: "border-box",
-    textAlign: "center",
-    marginBottom: "12px",
-  },
-
+  // ★白→通常色に戻す
   subInfo: {
-    color: "#8b7268",
+    color: "#6a4337",
     fontSize: "0.9rem",
     lineHeight: 1.9,
     padding: "0 14px",
@@ -182,14 +184,15 @@ const styles = {
     color: "#8b7268",
     fontSize: "0.77rem",
     lineHeight: 1.85,
-    textAlign: "center",
+    marginTop: "12px",
     padding: "0 70px 0 8px",
+    textAlign: "center",
   },
 
   teaImage: {
     position: "absolute",
     right: "12px",
-    bottom: "6px",
+    bottom: "10px",
     width: "84px",
     opacity: 0.34,
     filter:
