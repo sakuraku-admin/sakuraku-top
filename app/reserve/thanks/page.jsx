@@ -43,19 +43,19 @@ export default function ThanksPage() {
                   ))}
                 </div>
               )}
-
-              <div style={styles.note}>
-                <div>ご不明な点がありましたら</div>
-                <div>お気軽にLINEでお問合せください</div>
-              </div>
             </div>
-
-            <img
-              src="/images/tea-confirm.png"
-              alt=""
-              style={styles.teaImage}
-            />
           </div>
+
+          <div style={styles.note}>
+            <div>ご不明な点がありましたら</div>
+            <div>お気軽にLINEでお問合せください</div>
+          </div>
+
+          <img
+            src="/images/tea-confirm.png"
+            alt=""
+            style={styles.teaImage}
+          />
         </section>
 
         <button
@@ -97,7 +97,6 @@ const styles = {
     boxSizing: "border-box",
   },
 
-  // ★薄く調整
   titleBar: {
     background: "#D8F5DE",
     borderRadius: "20px",
@@ -117,19 +116,21 @@ const styles = {
   },
 
   infoCard: {
+    position: "relative",
     marginBottom: "14px",
+    paddingBottom: "74px",
   },
 
-  // ★ここだけ調整（下を縮める）
   pinkCard: {
     position: "relative",
     width: "100%",
     background: "#FFCFD2",
     borderRadius: "22px",
-    padding: "16px 14px 6px", // ← 下だけ縮めた
+    padding: "16px 14px 14px",
     boxSizing: "border-box",
     overflow: "hidden",
     textAlign: "center",
+    marginBottom: "10px",
   },
 
   datePill: {
@@ -158,7 +159,6 @@ const styles = {
     wordBreak: "keep-all",
   },
 
-  // ★白→通常色に戻す
   subInfo: {
     color: "#6a4337",
     fontSize: "0.9rem",
@@ -174,25 +174,27 @@ const styles = {
   optionBlock: {
     marginTop: "6px",
     textAlign: "center",
+    lineHeight: 1.55,
   },
 
   optionItem: {
     textAlign: "center",
+    marginTop: "2px",
   },
 
   note: {
     color: "#8b7268",
     fontSize: "0.77rem",
-    lineHeight: 1.85,
-    marginTop: "12px",
-    padding: "0 70px 0 8px",
+    lineHeight: 1.8,
+    marginTop: "2px",
+    padding: "0 76px 0 8px",
     textAlign: "center",
   },
 
   teaImage: {
     position: "absolute",
     right: "12px",
-    bottom: "10px",
+    bottom: "6px",
     width: "84px",
     opacity: 0.34,
     filter:
