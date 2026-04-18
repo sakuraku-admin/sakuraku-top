@@ -15,15 +15,6 @@ function addDays(date, days) {
   return next;
 }
 
-function getWeekStart(date) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
-  return d;
-}
-
 function getTodayStart() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -136,10 +127,6 @@ export default function ReserveDateTimePage() {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
 
-  const handlePrevWeek = () => {
-    setWeekStart((prev) => addDays(prev, -7));
-  };
-
   const handleNextWeek = () => {
     setWeekStart((prev) => addDays(prev, 7));
   };
@@ -173,11 +160,7 @@ export default function ReserveDateTimePage() {
         </section>
 
         <section style={styles.calendarInfoCard}>
-          <div style={styles.weekButtonRow}>
-            <button onClick={handlePrevWeek} style={styles.weekButton}>
-              ← 前の週
-            </button>
-
+          <div style={styles.weekButtonRowSingle}>
             <button onClick={handleNextWeek} style={styles.weekButton}>
               次の週 →
             </button>
@@ -409,16 +392,15 @@ const styles = {
     WebkitBackdropFilter: "blur(8px)",
   },
 
-  weekButtonRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "10px",
+  weekButtonRowSingle: {
+    display: "flex",
+    justifyContent: "center",
   },
 
   weekButton: {
     border: "none",
     borderRadius: "999px",
-    padding: "10px 8px",
+    padding: "10px 18px",
     background:
       "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
     color: "#fffaf7",
