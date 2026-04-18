@@ -24,6 +24,12 @@ function getWeekStart(date) {
   return d;
 }
 
+function getTodayStart() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+}
+
 function formatDateKey(date) {
   const y = date.getFullYear();
   const m = `${date.getMonth() + 1}`.padStart(2, "0");
@@ -120,7 +126,7 @@ function isToday(dateKey) {
 }
 
 export default function ReserveDateTimePage() {
-  const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
+  const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
