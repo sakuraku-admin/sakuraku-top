@@ -15,6 +15,15 @@ function addDays(date, days) {
   return next;
 }
 
+function getWeekStart(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = day === 0 ? -6 : 1 - day;
+  d.setDate(d.getDate() + diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
 function getTodayStart() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -127,6 +136,10 @@ export default function ReserveDateTimePage() {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
 
+  const handlePrevWeek = () => {
+    setWeekStart((prev) => addDays(prev, -7));
+  };
+
   const handleNextWeek = () => {
     setWeekStart((prev) => addDays(prev, 7));
   };
@@ -160,9 +173,25 @@ export default function ReserveDateTimePage() {
         </section>
 
         <section style={styles.calendarInfoCard}>
-          <div style={styles.weekButtonRowSingle}>
+          <div style={styles.weekButtonRow}>
+            <button onClick={handlePrevWeek} style={styles.weekButton}>
+              ← 前の週
+            </button>
+
             <button onClick={handleNextWeek} style={styles.weekButton}>
               次の週 →
+            </button>
+          </div>
+
+          <div style={styles.topNextButtonWrap}>
+            <button
+              style={{
+                ...styles.nextButton,
+                ...(selected ? {} : styles.nextButtonDisabled),
+              }}
+              disabled={!selected}
+            >
+              この日時で進む
             </button>
           </div>
         </section>
@@ -392,15 +421,16 @@ const styles = {
     WebkitBackdropFilter: "blur(8px)",
   },
 
-  weekButtonRowSingle: {
-    display: "flex",
-    justifyContent: "center",
+  weekButtonRow: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "10px",
   },
 
   weekButton: {
     border: "none",
     borderRadius: "999px",
-    padding: "10px 18px",
+    padding: "10px 8px",
     background:
       "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
     color: "#fffaf7",
@@ -409,6 +439,12 @@ const styles = {
     fontSize: "0.84rem",
     whiteSpace: "nowrap",
     boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
+  },
+
+  topNextButtonWrap: {
+    marginTop: "12px",
+    display: "flex",
+    justifyContent: "center",
   },
 
   calendarCard: {
