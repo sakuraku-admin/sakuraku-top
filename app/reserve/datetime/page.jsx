@@ -40,18 +40,6 @@ function formatJapaneseDate(date) {
   };
 }
 
-function formatRangeLabel(startDate, endDate) {
-  return `${startDate.getMonth() + 1}/${startDate.getDate()} ～ ${
-    endDate.getMonth() + 1
-  }/${endDate.getDate()}`;
-}
-
-function formatSelectedDateShort(dateKey, time) {
-  if (!dateKey || !time) return "未選択";
-  const [, month, day] = dateKey.split("-");
-  return `${Number(month)}/${Number(day)} ${time}～`;
-}
-
 function generateTimeSlots() {
   const slots = [];
   for (let hour = OPEN_HOUR; hour < CLOSE_HOUR; hour++) {
@@ -161,12 +149,6 @@ export default function ReserveDateTimePage() {
     setSelected({ dateKey, time });
   };
 
-  const currentRangeLabel = formatRangeLabel(weekDates[0], weekDates[6]);
-  const selectedLabel = formatSelectedDateShort(
-    selected?.dateKey,
-    selected?.time
-  );
-
   return (
     <main style={styles.page}>
       <div style={styles.container}>
@@ -185,8 +167,6 @@ export default function ReserveDateTimePage() {
         </section>
 
         <section style={styles.calendarInfoCard}>
-          <div style={styles.rangeText}>{currentRangeLabel}</div>
-
           <div style={styles.weekButtonRow}>
             <button onClick={handlePrevWeek} style={styles.weekButton}>
               ← 前の週
@@ -195,10 +175,6 @@ export default function ReserveDateTimePage() {
             <button onClick={handleNextWeek} style={styles.weekButton}>
               次の週 →
             </button>
-          </div>
-
-          <div style={styles.selectedBox}>
-            選択中：<strong style={styles.selectedStrong}>{selectedLabel}</strong>
           </div>
         </section>
 
@@ -427,18 +403,7 @@ const styles = {
     WebkitBackdropFilter: "blur(8px)",
   },
 
-  rangeText: {
-    textAlign: "center",
-    color: "#5a3a2c",
-    fontSize: "1rem",
-    fontWeight: 700,
-    lineHeight: 1.4,
-    fontFamily:
-      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-  },
-
   weekButtonRow: {
-    marginTop: "10px",
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
     gap: "10px",
@@ -456,22 +421,6 @@ const styles = {
     fontSize: "0.84rem",
     whiteSpace: "nowrap",
     boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
-  },
-
-  selectedBox: {
-    marginTop: "10px",
-    padding: "10px 12px",
-    borderRadius: "14px",
-    background: "rgba(255, 228, 235, 0.82)",
-    color: "#92515f",
-    fontSize: "0.88rem",
-    textAlign: "center",
-    border: "1px solid rgba(226, 142, 164, 0.30)",
-    lineHeight: 1.5,
-  },
-
-  selectedStrong: {
-    color: "#b44f69",
   },
 
   calendarCard: {
