@@ -9,8 +9,6 @@ const BUFFER_MINUTES = 60;
 const MENU_NAME = "深整コース 120分";
 const TREATMENT_MINUTES = 120;
 
-// ===== ここから上は一切変更なし =====
-
 function addDays(date, days) {
   const next = new Date(date);
   next.setDate(next.getDate() + days);
@@ -42,6 +40,18 @@ function formatJapaneseDate(date) {
   };
 }
 
+function formatRangeLabel(startDate, endDate) {
+  return `${startDate.getMonth() + 1}/${startDate.getDate()} ～ ${
+    endDate.getMonth() + 1
+  }/${endDate.getDate()}`;
+}
+
+function formatSelectedDateShort(dateKey, time) {
+  if (!dateKey || !time) return "未選択";
+  const [, month, day] = dateKey.split("-");
+  return `${Number(month)}/${Number(day)} ${time}～`;
+}
+
 function generateTimeSlots() {
   const slots = [];
   for (let hour = OPEN_HOUR; hour < CLOSE_HOUR; hour++) {
@@ -51,14 +61,64 @@ function generateTimeSlots() {
   return slots;
 }
 
-function isToday(dateKey) {
-  const todayKey = formatDateKey(new Date());
-  return dateKey === todayKey;
+function timeStringToMinutes(time) {
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+function minutesToTimeString(totalMinutes) {
+  const hour = Math.floor(totalMinutes / 60);
+  const minute = totalMinutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+function buildMockAvailability() {
+  const today = new Date();
+  const data = {};
+
+  for (let i = 0; i < 42; i++) {
+    const date = addDays(today, i);
+    const dateKey = formatDateKey(date);
+    const day = date.getDay();
+
+    let availableStarts = [];
+
+    if (day === 1) {
+      availableStarts = ["11:00", "12:30", "14:00", "16:00", "18:00"];
+    } else if (day === 2) {
+      availableStarts = ["11:30", "13:00", "15:00", "17:00"];
+    } else if (day === 3) {
+      availableStarts = ["12:00", "14:00", "16:30", "18:00"];
+    } else if (day === 4) {
+      availableStarts = ["11:00", "13:30", "15:30", "17:30"];
+    } else if (day === 5) {
+      availableStarts = ["11:30", "14:00", "16:00", "18:00"];
+    } else if (day === 6) {
+      availableStarts = ["11:00", "12:00", "14:30", "16:30"];
+    } else {
+      availableStarts = ["12:00", "15:00"];
+    }
+
+    data[dateKey] = availableStarts;
+  }
+
+  return data;
 }
 
 function canReserveAt(startTime, treatmentMinutes) {
-  const [h, m] = startTime.split(":").map(Number);
-  return h * 60 + m + treatmentMinutes <= CLOSE_HOUR * 60;
+  const start = timeStringToMinutes(startTime);
+  const treatmentEnd = start + treatmentMinutes;
+  const close = CLOSE_HOUR * 60;
+
+  return treatmentEnd <= close;
+}
+
+function getBlockedEndTime(startTime, treatmentMinutes, bufferMinutes) {
+  const start = timeStringToMinutes(startTime);
+  const close = CLOSE_HOUR * 60;
+  const blockedEnd = start + treatmentMinutes + bufferMinutes;
+
+  return Math.min(blockedEnd, close);
 }
 
 function isStartMarkedAvailable(dateKey, time, mockAvailability) {
@@ -66,190 +126,540 @@ function isStartMarkedAvailable(dateKey, time, mockAvailability) {
   return dayStarts.includes(time);
 }
 
-// ===== コンポーネント =====
+function isToday(dateKey) {
+  const todayKey = formatDateKey(new Date());
+  return dateKey === todayKey;
+}
 
 export default function ReserveDateTimePage() {
   const [weekStart, setWeekStart] = useState(getWeekStart(new Date()));
   const [selected, setSelected] = useState(null);
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
-
-  const mockAvailability = useMemo(() => ({}), []);
+  const mockAvailability = useMemo(() => buildMockAvailability(), []);
 
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
 
+  const handlePrevWeek = () => {
+    setWeekStart((prev) => addDays(prev, -7));
+  };
+
+  const handleNextWeek = () => {
+    setWeekStart((prev) => addDays(prev, 7));
+  };
+
   const handleSelect = (dateKey, time) => {
-    const ok =
+    const isReservable =
       !isToday(dateKey) &&
       isStartMarkedAvailable(dateKey, time, mockAvailability) &&
       canReserveAt(time, TREATMENT_MINUTES);
 
-    if (!ok) return;
+    if (!isReservable) return;
+
     setSelected({ dateKey, time });
   };
+
+  const currentRangeLabel = formatRangeLabel(weekDates[0], weekDates[6]);
+  const selectedLabel = formatSelectedDateShort(
+    selected?.dateKey,
+    selected?.time
+  );
 
   return (
     <main style={styles.page}>
       <div style={styles.container}>
+        <h1 style={styles.title}>ご希望の日時をお選びください</h1>
+
+        <section style={styles.infoCard}>
+          <div style={styles.infoMiniBox}>
+            <span style={styles.infoLabel}>選択メニュー</span>
+            <span style={styles.infoValue}>{MENU_NAME}</span>
+          </div>
+
+          <div style={styles.infoMiniBox}>
+            <span style={styles.infoLabel}>所要時間</span>
+            <span style={styles.infoValue}>{TREATMENT_MINUTES}分</span>
+          </div>
+        </section>
+
+        <section style={styles.calendarInfoCard}>
+          <div style={styles.rangeText}>{currentRangeLabel}</div>
+
+          <div style={styles.weekButtonRow}>
+            <button onClick={handlePrevWeek} style={styles.weekButton}>
+              ← 前の週
+            </button>
+
+            <button onClick={handleNextWeek} style={styles.weekButton}>
+              次の週 →
+            </button>
+          </div>
+
+          <div style={styles.selectedBox}>
+            選択中：<strong style={styles.selectedStrong}>{selectedLabel}</strong>
+          </div>
+        </section>
+
         <section style={styles.calendarCard}>
-          <div style={styles.calendarShell}>
-            
-            {/* 時間列（そのまま・幅だけ変更） */}
-            <div style={styles.timeColumn}>
-              <table style={styles.fixedTable}>
-                <thead>
-                  <tr>
-                    <th style={styles.timeHead}>時間</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {timeSlots.map((time) => {
-                    const isHalf = time.includes(":30");
+          <div style={styles.calendarScroll}>
+            <table style={styles.calendarTable}>
+              <thead>
+                <tr>
+                  <th style={styles.timeHead}>時間</th>
+                  {weekDates.map((date) => {
+                    const jp = formatJapaneseDate(date);
+                    const isSat = date.getDay() === 6;
+                    const isSun = date.getDay() === 0;
 
                     return (
-                      <tr key={time}>
-                        <td
+                      <th key={formatDateKey(date)} style={styles.dateHead}>
+                        <div
                           style={{
-                            ...styles.timeCell,
-                            ...(isHalf ? styles.timeCellHalf : {}),
+                            ...styles.dateTop,
+                            color: isSun
+                              ? "#d87088"
+                              : isSat
+                              ? "#6e78d8"
+                              : "#5a3a2c",
                           }}
                         >
-                          {time}
-                        </td>
-                      </tr>
+                          {jp.month}/{jp.day}
+                        </div>
+                        <div
+                          style={{
+                            ...styles.dateBottom,
+                            color: isSun
+                              ? "#d87088"
+                              : isSat
+                              ? "#6e78d8"
+                              : "#5a3a2c",
+                          }}
+                        >
+                          ({jp.week})
+                        </div>
+                      </th>
                     );
                   })}
-                </tbody>
-              </table>
-            </div>
+                </tr>
+              </thead>
 
-            {/* ここだけ修正 */}
-            <div style={styles.dateScroll}>
-              <table style={styles.dateTable}>
-                
-                {/* sticky化 */}
-                <thead style={styles.stickyHead}>
-                  <tr>
-                    {weekDates.map((date) => {
-                      const jp = formatJapaneseDate(date);
-                      return (
-                        <th key={formatDateKey(date)} style={styles.dateHead}>
-                          {jp.month}/{jp.day}
-                          <br />({jp.week})
-                        </th>
-                      );
-                    })}
-                  </tr>
-                </thead>
+              <tbody>
+                {timeSlots.map((time) => {
+                  const [hour, minute] = time.split(":");
+                  const isHalf = minute === "30";
 
-                <tbody>
-                  {timeSlots.map((time) => (
-                    <tr key={time}>
+                  return (
+                    <tr key={`row-${time}`}>
+                      <td
+                        style={{
+                          ...styles.timeCell,
+                          ...(isHalf ? styles.timeCellHalf : styles.timeCellHour),
+                        }}
+                      >
+                        {isHalf ? (
+                          <span style={styles.halfMinute}>{time}</span>
+                        ) : (
+                          time
+                        )}
+                      </td>
+
                       {weekDates.map((date) => {
                         const dateKey = formatDateKey(date);
 
-                        const ok =
+                        const markedAvailable = isStartMarkedAvailable(
+                          dateKey,
+                          time,
+                          mockAvailability
+                        );
+                        const withinBusinessHours = canReserveAt(
+                          time,
+                          TREATMENT_MINUTES
+                        );
+
+                        const isReservable =
                           !isToday(dateKey) &&
-                          isStartMarkedAvailable(
-                            dateKey,
-                            time,
-                            mockAvailability
-                          ) &&
-                          canReserveAt(time, TREATMENT_MINUTES);
+                          markedAvailable &&
+                          withinBusinessHours;
+
+                        const isSelected =
+                          selected?.dateKey === dateKey &&
+                          selected?.time === time;
+
+                        const blockedEndTime = getBlockedEndTime(
+                          time,
+                          TREATMENT_MINUTES,
+                          BUFFER_MINUTES
+                        );
 
                         return (
-                          <td key={dateKey + time} style={styles.slotCell}>
-                            {ok ? (
+                          <td
+                            key={`${dateKey}-${time}`}
+                            style={{
+                              ...styles.slotCell,
+                              ...(isReservable
+                                ? styles.slotCellAvailable
+                                : styles.slotCellUnavailable),
+                            }}
+                          >
+                            {isReservable ? (
                               <button
-                                onClick={() =>
-                                  handleSelect(dateKey, time)
-                                }
-                                style={styles.slotButton}
+                                onClick={() => handleSelect(dateKey, time)}
+                                style={{
+                                  ...styles.slotButton,
+                                  ...(isSelected
+                                    ? styles.slotSelected
+                                    : styles.slotAvailable),
+                                }}
+                                title={`施術終了 ${minutesToTimeString(
+                                  timeStringToMinutes(time) +
+                                    TREATMENT_MINUTES
+                                )} / 枠確保 ${blockedEndTime}まで`}
                               >
-                                ◎
+                                {isSelected ? "●" : "◎"}
                               </button>
                             ) : (
-                              <div style={styles.slotUnavailableMark}>
-                                ✕
-                              </div>
+                              <div style={styles.slotUnavailableMark}>✕</div>
                             )}
                           </td>
                         );
                       })}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </section>
+
+        <div style={styles.bottomButtonWrap}>
+          <button
+            style={{
+              ...styles.nextButton,
+              ...(selected ? {} : styles.nextButtonDisabled),
+            }}
+            disabled={!selected}
+          >
+            この日時で進む
+          </button>
+        </div>
       </div>
     </main>
   );
 }
 
 const styles = {
-  page: { minHeight: "100vh" },
-  container: { maxWidth: "400px", margin: "0 auto" },
+  page: {
+    minHeight: "100vh",
+    backgroundImage: "url('/images/mokume.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    padding: "28px 18px 56px",
+    boxSizing: "border-box",
+  },
 
-  calendarCard: { marginTop: "12px" },
+  container: {
+    width: "100%",
+    maxWidth: "400px",
+    margin: "0 auto",
+  },
 
-  calendarShell: {
+  title: {
+    margin: "0 0 14px 0",
+    textAlign: "center",
+    color: "#5a3a2c",
+    fontSize: "clamp(1.15rem, 5.4vw, 1.5rem)",
+    lineHeight: 1.45,
+    letterSpacing: "0.03em",
+    fontWeight: 700,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    textShadow: "0 1px 6px rgba(255,255,255,0.28)",
+  },
+
+  infoCard: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "10px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
+    borderRadius: "20px",
+    padding: "10px",
+    boxSizing: "border-box",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  },
+
+  infoMiniBox: {
+    background: "rgba(255, 250, 247, 0.72)",
+    border: "1px solid rgba(170, 130, 109, 0.12)",
+    borderRadius: "14px",
+    padding: "8px 10px",
     display: "flex",
-    border: "1px solid #eee",
+    flexDirection: "column",
+    gap: "4px",
+    boxSizing: "border-box",
   },
 
-  timeColumn: {
-    width: "42px", // ←細くした
+  infoLabel: {
+    fontSize: "0.72rem",
+    color: "#9c7f72",
+    lineHeight: 1.4,
   },
 
-  fixedTable: {
-    width: "42px",
+  infoValue: {
+    fontSize: "0.88rem",
+    color: "#5a3a2c",
+    fontWeight: 700,
+    lineHeight: 1.4,
   },
 
-  dateScroll: {
-    overflowY: "auto", // ←縦スクロール
-    height: "420px",
+  calendarInfoCard: {
+    marginTop: "12px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
+    borderRadius: "20px",
+    padding: "12px 12px 10px",
+    boxSizing: "border-box",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
   },
 
-  stickyHead: {
+  rangeText: {
+    textAlign: "center",
+    color: "#5a3a2c",
+    fontSize: "1rem",
+    fontWeight: 700,
+    lineHeight: 1.4,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  weekButtonRow: {
+    marginTop: "10px",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "10px",
+  },
+
+  weekButton: {
+    border: "none",
+    borderRadius: "999px",
+    padding: "10px 8px",
+    background:
+      "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
+    color: "#fffaf7",
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: "0.84rem",
+    whiteSpace: "nowrap",
+    boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
+  },
+
+  selectedBox: {
+    marginTop: "10px",
+    padding: "10px 12px",
+    borderRadius: "14px",
+    background: "rgba(255, 228, 235, 0.82)",
+    color: "#92515f",
+    fontSize: "0.88rem",
+    textAlign: "center",
+    border: "1px solid rgba(226, 142, 164, 0.30)",
+    lineHeight: 1.5,
+  },
+
+  selectedStrong: {
+    color: "#b44f69",
+  },
+
+  calendarCard: {
+    marginTop: "12px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
+    borderRadius: "22px",
+    padding: "8px",
+    boxSizing: "border-box",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  },
+
+  calendarScroll: {
+    maxHeight: "560px",
+    overflowY: "auto",
+    overflowX: "hidden",
+    WebkitOverflowScrolling: "touch",
+    borderRadius: "18px",
+    background: "#fffdfa",
+    border: "1px solid #ece1d8",
+  },
+
+  calendarTable: {
+    width: "100%",
+    borderCollapse: "collapse",
+    tableLayout: "fixed",
+    background: "#fffdfa",
+  },
+
+  timeHead: {
+    width: "54px",
+    minWidth: "54px",
+    height: "68px",
+    background: "#f4ece5",
+    color: "#5a3a2c",
+    fontWeight: 700,
+    textAlign: "center",
+    fontSize: "0.86rem",
+    borderBottom: "1px solid #e6d8cf",
+    padding: 0,
     position: "sticky",
     top: 0,
-    background: "#fff",
-    zIndex: 10,
-  },
-
-  dateTable: {
-    width: "100%",
-    tableLayout: "fixed",
+    zIndex: 4,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   dateHead: {
-    fontSize: "12px",
+    width: "calc((100% - 54px) / 7)",
+    minWidth: "44px",
+    height: "68px",
+    background: "#fdf7f2",
+    borderBottom: "1px solid #e6d8cf",
+    borderLeft: "1px solid #f0e6de",
+    padding: "6px 2px",
+    textAlign: "center",
+    boxSizing: "border-box",
+    position: "sticky",
+    top: 0,
+    zIndex: 3,
+  },
+
+  dateTop: {
+    fontSize: "0.82rem",
+    fontWeight: 700,
+    lineHeight: 1.2,
+  },
+
+  dateBottom: {
+    marginTop: "4px",
+    fontSize: "0.74rem",
+    fontWeight: 700,
+    lineHeight: 1.2,
   },
 
   timeCell: {
-    fontSize: "12px",
+    width: "54px",
+    minWidth: "54px",
+    height: "54px",
+    background: "#faf5f0",
+    color: "#5a3a2c",
+    fontWeight: 700,
+    textAlign: "center",
+    borderBottom: "1px solid #eee2d9",
+    padding: 0,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  timeCellHour: {
+    fontSize: "0.82rem",
+    letterSpacing: "0.01em",
   },
 
   timeCellHalf: {
-    color: "#aaa", // ←薄く
+    fontSize: "0.72rem",
+    color: "#8f786d",
+  },
+
+  halfMinute: {
+    color: "#8f786d",
+    opacity: 0.78,
   },
 
   slotCell: {
-    height: "44px",
+    height: "54px",
+    borderBottom: "1px solid #eee2d9",
+    borderLeft: "1px solid #f2e8e1",
     textAlign: "center",
+    padding: 0,
+    boxSizing: "border-box",
+  },
+
+  slotCellAvailable: {
+    background: "#fffdfa",
+  },
+
+  slotCellUnavailable: {
+    background: "#f1ebe6",
   },
 
   slotButton: {
+    width: "42px",
+    height: "42px",
+    borderRadius: "999px",
+    fontSize: "1.38rem",
+    fontWeight: 700,
     border: "none",
-    background: "none",
+    background: "transparent",
+    cursor: "pointer",
+    transition: "all 0.18s ease",
+    padding: 0,
+    lineHeight: 1,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  slotAvailable: {
+    color: "#e2a3b4",
+    boxShadow: "none",
+    transform: "none",
+  },
+
+  slotSelected: {
+    color: "#df7e98",
+    boxShadow: "none",
+    transform: "scale(1.08)",
   },
 
   slotUnavailableMark: {
-    color: "#aaa",
+    color: "#9d918a",
+    fontSize: "0.96rem",
+    fontWeight: 700,
+    lineHeight: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "32px",
+    height: "32px",
+    margin: "0 auto",
+    userSelect: "none",
+  },
+
+  bottomButtonWrap: {
+    marginTop: "22px",
+    display: "flex",
+    justifyContent: "center",
+  },
+
+  nextButton: {
+    border: "none",
+    borderRadius: "999px",
+    padding: "14px 26px",
+    fontSize: "1rem",
+    fontWeight: 700,
+    background: "#d98b9a",
+    color: "#fffdfb",
+    cursor: "pointer",
+    boxShadow: "0 8px 18px rgba(217, 139, 154, 0.24)",
+  },
+
+  nextButtonDisabled: {
+    background: "#ccbdb7",
+    cursor: "not-allowed",
+    boxShadow: "none",
   },
 };
