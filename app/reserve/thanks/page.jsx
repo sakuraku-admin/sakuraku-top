@@ -31,6 +31,28 @@ export default function ThanksPage() {
       if (reservationData.reserveTime) {
         setReserveTime(reservationData.reserveTime);
       }
+
+      // 👇ここだけ追加（履歴へ保存）
+      const historySaveKey = `savedHistory:${savedReservation}`;
+      const alreadySaved = sessionStorage.getItem(historySaveKey);
+
+      if (!alreadySaved) {
+        const existingHistory = localStorage.getItem("reservationHistory");
+        const historyList = existingHistory ? JSON.parse(existingHistory) : [];
+
+        const newHistoryItem = {
+          id: Date.now(),
+          date: reservationData.reserveDate || "",
+          course: `${reservationData.menuName || ""}${reservationData.menuTime || ""}`,
+          option: Array.isArray(reservationData.options)
+            ? reservationData.options.join("\n")
+            : "",
+        };
+
+        const updatedHistory = [newHistoryItem, ...historyList];
+        localStorage.setItem("reservationHistory", JSON.stringify(updatedHistory));
+        sessionStorage.setItem(historySaveKey, "true");
+      }
     } catch (error) {
       console.error("予約データの読み込みに失敗しました", error);
     }
