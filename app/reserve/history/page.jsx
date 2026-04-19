@@ -1,5 +1,9 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function ReserveHistoryPage() {
-  const historyList = [
+  const [historyList, setHistoryList] = useState([
     {
       id: 1,
       date: "2026/1/15",
@@ -20,7 +24,33 @@ export default function ReserveHistoryPage() {
     { id: 8, date: "", course: "", option: "" },
     { id: 9, date: "", course: "", option: "" },
     { id: 10, date: "", course: "", option: "" },
-  ];
+  ]);
+
+  useEffect(() => {
+    const savedHistory = localStorage.getItem("reservationHistory");
+    if (!savedHistory) return;
+
+    try {
+      const parsedHistory = JSON.parse(savedHistory);
+
+      if (Array.isArray(parsedHistory)) {
+        const filledHistory = [...parsedHistory];
+
+        while (filledHistory.length < 10) {
+          filledHistory.push({
+            id: `empty-${filledHistory.length + 1}`,
+            date: "",
+            course: "",
+            option: "",
+          });
+        }
+
+        setHistoryList(filledHistory.slice(0, 10));
+      }
+    } catch (error) {
+      console.error("履歴データの読み込みに失敗しました", error);
+    }
+  }, []);
 
   return (
     <main
