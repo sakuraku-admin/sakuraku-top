@@ -188,7 +188,7 @@ export default function Home() {
           </button>
 
           <a
-            href="/confirm"
+            href="/reserve/history"
             style={{
               ...subButtonStyle,
               position: "absolute",
