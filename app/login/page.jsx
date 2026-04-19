@@ -8,7 +8,15 @@ export default function LoginPage() {
 
   const handleLogin = (e) => {
     e.preventDefault();
+
     console.log("ログイン", { email, phoneLast4 });
+
+    // 👇追加（仮ログイン保存）
+    localStorage.setItem("customerName", email);
+    localStorage.setItem("isLoggedIn", "true");
+
+    // 👇ホームへ戻す（※これ無いと画面変わらない）
+    window.location.href = "/";
   };
 
   const handleResendMail = () => {
