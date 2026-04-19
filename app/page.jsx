@@ -101,7 +101,6 @@ export default function Home() {
             top: "2.2%",
             right: "4.2%",
             background: "transparent",
-            border: "none",
             color: "rgba(90, 58, 44, 0.68)",
             fontSize: "clamp(11px, 1vw, 14px)",
             fontWeight: 500,
