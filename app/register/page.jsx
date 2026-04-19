@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const router = useRouter();
 
   const handleRegister = (e) => {
     e.preventDefault();
     console.log("新規会員登録", { name, email, phone });
+    router.push("/");
   };
 
   return (
@@ -17,7 +20,6 @@ export default function RegisterPage() {
       <div style={styles.overlay}>
         <h1 style={styles.title}>新規会員登録</h1>
 
-        {/* ←ここだけ追加 */}
         <a href="/login" style={styles.reloginLink}>
           登録済みの方はこちら
         </a>
@@ -109,7 +111,6 @@ const styles = {
     marginBottom: "34px",
   },
 
-  /* ←ここだけ追加 */
   reloginLink: {
     marginTop: "-20px",
     marginBottom: "20px",
