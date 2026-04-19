@@ -18,7 +18,10 @@ export default function RegisterPage() {
 
     console.log("新規会員登録", { name, email, phone });
 
-  localStorage.setItem("customerName", name);
+    // 👇ここ修正（仮登録を保持）
+    localStorage.setItem("customerName", name);
+    localStorage.setItem("isLoggedIn", "true");
+
     router.push("/");
   };
 
