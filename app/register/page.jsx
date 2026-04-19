@@ -36,7 +36,7 @@ export default function RegisterPage() {
 
         <form style={styles.card} onSubmit={handleRegister}>
           <label style={styles.label}>
-            <span style={styles.labelText}>お名前</span>
+            <span style={styles.labelText}>お名前(ﾌﾙﾈｰﾑ/漢字)</span>
             <input
               type="text"
               value={name}
