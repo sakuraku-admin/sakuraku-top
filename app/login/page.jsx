@@ -3,15 +3,16 @@
 import { useState } from "react";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [customerName, setCustomerName] = useState("");
   const [phoneLast4, setPhoneLast4] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    console.log("ログイン", { email, phoneLast4 });
+    console.log("ログイン", { customerName, phoneLast4 });
 
-    // 👇ここだけ変更（名前は保存しない）
+    // 👇ここだけ変更
+    localStorage.setItem("customerName", customerName);
     localStorage.setItem("isLoggedIn", "true");
 
     // 👇ホームへ戻す
@@ -19,7 +20,7 @@ export default function LoginPage() {
   };
 
   const handleResendMail = () => {
-    console.log("メール再送", { email });
+    console.log("メール再送", { customerName });
   };
 
   return (
@@ -33,11 +34,11 @@ export default function LoginPage() {
           <label style={styles.label}>
             <span style={styles.labelText}>メールアドレス</span>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
               placeholder=""
-              autoComplete="email"
+              autoComplete="name"
               style={styles.input}
             />
           </label>
