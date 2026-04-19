@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function OptionMenuPage() {
+  const router = useRouter();
   const [selectedMag, setSelectedMag] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
@@ -34,6 +36,10 @@ export default function OptionMenuPage() {
 
   const handleHeadSelect = () => {
     setSelectedHead((prev) => !prev);
+  };
+
+  const handleNext = () => {
+    router.push("/reserve/datetime");
   };
 
   const optionButtonStyle = (selected) => ({
@@ -80,7 +86,11 @@ export default function OptionMenuPage() {
               整体コースのみご予約の方はこちら↓
             </p>
 
-            <button type="button" style={styles.skipButton}>
+            <button
+              type="button"
+              onClick={handleNext}
+              style={styles.skipButton}
+            >
               このまま次へ進む
             </button>
           </section>
@@ -199,7 +209,11 @@ export default function OptionMenuPage() {
               </div>
             </div>
 
-            <button type="button" style={styles.nextButton}>
+            <button
+              type="button"
+              onClick={handleNext}
+              style={styles.nextButton}
+            >
               この内容で次へ
             </button>
           </section>
