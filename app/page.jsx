@@ -163,10 +163,10 @@ export default function Home() {
               style={{
                 position: "absolute",
                 left: "50%",
-                top: "32.8%",
+                top: "35.5%", // ←ここ調整
                 transform: "translateX(-50%)",
                 color: "#6e5750",
-                fontSize: "clamp(16px, 1.8vw, 24px)",
+                fontSize: "clamp(13px, 1.5vw, 20px)", // ←少し小さく
                 fontWeight: 500,
                 fontFamily:
                   '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
