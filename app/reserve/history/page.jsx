@@ -229,6 +229,26 @@ export default function ReserveHistoryPage() {
             </div>
           ))}
         </div>
+
+        {/* 👇ここだけ追加 */}
+        <button
+          onClick={() => (window.location.href = "/")}
+          style={{
+            width: "100%",
+            border: "none",
+            borderRadius: "999px",
+            background: "linear-gradient(180deg, #e2a0b2 0%, #d88fa3 100%)",
+            color: "#fff",
+            fontSize: "1.18rem",
+            padding: "16px",
+            cursor: "pointer",
+            letterSpacing: "0.03em",
+            marginTop: "10px",
+            flexShrink: 0,
+          }}
+        >
+          トップへ戻る
+        </button>
       </div>
     </main>
   );
