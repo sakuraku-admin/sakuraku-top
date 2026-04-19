@@ -145,17 +145,28 @@ export default function Home() {
           }}
         />
 
-        <div style={{ position: "absolute", inset: 0 }} />
-        <div style={{ position: "absolute", inset: 0 }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+          }}
+        />
+
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+          }}
+        >
           {customerName && (
             <div
               style={{
                 position: "absolute",
                 left: "50%",
-                top: "35.5%",
+                top: "35.5%", // ←ここ調整
                 transform: "translateX(-50%)",
-                color: "rgba(110, 80, 60, 0.7)", // ←薄めの茶色
-                fontSize: "clamp(13px, 1.5vw, 20px)",
+                color: "#6e5750",
+                fontSize: "clamp(13px, 1.5vw, 20px)", // ←少し小さく
                 fontWeight: 500,
                 fontFamily:
                   '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
@@ -163,7 +174,7 @@ export default function Home() {
                 lineHeight: 1.4,
                 textAlign: "center",
                 zIndex: 10,
-                textShadow: "0 1px 4px rgba(255,255,255,0.35)",
+                textShadow: "0 1px 4px rgba(255,255,255,0.45)",
                 whiteSpace: "nowrap",
               }}
             >
@@ -177,7 +188,7 @@ export default function Home() {
               ...mainButtonStyle,
               position: "absolute",
               left: "50%",
-              top: "40%", // ←少し下げた
+              top: "38.5%",
               transform: "translateX(-50%)",
               cursor: "pointer",
               appearance: "none",
