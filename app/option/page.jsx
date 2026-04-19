@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function OptionMenuPage() {
+function OptionMenuContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -49,10 +49,12 @@ export default function OptionMenuPage() {
 
     const selectedOptions = [];
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
-    if (selectedShape === "shape-30")
+    if (selectedShape === "shape-30") {
       selectedOptions.push("巡りシェイプケア（30分）");
-    if (selectedShape === "shape-60")
+    }
+    if (selectedShape === "shape-60") {
       selectedOptions.push("巡りシェイプケア（60分）");
+    }
     if (selectedHead) selectedOptions.push("頭部解放（頭蓋筋膜リリース）");
 
     const params = new URLSearchParams({
@@ -247,6 +249,14 @@ export default function OptionMenuPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function OptionMenuPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <OptionMenuContent />
+    </Suspense>
   );
 }
 
