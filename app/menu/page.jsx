@@ -160,7 +160,7 @@ export default function MenuPage() {
 
     const params = new URLSearchParams({
       courseId: selectedMenu.id,
-      courseName: selectedMenu.name,
+      courseName: selectedMenu.categoryLabel,
       duration: selectedMenu.duration,
       price: selectedMenu.price,
       type: selectedMenu.type,
