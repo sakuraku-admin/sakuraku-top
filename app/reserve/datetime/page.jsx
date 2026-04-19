@@ -1,13 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
 const BUFFER_MINUTES = 60;
 
-const MENU_NAME = "深整コース 120分";
-const TREATMENT_MINUTES = 120;
+const DEFAULT_MENU_NAME = "深整コース 120分";
+const DEFAULT_TREATMENT_MINUTES = 120;
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -126,8 +127,23 @@ function isToday(dateKey) {
 }
 
 export default function ReserveDateTimePage() {
+  const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
+
+  const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
+  const durationParam = searchParams.get("duration");
+  const optionMinutesParam = searchParams.get("optionMinutes");
+  const selectedOptionsParam = searchParams.get("selectedOptions");
+
+  const baseTreatmentMinutes =
+    Number.parseInt(durationParam, 10) || DEFAULT_TREATMENT_MINUTES;
+  const optionMinutes = Number.parseInt(optionMinutesParam, 10) || 0;
+  const treatmentMinutes = baseTreatmentMinutes + optionMinutes;
+
+  const displayMenuName = selectedOptionsParam
+    ? `${courseName}＋${selectedOptionsParam}`
+    : courseName;
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
   const mockAvailability = useMemo(() => buildMockAvailability(), []);
@@ -148,7 +164,7 @@ export default function ReserveDateTimePage() {
     const isReservable =
       !isToday(dateKey) &&
       isStartMarkedAvailable(dateKey, time, mockAvailability) &&
-      canReserveAt(time, TREATMENT_MINUTES);
+      canReserveAt(time, treatmentMinutes);
 
     if (!isReservable) return;
 
@@ -163,12 +179,12 @@ export default function ReserveDateTimePage() {
         <section style={styles.infoCard}>
           <div style={styles.infoMiniBox}>
             <span style={styles.infoLabel}>選択メニュー</span>
-            <span style={styles.infoValue}>{MENU_NAME}</span>
+            <span style={styles.infoValue}>{displayMenuName}</span>
           </div>
 
           <div style={styles.infoMiniBox}>
             <span style={styles.infoLabel}>所要時間</span>
-            <span style={styles.infoValue}>{TREATMENT_MINUTES}分</span>
+            <span style={styles.infoValue}>{treatmentMinutes}分</span>
           </div>
         </section>
 
@@ -269,7 +285,7 @@ export default function ReserveDateTimePage() {
                         );
                         const withinBusinessHours = canReserveAt(
                           time,
-                          TREATMENT_MINUTES
+                          treatmentMinutes
                         );
 
                         const isReservable =
@@ -283,7 +299,7 @@ export default function ReserveDateTimePage() {
 
                         const blockedEndTime = getBlockedEndTime(
                           time,
-                          TREATMENT_MINUTES,
+                          treatmentMinutes,
                           BUFFER_MINUTES
                         );
 
@@ -308,7 +324,7 @@ export default function ReserveDateTimePage() {
                                 }}
                                 title={`施術終了 ${minutesToTimeString(
                                   timeStringToMinutes(time) +
-                                    TREATMENT_MINUTES
+                                    treatmentMinutes
                                 )} / 枠確保 ${blockedEndTime}まで`}
                               >
                                 {isSelected ? "●" : "◎"}
