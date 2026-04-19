@@ -52,6 +52,11 @@ export default function Home() {
     paddingBottom: "1px",
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    alert("ログアウトしました");
+  };
+
   return (
     <main
       style={{
@@ -75,6 +80,31 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
+        {/* ログアウト */}
+        <button
+          onClick={handleLogout}
+          style={{
+            position: "absolute",
+            top: "2.2%",
+            right: "4.2%",
+            background: "transparent",
+            border: "none",
+            color: "rgba(90, 58, 44, 0.68)",
+            fontSize: "clamp(11px, 1vw, 14px)",
+            fontWeight: 500,
+            fontFamily:
+              '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+            letterSpacing: "0.04em",
+            cursor: "pointer",
+            zIndex: 20,
+            padding: 0,
+            lineHeight: 1.4,
+            textShadow: "0 1px 3px rgba(255,255,255,0.45)",
+          }}
+        >
+          ログアウトする
+        </button>
+
         {/* ショップカード画像 */}
         <img
           src="/images/top1.png"
