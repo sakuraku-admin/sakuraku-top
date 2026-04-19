@@ -17,6 +17,8 @@ export default function RegisterPage() {
     }
 
     console.log("新規会員登録", { name, email, phone });
+
+  localStorage.setItem("isLoggedIn", "true");
     router.push("/");
   };
 
