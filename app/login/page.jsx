@@ -15,8 +15,19 @@ export default function LoginPage() {
     console.log("メール再送", { email });
   };
 
+  // ★追加：ログアウト処理
+  const handleLogout = () => {
+    localStorage.removeItem("user"); // ←キー名は必要に応じて変更OK
+    alert("ログアウトしました");
+  };
+
   return (
     <main style={styles.page}>
+      {/* ★追加：右上ログアウト */}
+      <div style={styles.logout} onClick={handleLogout}>
+        ログアウトする
+      </div>
+
       <div style={styles.overlay}>
         <h1 style={styles.title}>会員ログイン</h1>
 
@@ -83,6 +94,19 @@ const styles = {
     alignItems: "flex-start",
     padding: "44px 20px 32px",
     boxSizing: "border-box",
+    position: "relative", // ★追加（位置固定のため）
+  },
+
+  // ★追加：ログアウトスタイル
+  logout: {
+    position: "absolute",
+    top: "14px",
+    right: "16px",
+    fontSize: "0.75rem",
+    color: "rgba(91, 61, 43, 0.6)",
+    fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
+    letterSpacing: "0.06em",
+    cursor: "pointer",
   },
 
   overlay: {
