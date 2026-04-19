@@ -55,14 +55,14 @@ export default function Home() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("isLoggedIn");
     alert("ログアウトしました");
   };
 
   const handleReserveClick = () => {
-    const user = localStorage.getItem("user");
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
 
-    if (user) {
+    if (isLoggedIn === "true") {
       window.location.href = "/menu";
     } else {
       window.location.href = "/register";
