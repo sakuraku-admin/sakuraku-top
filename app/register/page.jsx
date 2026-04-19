@@ -11,6 +11,11 @@ export default function RegisterPage() {
 
   const handleRegister = (e) => {
     e.preventDefault();
+
+    if (!name.trim() || !email.trim() || !phone.trim()) {
+      return;
+    }
+
     console.log("新規会員登録", { name, email, phone });
     router.push("/");
   };
