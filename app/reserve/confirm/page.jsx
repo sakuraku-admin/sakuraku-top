@@ -1,13 +1,64 @@
 "use client";
 
-export default function ReserveConfirmPage() {
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+
+function formatJapaneseDate(dateKey) {
+  if (!dateKey) return "未選択";
+
+  const date = new Date(dateKey);
+  if (Number.isNaN(date.getTime())) return dateKey;
+
+  const weeks = ["日", "月", "火", "水", "木", "金", "土"];
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const week = weeks[date.getDay()];
+
+  return `${year}/${month}/${day}(${week})`;
+}
+
+function timeStringToMinutes(time) {
+  if (!time) return 0;
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+function minutesToTimeString(totalMinutes) {
+  const hour = Math.floor(totalMinutes / 60);
+  const minute = totalMinutes % 60;
+  return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+function ReserveConfirmContent() {
+  const searchParams = useSearchParams();
+
   const customerName = "〇〇　〇〇";
-  const menuName = "整体コース";
-  const menuTime = "60分";
-  const options = ["マグクリーム", "巡りシェイプケア30分", "頭部解放"];
-  const totalTime = "90分";
-  const reserveDate = "2026/4/17(金)";
-  const reserveTime = "11:00〜12:30";
+  const menuName = searchParams.get("courseName") || "整体コース";
+  const menuTime = `${searchParams.get("duration") || "60"}分`;
+
+  const selectedOptionsParam = searchParams.get("selectedOptions") || "";
+  const options = selectedOptionsParam
+    ? selectedOptionsParam.split("、").filter(Boolean)
+    : [];
+
+  const totalTime = `${searchParams.get("totalMinutes") || searchParams.get("duration") || "60"}分`;
+
+  const reserveDate = formatJapaneseDate(searchParams.get("date"));
+
+  const startTime = searchParams.get("time") || "";
+  const totalMinutes =
+    Number.parseInt(
+      searchParams.get("totalMinutes") || searchParams.get("duration") || "60",
+      10
+    ) || 60;
+
+  const endTime = startTime
+    ? minutesToTimeString(timeStringToMinutes(startTime) + totalMinutes)
+    : "";
+
+  const reserveTime =
+    startTime && endTime ? `${startTime}〜${endTime}` : "未選択";
 
   return (
     <main style={styles.page}>
@@ -63,6 +114,14 @@ export default function ReserveConfirmPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ReserveConfirmPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <ReserveConfirmContent />
+    </Suspense>
   );
 }
 
