@@ -59,7 +59,6 @@ export default function Home() {
     alert("ログアウトしました");
   };
 
-  // ★ここが今回の追加ポイント
   const handleReserveClick = () => {
     const user = localStorage.getItem("user");
 
@@ -93,7 +92,6 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        {/* ログアウト */}
         <button
           onClick={handleLogout}
           style={{
@@ -101,6 +99,7 @@ export default function Home() {
             top: "2.2%",
             right: "4.2%",
             background: "transparent",
+            border: "none",
             color: "rgba(90, 58, 44, 0.68)",
             fontSize: "clamp(11px, 1vw, 14px)",
             fontWeight: 500,
@@ -117,7 +116,6 @@ export default function Home() {
           ログアウトする
         </button>
 
-        {/* 画像 */}
         <img
           src="/images/top1.png"
           alt="さく楽 トップカード"
@@ -134,10 +132,19 @@ export default function Home() {
           }}
         />
 
-        <div style={{ position: "absolute", inset: 0 }} />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+          }}
+        />
 
-        <div style={{ position: "absolute", inset: 0 }}>
-          {/* 予約する（ここ変更） */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+          }}
+        >
           <button
             onClick={handleReserveClick}
             style={{
@@ -146,14 +153,14 @@ export default function Home() {
               left: "50%",
               top: "38.5%",
               transform: "translateX(-50%)",
-              border: "none",
               cursor: "pointer",
+              appearance: "none",
+              WebkitAppearance: "none",
             }}
           >
             予約する
           </button>
 
-          {/* 予約確認 */}
           <a
             href="/confirm"
             style={{
@@ -167,7 +174,6 @@ export default function Home() {
             予約確認
           </a>
 
-          {/* 店舗情報 */}
           <a
             href="/info"
             style={{
