@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const OPEN_HOUR = 11;
@@ -14,15 +14,6 @@ function addDays(date, days) {
   const next = new Date(date);
   next.setDate(next.getDate() + days);
   return next;
-}
-
-function getWeekStart(date) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = day === 0 ? -6 : 1 - day;
-  d.setDate(d.getDate() + diff);
-  d.setHours(0, 0, 0, 0);
-  return d;
 }
 
 function getTodayStart() {
@@ -126,7 +117,7 @@ function isToday(dateKey) {
   return dateKey === todayKey;
 }
 
-export default function ReserveDateTimePage() {
+function ReserveDateTimeContent() {
   const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
@@ -323,8 +314,7 @@ export default function ReserveDateTimePage() {
                                     : styles.slotAvailable),
                                 }}
                                 title={`施術終了 ${minutesToTimeString(
-                                  timeStringToMinutes(time) +
-                                    treatmentMinutes
+                                  timeStringToMinutes(time) + treatmentMinutes
                                 )} / 枠確保 ${blockedEndTime}まで`}
                               >
                                 {isSelected ? "●" : "◎"}
@@ -356,6 +346,14 @@ export default function ReserveDateTimePage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function ReserveDateTimePage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <ReserveDateTimeContent />
+    </Suspense>
   );
 }
 
