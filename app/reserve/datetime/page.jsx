@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -100,14 +100,19 @@ function isToday(dateKey) {
 }
 
 function ReserveDateTimeContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
 
+  const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
   const durationParam = searchParams.get("duration");
   const optionMinutesParam = searchParams.get("optionMinutes");
-  const selectedOptionsParam = searchParams.get("selectedOptions");
+  const selectedOptionsParam = searchParams.get("selectedOptions") || "";
+  const optionPriceParam = searchParams.get("optionPrice") || "";
+  const priceParam = searchParams.get("price") || "";
+  const typeParam = searchParams.get("type") || "";
 
   const baseTreatmentMinutes =
     Number.parseInt(durationParam, 10) || DEFAULT_TREATMENT_MINUTES;
@@ -144,6 +149,26 @@ function ReserveDateTimeContent() {
     setSelected({ dateKey, time });
   };
 
+  const handleGoConfirm = () => {
+    if (!selected) return;
+
+    const params = new URLSearchParams({
+      courseId,
+      courseName,
+      duration: String(baseTreatmentMinutes),
+      optionMinutes: String(optionMinutes),
+      selectedOptions: selectedOptionsParam,
+      optionPrice: optionPriceParam,
+      price: priceParam,
+      type: typeParam,
+      totalMinutes: String(treatmentMinutes),
+      date: selected.dateKey,
+      time: selected.time,
+    });
+
+    router.push(`/reserve/confirm?${params.toString()}`);
+  };
+
   return (
     <main style={styles.page}>
       <div style={styles.container}>
@@ -174,6 +199,7 @@ function ReserveDateTimeContent() {
 
           <div style={styles.topNextButtonWrap}>
             <button
+              onClick={handleGoConfirm}
               style={{
                 ...styles.nextButton,
                 ...(selected ? {} : styles.nextButtonDisabled),
@@ -317,6 +343,7 @@ function ReserveDateTimeContent() {
 
         <div style={styles.bottomButtonWrap}>
           <button
+            onClick={handleGoConfirm}
             style={{
               ...styles.nextButton,
               ...(selected ? {} : styles.nextButtonDisabled),
