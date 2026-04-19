@@ -11,11 +11,10 @@ export default function LoginPage() {
 
     console.log("ログイン", { email, phoneLast4 });
 
-    // 👇追加（仮ログイン保存）
-    localStorage.setItem("customerName", email);
+    // 👇ここだけ変更（名前は保存しない）
     localStorage.setItem("isLoggedIn", "true");
 
-    // 👇ホームへ戻す（※これ無いと画面変わらない）
+    // 👇ホームへ戻す
     window.location.href = "/";
   };
 
