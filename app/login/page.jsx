@@ -32,7 +32,7 @@ export default function LoginPage() {
           <p style={styles.subText}>（ご登録時の）</p>
 
           <label style={styles.label}>
-            <span style={styles.labelText}>メールアドレス</span>
+            <span style={styles.labelText}>名前(ﾌﾙﾈｰﾑ/漢字)</span>
             <input
               type="text"
               value={customerName}
