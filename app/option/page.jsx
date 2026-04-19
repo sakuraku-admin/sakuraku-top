@@ -1,10 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function OptionMenuPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [selectedMag, setSelectedMag] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
@@ -39,7 +41,32 @@ export default function OptionMenuPage() {
   };
 
   const handleNext = () => {
-    router.push("/reserve/datetime");
+    const courseId = searchParams.get("courseId") || "";
+    const courseName = searchParams.get("courseName") || "整体コース";
+    const duration = searchParams.get("duration") || "60";
+    const price = searchParams.get("price") || "";
+    const type = searchParams.get("type") || "seitai";
+
+    const selectedOptions = [];
+    if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
+    if (selectedShape === "shape-30")
+      selectedOptions.push("巡りシェイプケア（30分）");
+    if (selectedShape === "shape-60")
+      selectedOptions.push("巡りシェイプケア（60分）");
+    if (selectedHead) selectedOptions.push("頭部解放（頭蓋筋膜リリース）");
+
+    const params = new URLSearchParams({
+      courseId,
+      courseName,
+      duration,
+      price,
+      type,
+      optionMinutes: String(totalMinutes),
+      optionPrice: String(totalPrice),
+      selectedOptions: selectedOptions.join("、"),
+    });
+
+    router.push(`/reserve/datetime?${params.toString()}`);
   };
 
   const optionButtonStyle = (selected) => ({
