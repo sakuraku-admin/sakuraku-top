@@ -1,11 +1,40 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 export default function ThanksPage() {
-  const menuName = "整体コース";
-  const menuTime = "60分";
-  const options = ["頭部解放", "巡りシェイプ1部位", "マグバーム"];
-  const reserveDate = "2026/4/17(金)";
-  const reserveTime = "11:00〜12:30";
+  const [menuName, setMenuName] = useState("整体コース");
+  const [menuTime, setMenuTime] = useState("60分");
+  const [options, setOptions] = useState(["頭部解放", "巡りシェイプ1部位", "マグバーム"]);
+  const [reserveDate, setReserveDate] = useState("2026/4/17(金)");
+  const [reserveTime, setReserveTime] = useState("11:00〜12:30");
+
+  useEffect(() => {
+    const savedReservation = localStorage.getItem("reservationData");
+    if (!savedReservation) return;
+
+    try {
+      const reservationData = JSON.parse(savedReservation);
+
+      if (reservationData.menuName) {
+        setMenuName(reservationData.menuName);
+      }
+      if (reservationData.menuTime) {
+        setMenuTime(reservationData.menuTime);
+      }
+      if (Array.isArray(reservationData.options)) {
+        setOptions(reservationData.options);
+      }
+      if (reservationData.reserveDate) {
+        setReserveDate(reservationData.reserveDate);
+      }
+      if (reservationData.reserveTime) {
+        setReserveTime(reservationData.reserveTime);
+      }
+    } catch (error) {
+      console.error("予約データの読み込みに失敗しました", error);
+    }
+  }, []);
 
   const hasOptions = options && options.length > 0;
 
@@ -122,16 +151,16 @@ const styles = {
   },
 
   pinkCard: {
-  position: "relative",
-  width: "100%",
-  background:"linear-gradient(to bottom, #FFCFD2 75%, rgba(255, 207, 210, 0) 100%)",
-  borderRadius: "22px",
-  padding: "16px 14px 14px",
-  boxSizing: "border-box",
-  overflow: "hidden",
-  textAlign: "center",
-  marginBottom: "8px",
-},
+    position: "relative",
+    width: "100%",
+    background:"linear-gradient(to bottom, #FFCFD2 75%, rgba(255, 207, 210, 0) 100%)",
+    borderRadius: "22px",
+    padding: "16px 14px 14px",
+    boxSizing: "border-box",
+    overflow: "hidden",
+    textAlign: "center",
+    marginBottom: "8px",
+  },
 
   datePill: {
     maxWidth: "286px",
