@@ -9,7 +9,7 @@ function formatJapaneseDate(dateKey) {
   const date = new Date(dateKey);
   if (Number.isNaN(date.getTime())) return dateKey;
 
-  const weeks = ["日", "月", "火", "水", "木", "金", "土"];
+  const weeks = ["日", "月", "火", "水", "火", "金", "土"];
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -33,7 +33,6 @@ function minutesToTimeString(totalMinutes) {
 function ReserveConfirmContent() {
   const searchParams = useSearchParams();
 
-  // 👇ここだけ変更（localStorageから取得）
   const [customerName, setCustomerName] = useState("");
 
   useEffect(() => {
@@ -68,6 +67,10 @@ function ReserveConfirmContent() {
 
   const reserveTime =
     startTime && endTime ? `${startTime}〜${endTime}` : "未選択";
+
+  const handleReserve = () => {
+    window.location.href = "/reserve/thanks";
+  };
 
   return (
     <main style={styles.page}>
@@ -111,7 +114,11 @@ function ReserveConfirmContent() {
           </div>
         </section>
 
-        <button type="button" style={styles.reserveButton}>
+        <button
+          type="button"
+          style={styles.reserveButton}
+          onClick={handleReserve}
+        >
           この内容で予約する
         </button>
 
