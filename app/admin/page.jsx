@@ -186,18 +186,6 @@ function ReserveDateTimeContent() {
       <div style={styles.container}>
         <h1 style={styles.title}>カレンダー管理</h1>
 
-        <section style={styles.infoCard}>
-          <div style={styles.infoMiniBox}>
-            <span style={styles.infoLabel}>選択メニュー</span>
-            <span style={styles.infoValue}>{displayMenuName}</span>
-          </div>
-
-          <div style={styles.infoMiniBox}>
-            <span style={styles.infoLabel}>所要時間</span>
-            <span style={styles.infoValue}>{treatmentMinutes}分</span>
-          </div>
-        </section>
-
         <section style={styles.calendarInfoCard}>
           <div style={styles.weekButtonRow}>
             <button onClick={handlePrevWeek} style={styles.weekButton}>
@@ -209,18 +197,6 @@ function ReserveDateTimeContent() {
             </button>
           </div>
 
-          <div style={styles.topNextButtonWrap}>
-            <button
-              onClick={handleGoConfirm}
-              style={{
-                ...styles.nextButton,
-                ...(selected ? {} : styles.nextButtonDisabled),
-              }}
-              disabled={!selected}
-            >
-              この日時で進む
-            </button>
-          </div>
         </section>
 
         <section style={styles.calendarCard}>
@@ -355,18 +331,6 @@ function ReserveDateTimeContent() {
           </div>
         </section>
 
-        <div style={styles.bottomButtonWrap}>
-          <button
-            onClick={handleGoConfirm}
-            style={{
-              ...styles.nextButton,
-              ...(selected ? {} : styles.nextButtonDisabled),
-            }}
-            disabled={!selected}
-          >
-            この日時で進む
-          </button>
-        </div>
       </div>
     </main>
   );
