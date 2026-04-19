@@ -59,6 +59,17 @@ export default function Home() {
     alert("ログアウトしました");
   };
 
+  // ★ここが今回の追加ポイント
+  const handleReserveClick = () => {
+    const user = localStorage.getItem("user");
+
+    if (user) {
+      window.location.href = "/menu";
+    } else {
+      window.location.href = "/register";
+    }
+  };
+
   return (
     <main
       style={{
@@ -82,6 +93,7 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
+        {/* ログアウト */}
         <button
           onClick={handleLogout}
           style={{
@@ -106,6 +118,7 @@ export default function Home() {
           ログアウトする
         </button>
 
+        {/* 画像 */}
         <img
           src="/images/top1.png"
           alt="さく楽 トップカード"
@@ -122,32 +135,26 @@ export default function Home() {
           }}
         />
 
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
-        />
+        <div style={{ position: "absolute", inset: 0 }} />
 
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
-        >
-          <a
-            href="/reserve"
+        <div style={{ position: "absolute", inset: 0 }}>
+          {/* 予約する（ここ変更） */}
+          <button
+            onClick={handleReserveClick}
             style={{
               ...mainButtonStyle,
               position: "absolute",
               left: "50%",
               top: "38.5%",
               transform: "translateX(-50%)",
+              border: "none",
+              cursor: "pointer",
             }}
           >
             予約する
-          </a>
+          </button>
 
+          {/* 予約確認 */}
           <a
             href="/confirm"
             style={{
@@ -161,6 +168,7 @@ export default function Home() {
             予約確認
           </a>
 
+          {/* 店舗情報 */}
           <a
             href="/info"
             style={{
