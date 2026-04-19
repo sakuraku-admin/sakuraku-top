@@ -1,3 +1,5 @@
+"use client";
+
 export default function Home() {
   const mainButtonStyle = {
     display: "flex",
@@ -80,7 +82,6 @@ export default function Home() {
           overflow: "hidden",
         }}
       >
-        {/* ログアウト */}
         <button
           onClick={handleLogout}
           style={{
@@ -105,7 +106,6 @@ export default function Home() {
           ログアウトする
         </button>
 
-        {/* ショップカード画像 */}
         <img
           src="/images/top1.png"
           alt="さく楽 トップカード"
@@ -122,7 +122,6 @@ export default function Home() {
           }}
         />
 
-        {/* 透明レイヤー */}
         <div
           style={{
             position: "absolute",
@@ -130,14 +129,12 @@ export default function Home() {
           }}
         />
 
-        {/* ボタンレイヤー */}
         <div
           style={{
             position: "absolute",
             inset: 0,
           }}
         >
-          {/* 予約する */}
           <a
             href="/reserve"
             style={{
@@ -151,7 +148,6 @@ export default function Home() {
             予約する
           </a>
 
-          {/* 予約確認 */}
           <a
             href="/confirm"
             style={{
@@ -165,7 +161,6 @@ export default function Home() {
             予約確認
           </a>
 
-          {/* 店舗情報 */}
           <a
             href="/info"
             style={{
