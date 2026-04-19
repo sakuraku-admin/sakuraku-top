@@ -167,11 +167,23 @@ export default function MenuPage() {
     });
 
     if (selectedMenu.type === "seitai") {
-      router.push(`/options?${params.toString()}`);
+      router.push(`/option?${params.toString()}`);
       return;
     }
 
-    router.push(`/calendar?${params.toString()}`);
+    router.push(`/reserve/datetime?${params.toString()}`);
+  };
+
+  const handleFirstCourseReserve = () => {
+    const params = new URLSearchParams({
+      courseId: "first-course-100",
+      courseName: "初回限定コース",
+      duration: "100分",
+      price: "5000円",
+      type: "first",
+    });
+
+    router.push(`/reserve/datetime?${params.toString()}`);
   };
 
   return (
@@ -391,6 +403,14 @@ export default function MenuPage() {
             <div style={styles.popupTea}>
               ウェルカム／アフターティー付
             </div>
+
+            <button
+              type="button"
+              onClick={handleFirstCourseReserve}
+              style={styles.reserveButton}
+            >
+              このメニューで予約する
+            </button>
           </div>
         </div>
       )}
