@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 function formatJapaneseDate(dateKey) {
@@ -33,7 +33,16 @@ function minutesToTimeString(totalMinutes) {
 function ReserveConfirmContent() {
   const searchParams = useSearchParams();
 
-  const customerName = "〇〇　〇〇";
+  // 👇ここだけ変更（localStorageから取得）
+  const [customerName, setCustomerName] = useState("");
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("customerName");
+    if (savedName) {
+      setCustomerName(savedName);
+    }
+  }, []);
+
   const menuName = searchParams.get("courseName") || "整体コース";
   const menuTime = `${searchParams.get("duration") || "60"}分`;
 
