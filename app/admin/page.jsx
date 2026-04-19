@@ -104,6 +104,7 @@ function ReserveDateTimeContent() {
   const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
+  const [mockAvailability, setMockAvailability] = useState(buildMockAvailability);
 
   const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
@@ -124,7 +125,6 @@ function ReserveDateTimeContent() {
     : courseName;
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
-  const mockAvailability = useMemo(() => buildMockAvailability(), []);
 
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
@@ -139,12 +139,24 @@ function ReserveDateTimeContent() {
   };
 
   const handleSelect = (dateKey, time) => {
-    const isReservable =
-      !isToday(dateKey) &&
-      isStartMarkedAvailable(dateKey, time, mockAvailability) &&
-      canReserveAt(time, treatmentMinutes);
+    const withinBusinessHours = canReserveAt(time, treatmentMinutes);
+    if (!withinBusinessHours) return;
 
-    if (!isReservable) return;
+    setMockAvailability((prev) => {
+      const currentDay = prev[dateKey] || [];
+      const isOpen = currentDay.includes(time);
+
+      const nextDay = isOpen
+        ? currentDay.filter((slot) => slot !== time)
+        : [...currentDay, time].sort(
+            (a, b) => timeStringToMinutes(a) - timeStringToMinutes(b)
+          );
+
+      return {
+        ...prev,
+        [dateKey]: nextDay,
+      };
+    });
 
     setSelected({ dateKey, time });
   };
@@ -172,7 +184,7 @@ function ReserveDateTimeContent() {
   return (
     <main style={styles.page}>
       <div style={styles.container}>
-        <h1 style={styles.title}>ご希望の日時をお選びください</h1>
+        <h1 style={styles.title}>カレンダー管理</h1>
 
         <section style={styles.infoCard}>
           <div style={styles.infoMiniBox}>
@@ -312,20 +324,22 @@ function ReserveDateTimeContent() {
                                 : styles.slotCellUnavailable),
                             }}
                           >
-                            {isReservable ? (
+                            {withinBusinessHours ? (
                               <button
                                 onClick={() => handleSelect(dateKey, time)}
                                 style={{
                                   ...styles.slotButton,
-                                  ...(isSelected
-                                    ? styles.slotSelected
-                                    : styles.slotAvailable),
+                                  ...(markedAvailable
+                                    ? isSelected
+                                      ? styles.slotSelected
+                                      : styles.slotAvailable
+                                    : styles.slotClosed),
                                 }}
                                 title={`施術終了 ${minutesToTimeString(
                                   timeStringToMinutes(time) + treatmentMinutes
                                 )} / 枠確保 ${blockedEndTime}まで`}
                               >
-                                {isSelected ? "●" : "◎"}
+                                {markedAvailable ? "◎" : "✕"}
                               </button>
                             ) : (
                               <div style={styles.slotUnavailableMark}>✕</div>
@@ -619,6 +633,12 @@ const styles = {
     color: "#df7e98",
     boxShadow: "none",
     transform: "scale(1.08)",
+  },
+
+  slotClosed: {
+    color: "#9d918a",
+    boxShadow: "none",
+    transform: "none",
   },
 
   slotUnavailableMark: {
