@@ -1,6 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 export default function Home() {
+  const [customerName, setCustomerName] = useState("");
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("customerName");
+    if (savedName) {
+      setCustomerName(savedName);
+    }
+  }, []);
+
   const mainButtonStyle = {
     display: "flex",
     alignItems: "center",
@@ -56,6 +67,8 @@ export default function Home() {
 
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("customerName");
+    setCustomerName("");
     alert("ログアウトしました");
   };
 
@@ -145,6 +158,30 @@ export default function Home() {
             inset: 0,
           }}
         >
+          {customerName && (
+            <div
+              style={{
+                position: "absolute",
+                left: "50%",
+                top: "32.8%",
+                transform: "translateX(-50%)",
+                color: "#6e5750",
+                fontSize: "clamp(16px, 1.8vw, 24px)",
+                fontWeight: 500,
+                fontFamily:
+                  '"Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif',
+                letterSpacing: "0.08em",
+                lineHeight: 1.4,
+                textAlign: "center",
+                zIndex: 10,
+                textShadow: "0 1px 4px rgba(255,255,255,0.45)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {customerName} 様
+            </div>
+          )}
+
           <button
             onClick={handleReserveClick}
             style={{
