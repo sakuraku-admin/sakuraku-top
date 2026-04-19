@@ -22,6 +22,16 @@ function formatJapaneseDate(date) {
   }）`;
 }
 
+function timeStringToMinutes(time) {
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+function getCourseMinutes(course) {
+  const match = course.match(/(\d+)分/);
+  return match ? Number(match[1]) : 60;
+}
+
 const mockReservations = {
   "2026-04-20": [
     {
@@ -66,6 +76,31 @@ export default function AdminListPage() {
     const list = mockReservations[dateKey] || [];
     return [...list].sort((a, b) => a.time.localeCompare(b.time));
   }, [dateKey]);
+
+  const timelineItems = useMemo(() => {
+    const startBaseMinutes = 11 * 60;
+    const endBaseMinutes = 20 * 60;
+    const totalMinutes = endBaseMinutes - startBaseMinutes;
+
+    return reservations.map((item) => {
+      const startMinutes = timeStringToMinutes(item.time);
+      const durationMinutes = getCourseMinutes(item.course);
+      const endMinutes = Math.min(startMinutes + durationMinutes, endBaseMinutes);
+
+      const left = ((startMinutes - startBaseMinutes) / totalMinutes) * 100;
+      const width = ((endMinutes - startMinutes) / totalMinutes) * 100;
+
+      return {
+        ...item,
+        left: `${left}%`,
+        width: `${width}%`,
+      };
+    });
+  }, [reservations]);
+
+  const timelineLabels = useMemo(() => {
+    return Array.from({ length: 10 }, (_, i) => `${11 + i}:00`);
+  }, []);
 
   const handlePrevDay = () => {
     setSelectedDate((prev) => addDays(prev, -1));
@@ -113,6 +148,53 @@ export default function AdminListPage() {
           </div>
 
           <div style={styles.dateText}>{formatJapaneseDate(selectedDate)}</div>
+        </section>
+
+        <section style={styles.timelineCard}>
+          <div style={styles.timelineLabelRow}>
+            {timelineLabels.map((label) => (
+              <div key={label} style={styles.timelineHourLabel}>
+                {label}
+              </div>
+            ))}
+          </div>
+
+          <div style={styles.timelineTrackWrap}>
+            <div style={styles.timelineGrid}>
+              {timelineLabels.map((label, index) => (
+                <div key={`${label}-${index}`} style={styles.timelineGridCell} />
+              ))}
+            </div>
+
+            <div style={styles.timelineTrack}>
+              {timelineItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    ...styles.timelineItem,
+                    left: item.left,
+                    width: item.width,
+                  }}
+                  title={`${item.time} ${item.customerName} 様`}
+                />
+              ))}
+            </div>
+
+            <div style={styles.timelineNameLayer}>
+              {timelineItems.map((item) => (
+                <div
+                  key={`name-${item.id}`}
+                  style={{
+                    ...styles.timelineNameText,
+                    left: item.left,
+                    width: item.width,
+                  }}
+                >
+                  {item.customerName} 様
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section style={styles.listCard}>
@@ -251,6 +333,93 @@ const styles = {
     letterSpacing: "0.03em",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  timelineCard: {
+    marginTop: "12px",
+    background: "rgba(255,255,255,0.52)",
+    border: "1px solid rgba(255,255,255,0.28)",
+    borderRadius: "22px",
+    padding: "10px 10px 12px",
+    boxSizing: "border-box",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  },
+
+  timelineLabelRow: {
+    display: "grid",
+    gridTemplateColumns: "repeat(10, 1fr)",
+    gap: 0,
+    marginBottom: "6px",
+    padding: "0 2px",
+  },
+
+  timelineHourLabel: {
+    textAlign: "center",
+    color: "#6f6157",
+    fontSize: "0.54rem",
+    lineHeight: 1.2,
+    letterSpacing: "0.01em",
+    whiteSpace: "nowrap",
+  },
+
+  timelineTrackWrap: {
+    position: "relative",
+    paddingTop: "18px",
+  },
+
+  timelineGrid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(10, 1fr)",
+    height: "16px",
+    border: "1px solid #c8b8ad",
+    borderRadius: "0",
+    overflow: "hidden",
+    background: "rgba(255,253,250,0.92)",
+  },
+
+  timelineGridCell: {
+    borderRight: "1px solid #d7c8be",
+  },
+
+  timelineTrack: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: "18px",
+    height: "16px",
+  },
+
+  timelineItem: {
+    position: "absolute",
+    top: 0,
+    height: "16px",
+    background: "linear-gradient(180deg, #bfd8cb 0%, #9fbeae 100%)",
+    border: "1px solid #7fa08f",
+    boxSizing: "border-box",
+    overflow: "hidden",
+  },
+
+  timelineNameLayer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    top: 0,
+    height: "16px",
+    pointerEvents: "none",
+  },
+
+  timelineNameText: {
+    position: "absolute",
+    top: 0,
+    transform: "translateY(-2px)",
+    color: "#5a3a2c",
+    fontSize: "0.54rem",
+    lineHeight: 1,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    textAlign: "center",
   },
 
   listCard: {
