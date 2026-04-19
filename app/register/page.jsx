@@ -17,6 +17,11 @@ export default function RegisterPage() {
       <div style={styles.overlay}>
         <h1 style={styles.title}>新規会員登録</h1>
 
+        {/* ←ここだけ追加 */}
+        <a href="/login" style={styles.reloginLink}>
+          登録済みの方はこちら
+        </a>
+
         <form style={styles.card} onSubmit={handleRegister}>
           <label style={styles.label}>
             <span style={styles.labelText}>お名前</span>
@@ -102,6 +107,18 @@ const styles = {
     textShadow: "0 2px 8px rgba(255,255,255,0.35)",
     lineHeight: 1.2,
     marginBottom: "34px",
+  },
+
+  /* ←ここだけ追加 */
+  reloginLink: {
+    marginTop: "-20px",
+    marginBottom: "20px",
+    color: "rgba(91, 61, 43, 0.65)",
+    fontSize: "clamp(13px, 2.3vw, 15px)",
+    fontFamily: "'Hiragino Mincho ProN', 'Yu Mincho', serif",
+    textDecoration: "underline",
+    textUnderlineOffset: "3px",
+    cursor: "pointer",
   },
 
   card: {
