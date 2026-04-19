@@ -9,7 +9,7 @@ function formatJapaneseDate(dateKey) {
   const date = new Date(dateKey);
   if (Number.isNaN(date.getTime())) return dateKey;
 
-  const weeks = ["日", "月", "火", "水", "火", "金", "土"];
+  const weeks = ["日", "月", "火", "水", "木", "金", "土"];
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
@@ -50,7 +50,9 @@ function ReserveConfirmContent() {
     ? selectedOptionsParam.split("、").filter(Boolean)
     : [];
 
-  const totalTime = `${searchParams.get("totalMinutes") || searchParams.get("duration") || "60"}分`;
+  const totalTime = `${
+    searchParams.get("totalMinutes") || searchParams.get("duration") || "60"
+  }分`;
 
   const reserveDate = formatJapaneseDate(searchParams.get("date"));
 
@@ -69,6 +71,21 @@ function ReserveConfirmContent() {
     startTime && endTime ? `${startTime}〜${endTime}` : "未選択";
 
   const handleReserve = () => {
+    const reservationData = {
+      customerName,
+      menuName,
+      menuTime,
+      options,
+      totalTime,
+      reserveDate,
+      reserveTime,
+      date: searchParams.get("date") || "",
+      startTime,
+      endTime,
+      totalMinutes,
+    };
+
+    localStorage.setItem("reservationData", JSON.stringify(reservationData));
     window.location.href = "/reserve/thanks";
   };
 
