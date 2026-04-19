@@ -1,3 +1,0 @@
-export default function AdminListPage() {
-  return <div>予約一覧</div>;
-}
