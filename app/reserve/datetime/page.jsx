@@ -61,31 +61,13 @@ function minutesToTimeString(totalMinutes) {
 function buildMockAvailability() {
   const today = new Date();
   const data = {};
+  const allSlots = generateTimeSlots();
 
   for (let i = 0; i < 42; i++) {
     const date = addDays(today, i);
     const dateKey = formatDateKey(date);
-    const day = date.getDay();
 
-    let availableStarts = [];
-
-    if (day === 1) {
-      availableStarts = ["11:00", "12:30", "14:00", "16:00", "18:00"];
-    } else if (day === 2) {
-      availableStarts = ["11:30", "13:00", "15:00", "17:00"];
-    } else if (day === 3) {
-      availableStarts = ["12:00", "14:00", "16:30", "18:00"];
-    } else if (day === 4) {
-      availableStarts = ["11:00", "13:30", "15:30", "17:30"];
-    } else if (day === 5) {
-      availableStarts = ["11:30", "14:00", "16:00", "18:00"];
-    } else if (day === 6) {
-      availableStarts = ["11:00", "12:00", "14:30", "16:30"];
-    } else {
-      availableStarts = ["12:00", "15:00"];
-    }
-
-    data[dateKey] = availableStarts;
+    data[dateKey] = allSlots;
   }
 
   return data;
