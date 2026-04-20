@@ -179,21 +179,6 @@ export default function AdminListPage() {
                 />
               ))}
             </div>
-
-            <div style={styles.timelineNameLayer}>
-              {timelineItems.map((item) => (
-                <div
-                  key={`name-${item.id}`}
-                  style={{
-                    ...styles.timelineNameText,
-                    left: item.left,
-                    width: item.width,
-                  }}
-                >
-                  {item.customerName} 様
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -401,28 +386,6 @@ const styles = {
     border: "1px solid #7fa08f",
     boxSizing: "border-box",
     overflow: "hidden",
-  },
-
-  timelineNameLayer: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    top: 0,
-    height: "16px",
-    pointerEvents: "none",
-  },
-
-  timelineNameText: {
-    position: "absolute",
-    top: 0,
-    transform: "translateY(-2px)",
-    color: "#5a3a2c",
-    fontSize: "0.54rem",
-    lineHeight: 1,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    textAlign: "center",
   },
 
   listCard: {
