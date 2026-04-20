@@ -99,7 +99,7 @@ export default function AdminListPage() {
   }, [reservations]);
 
   const timelineLabels = useMemo(() => {
-    return Array.from({ length: 10 }, (_, i) => `${11 + i}:00`);
+    return Array.from({ length: 10 }, (_, i) => `${11 + i}`);
   }, []);
 
   const handlePrevDay = () => {
@@ -350,17 +350,20 @@ const styles = {
     display: "grid",
     gridTemplateColumns: "repeat(10, 1fr)",
     gap: 0,
-    marginBottom: "6px",
+    marginBottom: "-4px",
     padding: "0 2px",
   },
 
   timelineHourLabel: {
     textAlign: "center",
-    color: "#6f6157",
-    fontSize: "0.54rem",
-    lineHeight: 1.2,
-    letterSpacing: "0.01em",
+    color: "#4f4842",
+    fontSize: "0.86rem",
+    lineHeight: 1,
+    fontWeight: 700,
     whiteSpace: "nowrap",
+    transform: "translateY(6px)",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   timelineTrackWrap: {
