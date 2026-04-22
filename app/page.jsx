@@ -154,7 +154,7 @@ export default function Home() {
                 left: "50%",
                 top: "35.5%",
                 transform: "translateX(-50%)",
-                color: "rgba(110, 80, 60, 0.7)", // ←薄めの茶色
+                color: "rgba(110, 80, 60, 0.7)",
                 fontSize: "clamp(13px, 1.5vw, 20px)",
                 fontWeight: 500,
                 fontFamily:
@@ -177,7 +177,7 @@ export default function Home() {
               ...mainButtonStyle,
               position: "absolute",
               left: "50%",
-              top: "40%", // ←少し下げた
+              top: "40%",
               transform: "translateX(-50%)",
               cursor: "pointer",
               appearance: "none",
@@ -188,7 +188,7 @@ export default function Home() {
           </button>
 
           <a
-            href="/reserve/history"
+            href="/reserve/check"
             style={{
               ...subButtonStyle,
               position: "absolute",
