@@ -16,6 +16,26 @@ export default function ReserveCheckPage() {
 
   const totalPrice = "￥11,000";
 
+  const handleChangeReservation = () => {
+    window.location.href = "/menu";
+  };
+
+  const handleCancelReservation = () => {
+    const confirmed = window.confirm("ご予約を取り消しますか？");
+    if (!confirmed) return;
+
+    localStorage.removeItem("selectedMenu");
+    localStorage.removeItem("selectedOption");
+    localStorage.removeItem("selectedOptions");
+    localStorage.removeItem("selectedDate");
+    localStorage.removeItem("selectedTime");
+    localStorage.removeItem("reservationData");
+    localStorage.removeItem("currentReservation");
+
+    alert("ご予約を取り消しました");
+    window.location.href = "/";
+  };
+
   return (
     <main
       style={{
@@ -33,7 +53,7 @@ export default function ReserveCheckPage() {
           width: "100%",
           maxWidth: "900px",
           minHeight: "100vh",
-          backgroundImage: 'url("/images/reservememory.png")',
+          backgroundImage: 'url("/images/mokumecheck.png")',
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center top",
           backgroundSize: "cover",
@@ -188,6 +208,7 @@ export default function ReserveCheckPage() {
             >
               <button
                 type="button"
+                onClick={handleChangeReservation}
                 style={{
                   width: "100%",
                   border: "none",
@@ -208,6 +229,7 @@ export default function ReserveCheckPage() {
 
               <button
                 type="button"
+                onClick={handleCancelReservation}
                 style={{
                   width: "100%",
                   borderRadius: "999px",
