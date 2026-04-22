@@ -186,6 +186,19 @@ function ReserveDateTimeContent() {
       <div style={styles.container}>
         <h1 style={styles.title}>カレンダー管理</h1>
 
+        <div style={styles.switchWrap}>
+          <button style={{ ...styles.switchButton, ...styles.switchButtonActive }}>
+            カレンダー管理
+          </button>
+
+          <button
+            onClick={() => (window.location.href = "/admin/list")}
+            style={styles.switchButton}
+          >
+            予約一覧
+          </button>
+        </div>
+
         <section style={styles.calendarInfoCard}>
           <div style={styles.weekButtonRow}>
             <button onClick={handlePrevWeek} style={styles.weekButton}>
@@ -196,7 +209,6 @@ function ReserveDateTimeContent() {
               次の週 →
             </button>
           </div>
-
         </section>
 
         <section style={styles.calendarCard}>
@@ -330,7 +342,6 @@ function ReserveDateTimeContent() {
             </table>
           </div>
         </section>
-
       </div>
     </main>
   );
@@ -372,6 +383,32 @@ const styles = {
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
     textShadow: "0 1px 6px rgba(255,255,255,0.28)",
+  },
+
+  switchWrap: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "10px",
+    marginBottom: "12px",
+  },
+
+  switchButton: {
+    border: "none",
+    borderRadius: "999px",
+    padding: "11px 10px",
+    background: "rgba(255,255,255,0.72)",
+    color: "#5f665f",
+    fontWeight: 700,
+    cursor: "pointer",
+    fontSize: "0.9rem",
+    boxShadow: "0 6px 16px rgba(90, 110, 95, 0.10)",
+  },
+
+  switchButtonActive: {
+    background:
+      "linear-gradient(180deg, rgba(146, 185, 166, 0.96) 0%, rgba(123, 161, 143, 0.96) 100%)",
+    color: "#fffdfa",
+    boxShadow: "0 8px 18px rgba(90, 130, 110, 0.18)",
   },
 
   infoCard: {
