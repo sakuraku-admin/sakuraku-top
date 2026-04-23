@@ -246,16 +246,19 @@ export default function ReserveCheckPage() {
           <div
             style={{
               textAlign: "center",
-              color: "#6f4b41",
-              fontSize: "clamp(16px, 4vw, 19px)",
-              lineHeight: 1.45,
-              letterSpacing: "0.02em",
-              fontFamily:
-                '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              marginBottom: "10px",
-              borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
-              paddingBottom: "4px",
-              display: "inline-block",
+    color: "#6f4b41",
+    fontSize: "clamp(16px, 4vw, 19px)",
+    lineHeight: 1.45,
+    letterSpacing: "0.02em",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    marginBottom: "10px",
+    borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
+    paddingBottom: "4px",
+    display: "block",
+    width: "fit-content",
+    marginLeft: "auto",
+    marginRight: "auto",
             }}
           >
             合計　{totalPrice}
