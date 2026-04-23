@@ -195,14 +195,22 @@ export default function InfoPage() {
               <div
                 style={{
                   color: "#7f6257",
-                  fontSize: "clamp(14px, 3.5vw, 16px)",
+                  fontSize: "clamp(11px, 2.6vw, 13px)",
                   lineHeight: 1.9,
                   letterSpacing: "0.02em",
                   fontFamily:
                     '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
                 }}
               >
-                我孫子駅（北口）から徒歩1分、常陽銀行と「はなぜん」の間の通路を進み、左手に「CONKS」という美容室の入ったマンションの8階になります。一階エントランスにオートロックの自動ドアがございますので「803」を呼び出してお入りください。
+                我孫子駅（北口）から徒歩1分
+<br />
+常陽銀行と「はなぜん」の間の通路を進み、
+<br />
+左手に「CONKS」という美容室の入ったマンションの8階になります。
+<br />
+一階エントランスにオートロックの自動ドアがございますので
+<br />
+「803」を呼び出してお入りください。
               </div>
             </div>
           </div>
