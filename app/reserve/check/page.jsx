@@ -243,7 +243,6 @@ export default function ReserveCheckPage() {
             )}
           </div>
 
-          {/* ★ここだけ変更 */}
           <div
             style={{
               textAlign: "center",
@@ -287,4 +286,110 @@ export default function ReserveCheckPage() {
             <div>ご不明な点がありましたらお気軽にLINEからお問合せください</div>
           </div>
 
-          {/* 以下一切変更なし */}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+              marginBottom: "8px",
+            }}
+          >
+            <button
+              type="button"
+              onClick={handleChangeReservation}
+              style={{
+                width: "100%",
+                border: "none",
+                borderRadius: "999px",
+                background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
+                color: "#fffdfb",
+                fontSize: "clamp(16px, 4.2vw, 22px)",
+                fontWeight: 700,
+                letterSpacing: "0.03em",
+                padding: "13px 16px",
+                cursor: "pointer",
+                boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
+                fontFamily:
+                  '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+              }}
+            >
+              予約を変更する
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCancelReservation}
+              style={{
+                width: "100%",
+                borderRadius: "999px",
+                background: "rgba(255,255,255,0.82)",
+                color: "#7d5b50",
+                fontSize: "clamp(15px, 3.9vw, 20px)",
+                fontWeight: 500,
+                letterSpacing: "0.03em",
+                padding: "12px 16px",
+                cursor: "pointer",
+                border: "1.5px solid rgba(145, 112, 101, 0.16)",
+                boxShadow: "none",
+                fontFamily:
+                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+              }}
+            >
+              予約を取り消す
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = "/";
+              }}
+              style={{
+                width: "100%",
+                border: "none",
+                background: "transparent",
+                color: "#8d7066",
+                fontSize: "clamp(13px, 3.1vw, 15px)",
+                letterSpacing: "0.04em",
+                cursor: "pointer",
+                padding: "0",
+                fontFamily:
+                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+              }}
+            >
+              戻る
+            </button>
+          </div>
+
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: 0,
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => {
+                window.location.href = "/reserve/history";
+              }}
+              style={{
+                border: "none",
+                background: "transparent",
+                color: "#8f766a",
+                fontSize: "clamp(12px, 2.95vw, 14px)",
+                letterSpacing: "0.03em",
+                cursor: "pointer",
+                padding: "4px 6px",
+                fontFamily:
+                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+                textDecoration: "underline",
+                textUnderlineOffset: "3px",
+              }}
+            >
+              過去のご予約を見る
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  );
+}
