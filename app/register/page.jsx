@@ -47,7 +47,7 @@ export default function ReserveCheckPage() {
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-start",
-        padding: "34px 20px 34px",
+        padding: "24px 16px 24px",
         boxSizing: "border-box",
       }}
     >
@@ -55,61 +55,68 @@ export default function ReserveCheckPage() {
         style={{
           position: "relative",
           width: "100%",
-          maxWidth: "420px",
+          maxWidth: "390px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <img
-          src="/images/hedera.png"
-          alt="hedera decoration"
+        <div
           style={{
             position: "absolute",
-            top: "-8px",
-            left: "50%",
-            transform: "translateX(-50%)",
+            top: "-6px",
+            left: 0,
             width: "100%",
-            maxWidth: "420px",
-            height: "auto",
+            height: "92px",
+            overflow: "hidden",
             pointerEvents: "none",
-            userSelect: "none",
             zIndex: 3,
           }}
-        />
+        >
+          <img
+            src="/images/hedera.png"
+            alt="hedera decoration"
+            style={{
+              width: "100%",
+              height: "auto",
+              display: "block",
+              userSelect: "none",
+            }}
+          />
+        </div>
 
         <div
           style={{
             position: "relative",
             zIndex: 2,
-            width: "70%",
-            maxWidth: "280px",
-            height: "50px",
+            width: "68%",
+            maxWidth: "250px",
+            height: "44px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginTop: "8px",
-            marginBottom: "18px",
+            marginTop: "12px",
+            marginBottom: "14px",
             background:
-              "linear-gradient(180deg, rgba(255,255,255,0.30) 0%, rgba(255,250,246,0.52) 55%, rgba(255,247,242,0.42) 100%)",
+              "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,248,243,0.46) 55%, rgba(255,245,239,0.34) 100%)",
             borderRadius: "18px",
             backdropFilter: "blur(5px)",
             WebkitBackdropFilter: "blur(5px)",
             boxShadow:
-              "0 4px 14px rgba(120, 90, 70, 0.05), inset 0 1px 0 rgba(255,255,255,0.22)",
-            border: "1px solid rgba(255,255,255,0.16)",
+              "0 3px 10px rgba(120, 90, 70, 0.04), inset 0 1px 0 rgba(255,255,255,0.18)",
+            border: "1px solid rgba(255,255,255,0.14)",
           }}
         >
           <span
             style={{
               color: "#6e4b41",
-              fontSize: "clamp(17px, 4.4vw, 22px)",
+              fontSize: "clamp(16px, 4.2vw, 20px)",
               fontWeight: 500,
-              letterSpacing: "0.06em",
+              letterSpacing: "0.05em",
               lineHeight: 1.2,
               fontFamily:
                 '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              textShadow: "0 1px 3px rgba(255,255,255,0.22)",
+              textShadow: "0 1px 3px rgba(255,255,255,0.18)",
             }}
           >
             ご予約内容
@@ -121,33 +128,33 @@ export default function ReserveCheckPage() {
             position: "relative",
             zIndex: 2,
             width: "100%",
-            maxWidth: "390px",
-            background: "rgba(248, 242, 237, 0.86)",
-            borderRadius: "30px",
-            padding: "18px 16px 22px",
+            maxWidth: "340px",
+            background: "rgba(248, 242, 237, 0.88)",
+            borderRadius: "28px",
+            padding: "14px 14px 16px",
             boxSizing: "border-box",
-            boxShadow: "0 10px 24px rgba(110, 80, 65, 0.07)",
-            backdropFilter: "blur(4px)",
-            WebkitBackdropFilter: "blur(4px)",
-            marginTop: "6px",
+            boxShadow: "0 8px 20px rgba(110, 80, 65, 0.06)",
+            backdropFilter: "blur(3px)",
+            WebkitBackdropFilter: "blur(3px)",
+            marginTop: "2px",
           }}
         >
           <div
             style={{
               background: "rgba(241, 241, 241, 0.92)",
-              borderRadius: "24px",
-              padding: "16px 12px 14px",
+              borderRadius: "22px",
+              padding: "12px 10px 11px",
               textAlign: "center",
-              marginBottom: "18px",
+              marginBottom: "12px",
             }}
           >
             <div
               style={{
                 color: "#6a4337",
-                fontSize: "clamp(18px, 4.9vw, 27px)",
+                fontSize: "clamp(16px, 4.4vw, 22px)",
                 fontWeight: 600,
                 letterSpacing: "0.02em",
-                lineHeight: 1.45,
+                lineHeight: 1.35,
                 fontFamily:
                   '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
               }}
@@ -157,10 +164,10 @@ export default function ReserveCheckPage() {
             <div
               style={{
                 color: "#6a4337",
-                fontSize: "clamp(18px, 4.7vw, 26px)",
+                fontSize: "clamp(16px, 4.2vw, 21px)",
                 fontWeight: 600,
                 letterSpacing: "0.01em",
-                lineHeight: 1.35,
+                lineHeight: 1.3,
                 marginTop: "2px",
                 fontFamily:
                   '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
@@ -174,12 +181,12 @@ export default function ReserveCheckPage() {
             style={{
               textAlign: "center",
               color: "#7d5b50",
-              fontSize: "clamp(17px, 4.4vw, 23px)",
-              lineHeight: 1.75,
+              fontSize: "clamp(16px, 4vw, 20px)",
+              lineHeight: 1.55,
               letterSpacing: "0.02em",
               fontFamily:
                 '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              marginBottom: "4px",
+              marginBottom: "2px",
             }}
           >
             <div>
@@ -187,7 +194,7 @@ export default function ReserveCheckPage() {
             </div>
             <div
               style={{
-                fontSize: "clamp(15px, 3.9vw, 20px)",
+                fontSize: "clamp(14px, 3.6vw, 18px)",
                 color: "#8d7066",
                 marginTop: "1px",
               }}
@@ -199,21 +206,21 @@ export default function ReserveCheckPage() {
           <div
             style={{
               color: "#8c6c61",
-              fontSize: "clamp(12px, 3.15vw, 16px)",
-              lineHeight: 1.8,
+              fontSize: "clamp(11px, 2.9vw, 14px)",
+              lineHeight: 1.65,
               letterSpacing: "0.01em",
               fontFamily:
                 '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
               textAlign: "center",
-              marginBottom: "10px",
+              marginBottom: "8px",
             }}
           >
             {options.length > 0 && (
               <>
                 <div
                   style={{
-                    marginBottom: "3px",
-                    fontSize: "clamp(13px, 3.35vw, 16px)",
+                    marginBottom: "2px",
+                    fontSize: "clamp(12px, 3.1vw, 14px)",
                   }}
                 >
                   オプション
@@ -221,8 +228,8 @@ export default function ReserveCheckPage() {
                 <div
                   style={{
                     color: "#9a7f76",
-                    fontSize: "clamp(11px, 2.95vw, 15px)",
-                    lineHeight: 1.85,
+                    fontSize: "clamp(10px, 2.7vw, 13px)",
+                    lineHeight: 1.7,
                   }}
                 >
                   {options.map((option, index) => (
@@ -240,12 +247,12 @@ export default function ReserveCheckPage() {
             style={{
               textAlign: "center",
               color: "#6f4b41",
-              fontSize: "clamp(19px, 4.7vw, 23px)",
-              lineHeight: 1.7,
+              fontSize: "clamp(18px, 4.4vw, 21px)",
+              lineHeight: 1.45,
               letterSpacing: "0.02em",
               fontFamily:
                 '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              marginBottom: "14px",
+              marginBottom: "10px",
             }}
           >
             合計　{totalPrice}
@@ -255,21 +262,21 @@ export default function ReserveCheckPage() {
             style={{
               width: "100%",
               height: "1px",
-              background: "rgba(120, 89, 74, 0.14)",
-              marginBottom: "14px",
+              background: "rgba(120, 89, 74, 0.12)",
+              marginBottom: "10px",
             }}
           />
 
           <div
             style={{
               color: "#84675d",
-              fontSize: "clamp(12px, 3.05vw, 15px)",
-              lineHeight: 1.8,
+              fontSize: "clamp(10px, 2.75vw, 13px)",
+              lineHeight: 1.6,
               letterSpacing: "0.01em",
               fontFamily:
                 '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
               textAlign: "center",
-              marginBottom: "18px",
+              marginBottom: "12px",
             }}
           >
             <div>ご来店を心よりお待ちしております🌸</div>
@@ -280,8 +287,8 @@ export default function ReserveCheckPage() {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "12px",
-              marginBottom: "10px",
+              gap: "10px",
+              marginBottom: "8px",
             }}
           >
             <button
@@ -293,12 +300,12 @@ export default function ReserveCheckPage() {
                 borderRadius: "999px",
                 background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
                 color: "#fffdfb",
-                fontSize: "clamp(17px, 4.5vw, 24px)",
+                fontSize: "clamp(16px, 4.2vw, 22px)",
                 fontWeight: 700,
                 letterSpacing: "0.03em",
-                padding: "16px 18px",
+                padding: "13px 16px",
                 cursor: "pointer",
-                boxShadow: "0 8px 18px rgba(210, 140, 160, 0.14)",
+                boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
                 fontFamily:
                   '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
               }}
@@ -312,14 +319,14 @@ export default function ReserveCheckPage() {
               style={{
                 width: "100%",
                 borderRadius: "999px",
-                background: "rgba(255,255,255,0.80)",
+                background: "rgba(255,255,255,0.82)",
                 color: "#7d5b50",
-                fontSize: "clamp(16px, 4.1vw, 22px)",
+                fontSize: "clamp(15px, 3.9vw, 20px)",
                 fontWeight: 500,
                 letterSpacing: "0.03em",
-                padding: "15px 18px",
+                padding: "12px 16px",
                 cursor: "pointer",
-                border: "1.5px solid rgba(145, 112, 101, 0.18)",
+                border: "1.5px solid rgba(145, 112, 101, 0.16)",
                 boxShadow: "none",
                 fontFamily:
                   '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
@@ -338,10 +345,10 @@ export default function ReserveCheckPage() {
                 border: "none",
                 background: "transparent",
                 color: "#8d7066",
-                fontSize: "clamp(14px, 3.4vw, 17px)",
+                fontSize: "clamp(13px, 3.1vw, 15px)",
                 letterSpacing: "0.04em",
                 cursor: "pointer",
-                padding: "2px 0 0",
+                padding: "0",
                 fontFamily:
                   '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
               }}
@@ -353,7 +360,7 @@ export default function ReserveCheckPage() {
           <div
             style={{
               textAlign: "center",
-              marginTop: "0",
+              marginTop: 0,
             }}
           >
             <button
@@ -365,14 +372,14 @@ export default function ReserveCheckPage() {
                 border: "none",
                 background: "transparent",
                 color: "#8f766a",
-                fontSize: "clamp(13px, 3.15vw, 16px)",
+                fontSize: "clamp(12px, 2.95vw, 14px)",
                 letterSpacing: "0.03em",
                 cursor: "pointer",
-                padding: "6px 8px",
+                padding: "4px 6px",
                 fontFamily:
                   '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
                 textDecoration: "underline",
-                textUnderlineOffset: "4px",
+                textUnderlineOffset: "3px",
               }}
             >
               過去のご予約を見る
