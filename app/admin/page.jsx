@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const OPEN_HOUR = 11;
@@ -9,6 +9,8 @@ const BUFFER_MINUTES = 60;
 
 const DEFAULT_MENU_NAME = "深整コース 120分";
 const DEFAULT_TREATMENT_MINUTES = 120;
+
+const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -99,6 +101,41 @@ function isToday(dateKey) {
   return dateKey === todayKey;
 }
 
+function readAvailabilityFromStorage() {
+  if (typeof window === "undefined") {
+    return buildMockAvailability();
+  }
+
+  try {
+    const saved = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
+
+    if (!saved) {
+      return buildMockAvailability();
+    }
+
+    const parsed = JSON.parse(saved);
+
+    if (!parsed || typeof parsed !== "object") {
+      return buildMockAvailability();
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error("localStorageの予約枠データ読み込みに失敗しました", error);
+    return buildMockAvailability();
+  }
+}
+
+function saveAvailabilityToStorage(data) {
+  if (typeof window === "undefined") return;
+
+  try {
+    localStorage.setItem(AVAILABILITY_STORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error("localStorageの予約枠データ保存に失敗しました", error);
+  }
+}
+
 function ReserveDateTimeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -126,6 +163,10 @@ function ReserveDateTimeContent() {
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
 
+  useEffect(() => {
+    setMockAvailability(readAvailabilityFromStorage());
+  }, []);
+
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
@@ -152,10 +193,13 @@ function ReserveDateTimeContent() {
             (a, b) => timeStringToMinutes(a) - timeStringToMinutes(b)
           );
 
-      return {
+      const nextAvailability = {
         ...prev,
         [dateKey]: nextDay,
       };
+
+      saveAvailabilityToStorage(nextAvailability);
+      return nextAvailability;
     });
 
     setSelected({ dateKey, time });
