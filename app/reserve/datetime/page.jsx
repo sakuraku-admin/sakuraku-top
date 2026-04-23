@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const OPEN_HOUR = 11;
@@ -9,6 +9,8 @@ const BUFFER_MINUTES = 60;
 
 const DEFAULT_MENU_NAME = "深整コース 120分";
 const DEFAULT_TREATMENT_MINUTES = 120;
+
+const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -99,11 +101,39 @@ function isToday(dateKey) {
   return dateKey === todayKey;
 }
 
+function readAvailabilityFromStorage() {
+  if (typeof window === "undefined") {
+    return buildMockAvailability();
+  }
+
+  try {
+    const saved = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
+
+    if (!saved) {
+      return buildMockAvailability();
+    }
+
+    const parsed = JSON.parse(saved);
+
+    if (!parsed || typeof parsed !== "object") {
+      return buildMockAvailability();
+    }
+
+    return parsed;
+  } catch (error) {
+    console.error("localStorageの予約枠データ読み込みに失敗しました", error);
+    return buildMockAvailability();
+  }
+}
+
 function ReserveDateTimeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
+  const [mockAvailability, setMockAvailability] = useState(() =>
+    buildMockAvailability()
+  );
 
   const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
@@ -124,7 +154,21 @@ function ReserveDateTimeContent() {
     : courseName;
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
-  const mockAvailability = useMemo(() => buildMockAvailability(), []);
+
+  useEffect(() => {
+    setMockAvailability(readAvailabilityFromStorage());
+  }, []);
+
+  useEffect(() => {
+    const handleStorage = (event) => {
+      if (event.key === AVAILABILITY_STORAGE_KEY) {
+        setMockAvailability(readAvailabilityFromStorage());
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
 
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
