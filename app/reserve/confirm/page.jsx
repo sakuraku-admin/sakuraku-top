@@ -3,6 +3,11 @@
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
+const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
+const RESERVATION_DATA_STORAGE_KEY = "reservationData";
+const RESERVATION_HISTORY_STORAGE_KEY = "reservationHistory";
+const RESERVATIONS_STORAGE_KEY = "reservations";
+
 function formatJapaneseDate(dateKey) {
   if (!dateKey) return "未選択";
 
@@ -28,6 +33,19 @@ function minutesToTimeString(totalMinutes) {
   const hour = Math.floor(totalMinutes / 60);
   const minute = totalMinutes % 60;
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
+}
+
+function readJsonArrayFromStorage(key) {
+  try {
+    const saved = localStorage.getItem(key);
+    if (!saved) return [];
+
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error(`${key} の読み込みに失敗しました`, error);
+    return [];
+  }
 }
 
 function ReserveConfirmContent() {
@@ -71,6 +89,8 @@ function ReserveConfirmContent() {
     startTime && endTime ? `${startTime}〜${endTime}` : "未選択";
 
   const handleReserve = () => {
+    const rawDate = searchParams.get("date") || "";
+
     const reservationData = {
       customerName,
       menuName,
@@ -79,13 +99,63 @@ function ReserveConfirmContent() {
       totalTime,
       reserveDate,
       reserveTime,
-      date: searchParams.get("date") || "",
+      date: rawDate,
       startTime,
       endTime,
       totalMinutes,
+      createdAt: new Date().toISOString(),
     };
 
-    localStorage.setItem("reservationData", JSON.stringify(reservationData));
+    localStorage.setItem(
+      RESERVATION_DATA_STORAGE_KEY,
+      JSON.stringify(reservationData)
+    );
+
+    const reservationHistory = readJsonArrayFromStorage(
+      RESERVATION_HISTORY_STORAGE_KEY
+    );
+    localStorage.setItem(
+      RESERVATION_HISTORY_STORAGE_KEY,
+      JSON.stringify([...reservationHistory, reservationData])
+    );
+
+    const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
+    localStorage.setItem(
+      RESERVATIONS_STORAGE_KEY,
+      JSON.stringify([...reservations, reservationData])
+    );
+
+    try {
+      const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
+
+      if (savedAvailability) {
+        const parsedAvailability = JSON.parse(savedAvailability);
+
+        if (
+          parsedAvailability &&
+          typeof parsedAvailability === "object" &&
+          rawDate &&
+          startTime
+        ) {
+          const currentDay = Array.isArray(parsedAvailability[rawDate])
+            ? parsedAvailability[rawDate]
+            : [];
+
+          const nextAvailability = {
+            ...parsedAvailability,
+            [rawDate]: currentDay.filter((slot) => slot !== startTime),
+          };
+
+          localStorage.setItem(
+            AVAILABILITY_STORAGE_KEY,
+            JSON.stringify(nextAvailability)
+          );
+        }
+      }
+    } catch (error) {
+      console.error("予約枠データの更新に失敗しました", error);
+    }
+
     window.location.href = "/reserve/thanks";
   };
 
