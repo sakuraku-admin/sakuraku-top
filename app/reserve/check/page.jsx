@@ -129,7 +129,7 @@ export default function ReserveCheckPage() {
             zIndex: 2,
             width: "100%",
             maxWidth: "340px",
-            background: "rgba(248, 242, 237, 0.88)",
+            background: "rgba(255, 250, 246, 0.9)",
             borderRadius: "28px",
             padding: "14px 14px 16px",
             boxSizing: "border-box",
