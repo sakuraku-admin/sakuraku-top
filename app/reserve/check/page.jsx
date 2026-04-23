@@ -141,7 +141,7 @@ export default function ReserveCheckPage() {
         >
           <div
             style={{
-              background: "rgba(241, 241, 241, 0.92)",
+              background: "rgba(255, 255, 255, 0.95)",
               borderRadius: "22px",
               padding: "12px 10px 11px",
               textAlign: "center",
