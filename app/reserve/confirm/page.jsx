@@ -55,21 +55,32 @@ function ReserveConfirmContent() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+  try {
+    const savedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-      if (savedUser) {
-        const parsedUser = JSON.parse(savedUser);
-        setUserData(parsedUser);
-
-        if (parsedUser?.name) {
-          setCustomerName(parsedUser.name);
-        }
-      }
-    } catch (error) {
-      console.error("お客様情報の読み込みに失敗しました", error);
+    // 👇 未ログインなら弾く
+    if (!savedUser) {
+      window.location.href = "/register";
+      return;
     }
-  }, []);
+
+    const parsedUser = JSON.parse(savedUser);
+
+    if (!parsedUser?.isLoggedIn) {
+      window.location.href = "/register";
+      return;
+    }
+
+    setUserData(parsedUser);
+
+    if (parsedUser?.name) {
+      setCustomerName(parsedUser.name);
+    }
+  } catch (error) {
+    console.error("お客様情報の読み込みに失敗しました", error);
+    window.location.href = "/register";
+  }
+}, []);
 
   const menuName = searchParams.get("courseName") || "整体コース";
   const menuTime = `${searchParams.get("duration") || "60"}分`;
