@@ -1,7 +1,9 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+const USER_STORAGE_KEY = "sakurakuUser";
 
 function OptionMenuContent() {
   const router = useRouter();
@@ -10,6 +12,26 @@ function OptionMenuContent() {
   const [selectedMag, setSelectedMag] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (!savedUser) {
+        router.push("/register");
+        return;
+      }
+
+      const parsedUser = JSON.parse(savedUser);
+
+      if (!parsedUser?.isLoggedIn) {
+        router.push("/register");
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
+      router.push("/register");
+    }
+  }, [router]);
 
   const totalPrice = useMemo(() => {
     return (
