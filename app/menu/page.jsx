@@ -189,7 +189,7 @@ export default function MenuPage() {
     });
 
     if (selectedMenu.type === "seitai") {
-      router.push(`/reserve/option?${params.toString()}`);
+      router.push(`/option?${params.toString()}`);
       return;
     }
 
