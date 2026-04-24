@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+
+const USER_STORAGE_KEY = "sakurakuUser";
 
 const menuItems = [
   {
@@ -143,6 +145,26 @@ export default function MenuPage() {
   const [selectedMenu, setSelectedMenu] = useState(null);
   const [showFirstCoursePopup, setShowFirstCoursePopup] = useState(false);
 
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (!savedUser) {
+        router.push("/register");
+        return;
+      }
+
+      const parsedUser = JSON.parse(savedUser);
+
+      if (!parsedUser?.isLoggedIn) {
+        router.push("/register");
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
+      router.push("/register");
+    }
+  }, [router]);
+
   const seitaiMenus = useMemo(
     () => menuItems.filter((item) => item.type === "seitai"),
     []
@@ -167,7 +189,7 @@ export default function MenuPage() {
     });
 
     if (selectedMenu.type === "seitai") {
-      router.push(`/option?${params.toString()}`);
+      router.push(`/reserve/option?${params.toString()}`);
       return;
     }
 
@@ -400,9 +422,7 @@ export default function MenuPage() {
               </div>
             </div>
 
-            <div style={styles.popupTea}>
-              ウェルカム／アフターティー付
-            </div>
+            <div style={styles.popupTea}>ウェルカム／アフターティー付</div>
 
             <button
               type="button"
@@ -750,8 +770,7 @@ const styles = {
     justifyContent: "center",
     whiteSpace: "nowrap",
     lineHeight: 1,
-    fontFamily:
-      '"Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif',
+    fontFamily: '"Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif',
     letterSpacing: "0.01em",
     opacity: 0.96,
     flex: "0 0 auto",
