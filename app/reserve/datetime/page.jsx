@@ -11,6 +11,7 @@ const DEFAULT_MENU_NAME = "深整コース 120分";
 const DEFAULT_TREATMENT_MINUTES = 120;
 
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
+const USER_STORAGE_KEY = "sakurakuUser";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -154,6 +155,26 @@ function ReserveDateTimeContent() {
     : courseName;
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
+
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (!savedUser) {
+        router.push("/register");
+        return;
+      }
+
+      const parsedUser = JSON.parse(savedUser);
+
+      if (!parsedUser?.isLoggedIn) {
+        router.push("/register");
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
+      router.push("/register");
+    }
+  }, [router]);
 
   useEffect(() => {
     setMockAvailability(readAvailabilityFromStorage());
