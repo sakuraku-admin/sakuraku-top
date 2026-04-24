@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+const USER_STORAGE_KEY = "sakurakuUser";
+
 export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,9 +20,15 @@ export default function RegisterPage() {
 
     console.log("新規会員登録", { name, email, phone });
 
-    // 👇ここ修正（仮登録を保持）
-    localStorage.setItem("customerName", name);
-    localStorage.setItem("isLoggedIn", "true");
+    const userData = {
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      isLoggedIn: true,
+      createdAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
 
     router.push("/");
   };
