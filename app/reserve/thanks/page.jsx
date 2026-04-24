@@ -2,15 +2,41 @@
 
 import { useEffect, useState } from "react";
 
+const USER_STORAGE_KEY = "sakurakuUser";
+const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
+
 export default function ThanksPage() {
   const [menuName, setMenuName] = useState("整体コース");
   const [menuTime, setMenuTime] = useState("60分");
-  const [options, setOptions] = useState(["頭部解放", "巡りシェイプ1部位", "マグバーム"]);
-  const [reserveDate, setReserveDate] = useState("2026/4/17(金)");
-  const [reserveTime, setReserveTime] = useState("11:00〜12:30");
+  const [options, setOptions] = useState([]);
+  const [reserveDate, setReserveDate] = useState("未選択");
+  const [reserveTime, setReserveTime] = useState("未選択");
 
   useEffect(() => {
-    const savedReservation = localStorage.getItem("reservationData");
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (!savedUser) {
+        window.location.href = "/register";
+        return;
+      }
+
+      const parsedUser = JSON.parse(savedUser);
+
+      if (!parsedUser?.isLoggedIn) {
+        window.location.href = "/register";
+        return;
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
+      window.location.href = "/register";
+    }
+  }, []);
+
+  useEffect(() => {
+    const savedReservation = localStorage.getItem(
+      CURRENT_RESERVATION_STORAGE_KEY
+    );
     if (!savedReservation) return;
 
     try {
@@ -30,28 +56,6 @@ export default function ThanksPage() {
       }
       if (reservationData.reserveTime) {
         setReserveTime(reservationData.reserveTime);
-      }
-
-      // 👇ここだけ追加（履歴へ保存）
-      const historySaveKey = `savedHistory:${savedReservation}`;
-      const alreadySaved = sessionStorage.getItem(historySaveKey);
-
-      if (!alreadySaved) {
-        const existingHistory = localStorage.getItem("reservationHistory");
-        const historyList = existingHistory ? JSON.parse(existingHistory) : [];
-
-        const newHistoryItem = {
-          id: Date.now(),
-          date: reservationData.reserveDate || "",
-          course: `${reservationData.menuName || ""}${reservationData.menuTime || ""}`,
-          option: Array.isArray(reservationData.options)
-            ? reservationData.options.join("\n")
-            : "",
-        };
-
-        const updatedHistory = [newHistoryItem, ...historyList];
-        localStorage.setItem("reservationHistory", JSON.stringify(updatedHistory));
-        sessionStorage.setItem(historySaveKey, "true");
       }
     } catch (error) {
       console.error("予約データの読み込みに失敗しました", error);
@@ -175,7 +179,8 @@ const styles = {
   pinkCard: {
     position: "relative",
     width: "100%",
-    background:"linear-gradient(to bottom, #FFCFD2 75%, rgba(255, 207, 210, 0) 100%)",
+    background:
+      "linear-gradient(to bottom, #FFCFD2 75%, rgba(255, 207, 210, 0) 100%)",
     borderRadius: "22px",
     padding: "16px 14px 14px",
     boxSizing: "border-box",
