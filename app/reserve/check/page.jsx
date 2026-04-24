@@ -1,39 +1,111 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+const USER_STORAGE_KEY = "sakurakuUser";
+const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
+const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
+const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
+
 export default function ReserveCheckPage() {
-  const reserveDate = "2026/4/17(金)";
-  const reserveTime = "11:00〜12:30";
+  const [reservation, setReservation] = useState(null);
 
-  const menuName = "整体コース";
-  const menuTime = "60分";
-  const menuPrice = "￥5,000";
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-  const options = [
-    { name: "頭部解放", price: "￥3,000" },
-    { name: "巡りシェイプ1部位", price: "￥2,000" },
-    { name: "マグバーム", price: "￥1,000" },
-  ];
+      if (!savedUser) {
+        window.location.href = "/register";
+        return;
+      }
 
-  const totalPrice = "￥11,000";
+      const parsedUser = JSON.parse(savedUser);
+
+      if (!parsedUser?.isLoggedIn) {
+        window.location.href = "/register";
+        return;
+      }
+
+      const savedReservation = localStorage.getItem(
+        CURRENT_RESERVATION_STORAGE_KEY
+      );
+
+      if (savedReservation) {
+        setReservation(JSON.parse(savedReservation));
+      }
+    } catch (error) {
+      console.error("予約情報の読み込みに失敗しました", error);
+    }
+  }, []);
+
+  const reserveDate = reservation?.reserveDate || "現在ご予約はありません";
+  const reserveTime = reservation?.reserveTime || "";
+
+  const menuName = reservation?.menuName || "";
+  const menuTime = reservation?.menuTime || "";
+  const menuPrice = reservation?.price || "";
+
+  const options = Array.isArray(reservation?.options) ? reservation.options : [];
+
+  const totalPrice = reservation?.totalPrice || "";
 
   const handleChangeReservation = () => {
     window.location.href = "/menu";
   };
 
   const handleCancelReservation = () => {
+    if (!reservation) return;
+
     const confirmed = window.confirm("ご予約を取り消しますか？");
     if (!confirmed) return;
 
-    localStorage.removeItem("selectedMenu");
-    localStorage.removeItem("selectedOption");
-    localStorage.removeItem("selectedOptions");
-    localStorage.removeItem("selectedDate");
-    localStorage.removeItem("selectedTime");
-    localStorage.removeItem("reservationData");
-    localStorage.removeItem("currentReservation");
+    try {
+      localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
 
-    alert("ご予約を取り消しました");
-    window.location.href = "/";
+      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+      const reservations = savedReservations
+        ? JSON.parse(savedReservations)
+        : [];
+
+      const updatedReservations = Array.isArray(reservations)
+        ? reservations.filter((item) => item.id !== reservation.id)
+        : [];
+
+      localStorage.setItem(
+        RESERVATIONS_STORAGE_KEY,
+        JSON.stringify(updatedReservations)
+      );
+
+      const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
+
+      if (savedAvailability && reservation.date && reservation.startTime) {
+        const availability = JSON.parse(savedAvailability);
+
+        const currentDay = Array.isArray(availability[reservation.date])
+          ? availability[reservation.date]
+          : [];
+
+        const restoredDay = currentDay.includes(reservation.startTime)
+          ? currentDay
+          : [...currentDay, reservation.startTime].sort();
+
+        const nextAvailability = {
+          ...availability,
+          [reservation.date]: restoredDay,
+        };
+
+        localStorage.setItem(
+          AVAILABILITY_STORAGE_KEY,
+          JSON.stringify(nextAvailability)
+        );
+      }
+
+      alert("ご予約を取り消しました");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("予約の取り消しに失敗しました", error);
+      alert("予約の取り消しに失敗しました。もう一度お試しください。");
+    }
   };
 
   return (
@@ -177,92 +249,98 @@ export default function ReserveCheckPage() {
             </div>
           </div>
 
-          <div
-            style={{
-              textAlign: "center",
-              color: "#7d5b50",
-              fontSize: "clamp(16px, 4vw, 20px)",
-              lineHeight: 1.55,
-              letterSpacing: "0.02em",
-              fontFamily:
-                '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              marginBottom: "2px",
-            }}
-          >
-            <div>
-              {menuName}（{menuTime}）
-            </div>
-            <div
-              style={{
-                fontSize: "clamp(14px, 3.6vw, 18px)",
-                color: "#8d7066",
-                marginTop: "1px",
-              }}
-            >
-              {menuPrice}
-            </div>
-          </div>
-
-          <div
-            style={{
-              color: "#8c6c61",
-              fontSize: "clamp(11px, 2.9vw, 14px)",
-              lineHeight: 1.65,
-              letterSpacing: "0.01em",
-              fontFamily:
-                '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              textAlign: "center",
-              marginBottom: "8px",
-            }}
-          >
-            {options.length > 0 && (
-              <>
-                <div
-                  style={{
-                    marginBottom: "2px",
-                    fontSize: "clamp(12px, 3.1vw, 14px)",
-                  }}
-                >
-                  オプション
+          {reservation && (
+            <>
+              <div
+                style={{
+                  textAlign: "center",
+                  color: "#7d5b50",
+                  fontSize: "clamp(16px, 4vw, 20px)",
+                  lineHeight: 1.55,
+                  letterSpacing: "0.02em",
+                  fontFamily:
+                    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+                  marginBottom: "2px",
+                }}
+              >
+                <div>
+                  {menuName}（{menuTime}）
                 </div>
                 <div
                   style={{
-                    color: "#9a7f76",
-                    fontSize: "clamp(10px, 2.7vw, 13px)",
-                    lineHeight: 1.7,
+                    fontSize: "clamp(14px, 3.6vw, 18px)",
+                    color: "#8d7066",
+                    marginTop: "1px",
                   }}
                 >
-                  {options.map((option, index) => (
-                    <span key={option.name}>
-                      {index === 0 ? "" : "　"}
-                      {option.name} {option.price}
-                    </span>
-                  ))}
+                  {menuPrice}
                 </div>
-              </>
-            )}
-          </div>
+              </div>
 
-          <div
-            style={{
-              textAlign: "center",
-    color: "#6f4b41",
-    fontSize: "clamp(16px, 4vw, 19px)",
-    lineHeight: 1.45,
-    letterSpacing: "0.02em",
-    fontFamily:
-      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-    marginBottom: "10px",
-    borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
-    paddingBottom: "4px",
-    display: "block",
-    width: "fit-content",
-    marginLeft: "auto",
-    marginRight: "auto",
-            }}
-          >
-            合計　{totalPrice}
-          </div>
+              <div
+                style={{
+                  color: "#8c6c61",
+                  fontSize: "clamp(11px, 2.9vw, 14px)",
+                  lineHeight: 1.65,
+                  letterSpacing: "0.01em",
+                  fontFamily:
+                    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+                  textAlign: "center",
+                  marginBottom: "8px",
+                }}
+              >
+                {options.length > 0 && (
+                  <>
+                    <div
+                      style={{
+                        marginBottom: "2px",
+                        fontSize: "clamp(12px, 3.1vw, 14px)",
+                      }}
+                    >
+                      オプション
+                    </div>
+                    <div
+                      style={{
+                        color: "#9a7f76",
+                        fontSize: "clamp(10px, 2.7vw, 13px)",
+                        lineHeight: 1.7,
+                      }}
+                    >
+                      {options.map((option, index) => (
+                        <span key={option}>
+                          {index === 0 ? "" : "　"}
+                          {option}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {totalPrice && (
+                <div
+                  style={{
+                    textAlign: "center",
+                    color: "#6f4b41",
+                    fontSize: "clamp(16px, 4vw, 19px)",
+                    lineHeight: 1.45,
+                    letterSpacing: "0.02em",
+                    fontFamily:
+                      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+                    marginBottom: "10px",
+                    borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
+                    paddingBottom: "4px",
+                    display: "block",
+                    width: "fit-content",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                >
+                  合計　{totalPrice}
+                </div>
+              )}
+            </>
+          )}
 
           <div
             style={{
@@ -285,8 +363,16 @@ export default function ReserveCheckPage() {
               marginBottom: "12px",
             }}
           >
-            <div>ご来店を心よりお待ちしております🌸</div>
-            <div>ご不明な点がありましたらお気軽にLINEからお問合せください</div>
+            {reservation ? (
+              <>
+                <div>ご来店を心よりお待ちしております🌸</div>
+                <div>
+                  ご不明な点がありましたらお気軽にLINEからお問合せください
+                </div>
+              </>
+            ) : (
+              <div>現在表示できるご予約はありません。</div>
+            )}
           </div>
 
           <div
@@ -297,49 +383,54 @@ export default function ReserveCheckPage() {
               marginBottom: "8px",
             }}
           >
-            <button
-              type="button"
-              onClick={handleChangeReservation}
-              style={{
-                width: "100%",
-                border: "none",
-                borderRadius: "999px",
-                background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
-                color: "#fffdfb",
-                fontSize: "clamp(16px, 4.2vw, 22px)",
-                fontWeight: 700,
-                letterSpacing: "0.03em",
-                padding: "13px 16px",
-                cursor: "pointer",
-                boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
-                fontFamily:
-                  '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
-              }}
-            >
-              予約を変更する
-            </button>
+            {reservation && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleChangeReservation}
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    borderRadius: "999px",
+                    background:
+                      "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
+                    color: "#fffdfb",
+                    fontSize: "clamp(16px, 4.2vw, 22px)",
+                    fontWeight: 700,
+                    letterSpacing: "0.03em",
+                    padding: "13px 16px",
+                    cursor: "pointer",
+                    boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
+                    fontFamily:
+                      '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+                  }}
+                >
+                  予約を変更する
+                </button>
 
-            <button
-              type="button"
-              onClick={handleCancelReservation}
-              style={{
-                width: "100%",
-                borderRadius: "999px",
-                background: "rgba(255,255,255,0.82)",
-                color: "#7d5b50",
-                fontSize: "clamp(15px, 3.9vw, 20px)",
-                fontWeight: 500,
-                letterSpacing: "0.03em",
-                padding: "12px 16px",
-                cursor: "pointer",
-                border: "1.5px solid rgba(145, 112, 101, 0.16)",
-                boxShadow: "none",
-                fontFamily:
-                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              }}
-            >
-              予約を取り消す
-            </button>
+                <button
+                  type="button"
+                  onClick={handleCancelReservation}
+                  style={{
+                    width: "100%",
+                    borderRadius: "999px",
+                    background: "rgba(255,255,255,0.82)",
+                    color: "#7d5b50",
+                    fontSize: "clamp(15px, 3.9vw, 20px)",
+                    fontWeight: 500,
+                    letterSpacing: "0.03em",
+                    padding: "12px 16px",
+                    cursor: "pointer",
+                    border: "1.5px solid rgba(145, 112, 101, 0.16)",
+                    boxShadow: "none",
+                    fontFamily:
+                      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+                  }}
+                >
+                  予約を取り消す
+                </button>
+              </>
+            )}
 
             <button
               type="button"
