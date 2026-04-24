@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+const USER_STORAGE_KEY = "sakurakuUser";
+
 export default function LoginPage() {
   const [customerName, setCustomerName] = useState("");
   const [phoneLast4, setPhoneLast4] = useState("");
@@ -11,9 +13,18 @@ export default function LoginPage() {
 
     console.log("ログイン", { customerName, phoneLast4 });
 
-    // 👇ここだけ変更
-    localStorage.setItem("customerName", customerName);
-    localStorage.setItem("isLoggedIn", "true");
+    if (!customerName.trim() || !phoneLast4.trim()) {
+      return;
+    }
+
+    const userData = {
+      name: customerName.trim(),
+      phoneLast4: phoneLast4.trim(),
+      isLoggedIn: true,
+      loggedInAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
 
     // 👇ホームへ戻す
     window.location.href = "/";
