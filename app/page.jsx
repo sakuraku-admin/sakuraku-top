@@ -2,13 +2,24 @@
 
 import { useEffect, useState } from "react";
 
+const USER_STORAGE_KEY = "sakurakuUser";
+
 export default function Home() {
   const [customerName, setCustomerName] = useState("");
 
   useEffect(() => {
-    const savedName = localStorage.getItem("customerName");
-    if (savedName) {
-      setCustomerName(savedName);
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+
+        if (parsedUser?.isLoggedIn && parsedUser?.name) {
+          setCustomerName(parsedUser.name);
+        }
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
     }
   }, []);
 
@@ -66,20 +77,28 @@ export default function Home() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("customerName");
+    localStorage.removeItem(USER_STORAGE_KEY);
     setCustomerName("");
     alert("ログアウトしました");
   };
 
   const handleReserveClick = () => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-    if (isLoggedIn === "true") {
-      window.location.href = "/menu";
-    } else {
-      window.location.href = "/register";
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+
+        if (parsedUser?.isLoggedIn) {
+          window.location.href = "/menu";
+          return;
+        }
+      }
+    } catch (error) {
+      console.error("ログイン状態の確認に失敗しました", error);
     }
+
+    window.location.href = "/register";
   };
 
   return (
