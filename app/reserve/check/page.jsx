@@ -49,8 +49,56 @@ export default function ReserveCheckPage() {
 
   const totalPrice = reservation?.totalPrice || "";
 
+  const removeCurrentReservationAndRestoreSlot = () => {
+    localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
+
+    const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+    const reservations = savedReservations ? JSON.parse(savedReservations) : [];
+
+    const updatedReservations = Array.isArray(reservations)
+      ? reservations.filter((item) => item.id !== reservation.id)
+      : [];
+
+    localStorage.setItem(
+      RESERVATIONS_STORAGE_KEY,
+      JSON.stringify(updatedReservations)
+    );
+
+    const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
+
+    if (savedAvailability && reservation.date && reservation.startTime) {
+      const availability = JSON.parse(savedAvailability);
+
+      const currentDay = Array.isArray(availability[reservation.date])
+        ? availability[reservation.date]
+        : [];
+
+      const restoredDay = currentDay.includes(reservation.startTime)
+        ? currentDay
+        : [...currentDay, reservation.startTime].sort();
+
+      const nextAvailability = {
+        ...availability,
+        [reservation.date]: restoredDay,
+      };
+
+      localStorage.setItem(
+        AVAILABILITY_STORAGE_KEY,
+        JSON.stringify(nextAvailability)
+      );
+    }
+  };
+
   const handleChangeReservation = () => {
-    window.location.href = "/menu";
+    if (!reservation) return;
+
+    try {
+      removeCurrentReservationAndRestoreSlot();
+      window.location.href = "/menu";
+    } catch (error) {
+      console.error("予約変更処理に失敗しました", error);
+      alert("予約変更処理に失敗しました。もう一度お試しください。");
+    }
   };
 
   const handleCancelReservation = () => {
@@ -60,45 +108,7 @@ export default function ReserveCheckPage() {
     if (!confirmed) return;
 
     try {
-      localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
-
-      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-      const reservations = savedReservations
-        ? JSON.parse(savedReservations)
-        : [];
-
-      const updatedReservations = Array.isArray(reservations)
-        ? reservations.filter((item) => item.id !== reservation.id)
-        : [];
-
-      localStorage.setItem(
-        RESERVATIONS_STORAGE_KEY,
-        JSON.stringify(updatedReservations)
-      );
-
-      const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
-
-      if (savedAvailability && reservation.date && reservation.startTime) {
-        const availability = JSON.parse(savedAvailability);
-
-        const currentDay = Array.isArray(availability[reservation.date])
-          ? availability[reservation.date]
-          : [];
-
-        const restoredDay = currentDay.includes(reservation.startTime)
-          ? currentDay
-          : [...currentDay, reservation.startTime].sort();
-
-        const nextAvailability = {
-          ...availability,
-          [reservation.date]: restoredDay,
-        };
-
-        localStorage.setItem(
-          AVAILABILITY_STORAGE_KEY,
-          JSON.stringify(nextAvailability)
-        );
-      }
+      removeCurrentReservationAndRestoreSlot();
 
       alert("ご予約を取り消しました");
       window.location.href = "/";
