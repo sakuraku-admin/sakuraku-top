@@ -4,9 +4,9 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
-const RESERVATION_DATA_STORAGE_KEY = "reservationData";
-const RESERVATION_HISTORY_STORAGE_KEY = "reservationHistory";
-const RESERVATIONS_STORAGE_KEY = "reservations";
+const USER_STORAGE_KEY = "sakurakuUser";
+const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
+const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
 function formatJapaneseDate(dateKey) {
   if (!dateKey) return "未選択";
@@ -52,11 +52,22 @@ function ReserveConfirmContent() {
   const searchParams = useSearchParams();
 
   const [customerName, setCustomerName] = useState("");
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const savedName = localStorage.getItem("customerName");
-    if (savedName) {
-      setCustomerName(savedName);
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        setUserData(parsedUser);
+
+        if (parsedUser?.name) {
+          setCustomerName(parsedUser.name);
+        }
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
     }
   }, []);
 
@@ -92,7 +103,9 @@ function ReserveConfirmContent() {
     const rawDate = searchParams.get("date") || "";
 
     const reservationData = {
+      id: `${rawDate}-${startTime}-${Date.now()}`,
       customerName,
+      customer: userData,
       menuName,
       menuTime,
       options,
@@ -107,16 +120,8 @@ function ReserveConfirmContent() {
     };
 
     localStorage.setItem(
-      RESERVATION_DATA_STORAGE_KEY,
+      CURRENT_RESERVATION_STORAGE_KEY,
       JSON.stringify(reservationData)
-    );
-
-    const reservationHistory = readJsonArrayFromStorage(
-      RESERVATION_HISTORY_STORAGE_KEY
-    );
-    localStorage.setItem(
-      RESERVATION_HISTORY_STORAGE_KEY,
-      JSON.stringify([...reservationHistory, reservationData])
     );
 
     const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
