@@ -8,6 +8,9 @@ const USER_STORAGE_KEY = "sakurakuUser";
 const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
 const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
+const OPEN_HOUR = 11;
+const CLOSE_HOUR = 20;
+
 function formatJapaneseDate(dateKey) {
   if (!dateKey) return "未選択";
 
@@ -35,6 +38,42 @@ function minutesToTimeString(totalMinutes) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
+function generateTimeSlots() {
+  const slots = [];
+  for (let hour = OPEN_HOUR; hour < CLOSE_HOUR; hour++) {
+    slots.push(`${String(hour).padStart(2, "0")}:00`);
+    slots.push(`${String(hour).padStart(2, "0")}:30`);
+  }
+  return slots;
+}
+
+function addDays(date, days) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + days);
+  return next;
+}
+
+function formatDateKey(date) {
+  const y = date.getFullYear();
+  const m = `${date.getMonth() + 1}`.padStart(2, "0");
+  const d = `${date.getDate()}`.padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function buildInitialAvailability() {
+  const today = new Date();
+  const data = {};
+  const allSlots = generateTimeSlots();
+
+  for (let i = 0; i < 42; i++) {
+    const date = addDays(today, i);
+    const dateKey = formatDateKey(date);
+    data[dateKey] = allSlots;
+  }
+
+  return data;
+}
+
 function readJsonArrayFromStorage(key) {
   try {
     const saved = localStorage.getItem(key);
@@ -55,32 +94,32 @@ function ReserveConfirmContent() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-  try {
-    const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+    try {
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-    // 👇 未ログインなら弾く
-    if (!savedUser) {
+      // 👇 未ログインなら弾く
+      if (!savedUser) {
+        window.location.href = "/register";
+        return;
+      }
+
+      const parsedUser = JSON.parse(savedUser);
+
+      if (!parsedUser?.isLoggedIn) {
+        window.location.href = "/register";
+        return;
+      }
+
+      setUserData(parsedUser);
+
+      if (parsedUser?.name) {
+        setCustomerName(parsedUser.name);
+      }
+    } catch (error) {
+      console.error("お客様情報の読み込みに失敗しました", error);
       window.location.href = "/register";
-      return;
     }
-
-    const parsedUser = JSON.parse(savedUser);
-
-    if (!parsedUser?.isLoggedIn) {
-      window.location.href = "/register";
-      return;
-    }
-
-    setUserData(parsedUser);
-
-    if (parsedUser?.name) {
-      setCustomerName(parsedUser.name);
-    }
-  } catch (error) {
-    console.error("お客様情報の読み込みに失敗しました", error);
-    window.location.href = "/register";
-  }
-}, []);
+  }, []);
 
   const menuName = searchParams.get("courseName") || "整体コース";
   const menuTime = `${searchParams.get("duration") || "60"}分`;
@@ -144,29 +183,29 @@ function ReserveConfirmContent() {
     try {
       const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
 
-      if (savedAvailability) {
-        const parsedAvailability = JSON.parse(savedAvailability);
+      const parsedAvailability = savedAvailability
+        ? JSON.parse(savedAvailability)
+        : buildInitialAvailability();
 
-        if (
-          parsedAvailability &&
-          typeof parsedAvailability === "object" &&
-          rawDate &&
-          startTime
-        ) {
-          const currentDay = Array.isArray(parsedAvailability[rawDate])
-            ? parsedAvailability[rawDate]
-            : [];
+      if (
+        parsedAvailability &&
+        typeof parsedAvailability === "object" &&
+        rawDate &&
+        startTime
+      ) {
+        const currentDay = Array.isArray(parsedAvailability[rawDate])
+          ? parsedAvailability[rawDate]
+          : generateTimeSlots();
 
-          const nextAvailability = {
-            ...parsedAvailability,
-            [rawDate]: currentDay.filter((slot) => slot !== startTime),
-          };
+        const nextAvailability = {
+          ...parsedAvailability,
+          [rawDate]: currentDay.filter((slot) => slot !== startTime),
+        };
 
-          localStorage.setItem(
-            AVAILABILITY_STORAGE_KEY,
-            JSON.stringify(nextAvailability)
-          );
-        }
+        localStorage.setItem(
+          AVAILABILITY_STORAGE_KEY,
+          JSON.stringify(nextAvailability)
+        );
       }
     } catch (error) {
       console.error("予約枠データの更新に失敗しました", error);
