@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -23,6 +23,7 @@ function formatJapaneseDate(date) {
 }
 
 function timeStringToMinutes(time) {
+  if (!time) return 0;
   const [hour, minute] = time.split(":").map(Number);
   return hour * 60 + minute;
 }
@@ -32,50 +33,56 @@ function getCourseMinutes(course) {
   return match ? Number(match[1]) : 60;
 }
 
-const mockReservations = {
-  "2026-04-20": [
-    {
-      id: 1,
-      time: "11:00",
-      customerName: "山田 花子",
-      course: "深整コース 120分",
-      options: "頭部解放 / マグバーム",
-    },
-    {
-      id: 2,
-      time: "14:00",
-      customerName: "鈴木 さくら",
-      course: "整体コース 90分",
-      options: "巡りシェイプ1部位",
-    },
-    {
-      id: 3,
-      time: "17:30",
-      customerName: "佐藤 美咲",
-      course: "整体コース 60分",
-      options: "なし",
-    },
-  ],
-  "2026-04-21": [
-    {
-      id: 4,
-      time: "12:00",
-      customerName: "高橋 由美",
-      course: "深整コース 120分",
-      options: "ホットストーン / 頭部解放",
-    },
-  ],
-};
+const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
+
+function formatReservationForAdmin(item) {
+  const menuName = item?.menuName || "";
+  const menuTime = item?.menuTime || "";
+  const course = `${menuName}${menuTime ? ` ${menuTime}` : ""}`.trim();
+
+  const options = Array.isArray(item?.options) && item.options.length > 0
+    ? item.options.join(" / ")
+    : "なし";
+
+  return {
+    id: item?.id || `${item?.date || ""}-${item?.startTime || ""}`,
+    date: item?.date || "",
+    time: item?.startTime || "",
+    customerName: item?.customerName || item?.customer?.name || "お名前未登録",
+    course: course || "コース未選択",
+    options,
+    totalMinutes: item?.totalMinutes || getCourseMinutes(course),
+  };
+}
+
 
 export default function AdminListPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [allReservations, setAllReservations] = useState([]);
+
+  useEffect(() => {
+    try {
+      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+      const parsedReservations = savedReservations
+        ? JSON.parse(savedReservations)
+        : [];
+
+      if (Array.isArray(parsedReservations)) {
+        setAllReservations(parsedReservations.map(formatReservationForAdmin));
+      }
+    } catch (error) {
+      console.error("予約一覧データの読み込みに失敗しました", error);
+      setAllReservations([]);
+    }
+  }, []);
 
   const dateKey = formatDateKey(selectedDate);
 
   const reservations = useMemo(() => {
-    const list = mockReservations[dateKey] || [];
-    return [...list].sort((a, b) => a.time.localeCompare(b.time));
-  }, [dateKey]);
+    return allReservations
+      .filter((item) => item.date === dateKey)
+      .sort((a, b) => a.time.localeCompare(b.time));
+  }, [allReservations, dateKey]);
 
   const timelineItems = useMemo(() => {
     const startBaseMinutes = 11 * 60;
@@ -84,7 +91,7 @@ export default function AdminListPage() {
 
     return reservations.map((item) => {
       const startMinutes = timeStringToMinutes(item.time);
-      const durationMinutes = getCourseMinutes(item.course);
+      const durationMinutes = item.totalMinutes || getCourseMinutes(item.course);
       const endMinutes = Math.min(startMinutes + durationMinutes, endBaseMinutes);
 
       const left = ((startMinutes - startBaseMinutes) / totalMinutes) * 100;
