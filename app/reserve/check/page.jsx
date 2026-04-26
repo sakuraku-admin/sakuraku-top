@@ -8,7 +8,8 @@ const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 
 export default function ReserveCheckPage() {
-  const [reservation, setReservation] = useState(null);
+  const [reservations, setReservations] = useState([]);
+  const [selectedReservation, setSelectedReservation] = useState(null);
 
   useEffect(() => {
     try {
@@ -26,60 +27,46 @@ export default function ReserveCheckPage() {
         return;
       }
 
-      const savedReservation = localStorage.getItem(
-        CURRENT_RESERVATION_STORAGE_KEY
-      );
+      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+      const parsedReservations = savedReservations
+        ? JSON.parse(savedReservations)
+        : [];
 
-      if (savedReservation) {
-        setReservation(JSON.parse(savedReservation));
+      if (Array.isArray(parsedReservations)) {
+        const userReservations = parsedReservations.filter((item) => {
+          const reservationName =
+            item?.customerName || item?.customer?.name || "";
+          return reservationName === parsedUser.name;
+        });
+
+        setReservations(userReservations);
       }
     } catch (error) {
       console.error("予約情報の読み込みに失敗しました", error);
     }
   }, []);
 
-  const reserveDate = reservation?.reserveDate || "現在ご予約はありません";
-  const reserveTime = reservation?.reserveTime || "";
-
-  const menuName = reservation?.menuName || "";
-  const menuTime = reservation?.menuTime || "";
-  const menuPrice = reservation?.price || "";
-
-  const options = Array.isArray(reservation?.options) ? reservation.options : [];
-
-  const totalPrice = reservation?.totalPrice || "";
-
-  const removeCurrentReservationAndRestoreSlot = () => {
-    localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
-
-    const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-    const reservations = savedReservations ? JSON.parse(savedReservations) : [];
-
-    const updatedReservations = Array.isArray(reservations)
-      ? reservations.filter((item) => item.id !== reservation.id)
-      : [];
-
-    localStorage.setItem(
-      RESERVATIONS_STORAGE_KEY,
-      JSON.stringify(updatedReservations)
-    );
-
+  const restoreAvailabilitySlot = (targetReservation) => {
     const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
 
-    if (savedAvailability && reservation.date && reservation.startTime) {
+    if (
+      savedAvailability &&
+      targetReservation.date &&
+      targetReservation.startTime
+    ) {
       const availability = JSON.parse(savedAvailability);
 
-      const currentDay = Array.isArray(availability[reservation.date])
-        ? availability[reservation.date]
+      const currentDay = Array.isArray(availability[targetReservation.date])
+        ? availability[targetReservation.date]
         : [];
 
-      const restoredDay = currentDay.includes(reservation.startTime)
+      const restoredDay = currentDay.includes(targetReservation.startTime)
         ? currentDay
-        : [...currentDay, reservation.startTime].sort();
+        : [...currentDay, targetReservation.startTime].sort();
 
       const nextAvailability = {
         ...availability,
-        [reservation.date]: restoredDay,
+        [targetReservation.date]: restoredDay,
       };
 
       localStorage.setItem(
@@ -89,11 +76,42 @@ export default function ReserveCheckPage() {
     }
   };
 
-  const handleChangeReservation = () => {
-    if (!reservation) return;
+  const removeReservation = (targetReservation) => {
+    const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+    const allReservations = savedReservations
+      ? JSON.parse(savedReservations)
+      : [];
 
+    const updatedReservations = Array.isArray(allReservations)
+      ? allReservations.filter((item) => item.id !== targetReservation.id)
+      : [];
+
+    localStorage.setItem(
+      RESERVATIONS_STORAGE_KEY,
+      JSON.stringify(updatedReservations)
+    );
+
+    const savedCurrent = localStorage.getItem(CURRENT_RESERVATION_STORAGE_KEY);
+
+    if (savedCurrent) {
+      const currentReservation = JSON.parse(savedCurrent);
+
+      if (currentReservation?.id === targetReservation.id) {
+        localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
+      }
+    }
+
+    restoreAvailabilitySlot(targetReservation);
+
+    setReservations((prev) =>
+      prev.filter((item) => item.id !== targetReservation.id)
+    );
+    setSelectedReservation(null);
+  };
+
+  const handleChangeReservation = (targetReservation) => {
     try {
-      removeCurrentReservationAndRestoreSlot();
+      removeReservation(targetReservation);
       window.location.href = "/menu";
     } catch (error) {
       console.error("予約変更処理に失敗しました", error);
@@ -101,17 +119,13 @@ export default function ReserveCheckPage() {
     }
   };
 
-  const handleCancelReservation = () => {
-    if (!reservation) return;
-
+  const handleCancelReservation = (targetReservation) => {
     const confirmed = window.confirm("ご予約を取り消しますか？");
     if (!confirmed) return;
 
     try {
-      removeCurrentReservationAndRestoreSlot();
-
+      removeReservation(targetReservation);
       alert("ご予約を取り消しました");
-      window.location.href = "/";
     } catch (error) {
       console.error("予約の取り消しに失敗しました", error);
       alert("予約の取り消しに失敗しました。もう一度お試しください。");
@@ -119,381 +133,484 @@ export default function ReserveCheckPage() {
   };
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        backgroundImage: "url('/images/mokume.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "repeat",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        padding: "24px 16px 24px",
-        boxSizing: "border-box",
-      }}
-    >
-      <div
-        style={{
-          position: "relative",
-          width: "100%",
-          maxWidth: "390px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: "-6px",
-            left: 0,
-            width: "100%",
-            height: "92px",
-            overflow: "hidden",
-            pointerEvents: "none",
-            zIndex: 3,
-          }}
-        >
+    <main style={styles.page}>
+      <div style={styles.wrap}>
+        <div style={styles.hederaWrap}>
           <img
             src="/images/hedera.png"
             alt="hedera decoration"
-            style={{
-              width: "100%",
-              height: "auto",
-              display: "block",
-              userSelect: "none",
-            }}
+            style={styles.hederaImage}
           />
         </div>
 
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            width: "68%",
-            maxWidth: "250px",
-            height: "44px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: "12px",
-            marginBottom: "14px",
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,248,243,0.46) 55%, rgba(255,245,239,0.34) 100%)",
-            borderRadius: "18px",
-            backdropFilter: "blur(5px)",
-            WebkitBackdropFilter: "blur(5px)",
-            boxShadow:
-              "0 3px 10px rgba(120, 90, 70, 0.04), inset 0 1px 0 rgba(255,255,255,0.18)",
-            border: "1px solid rgba(255,255,255,0.14)",
-          }}
-        >
-          <span
-            style={{
-              color: "#6e4b41",
-              fontSize: "clamp(16px, 4.2vw, 20px)",
-              fontWeight: 500,
-              letterSpacing: "0.05em",
-              lineHeight: 1.2,
-              fontFamily:
-                '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              textShadow: "0 1px 3px rgba(255,255,255,0.18)",
-            }}
-          >
-            ご予約内容
-          </span>
+        <div style={styles.titleBox}>
+          <span style={styles.titleText}>ご予約内容</span>
         </div>
 
-        <div
-          style={{
-            position: "relative",
-            zIndex: 2,
-            width: "100%",
-            maxWidth: "340px",
-            background: "rgba(255, 250, 246, 0.9)",
-            borderRadius: "28px",
-            padding: "14px 14px 16px",
-            boxSizing: "border-box",
-            boxShadow: "0 8px 20px rgba(110, 80, 65, 0.06)",
-            backdropFilter: "blur(3px)",
-            WebkitBackdropFilter: "blur(3px)",
-            marginTop: "2px",
-          }}
-        >
-          <div
-            style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              borderRadius: "22px",
-              padding: "12px 10px 11px",
-              textAlign: "center",
-              marginBottom: "12px",
-            }}
-          >
-            <div
-              style={{
-                color: "#6a4337",
-                fontSize: "clamp(16px, 4.4vw, 22px)",
-                fontWeight: 600,
-                letterSpacing: "0.02em",
-                lineHeight: 1.35,
-                fontFamily:
-                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              }}
-            >
-              ご予約日時：{reserveDate}
-            </div>
-            <div
-              style={{
-                color: "#6a4337",
-                fontSize: "clamp(16px, 4.2vw, 21px)",
-                fontWeight: 600,
-                letterSpacing: "0.01em",
-                lineHeight: 1.3,
-                marginTop: "2px",
-                fontFamily:
-                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              }}
-            >
-              {reserveTime}
-            </div>
-          </div>
-
-          {reservation && (
-            <>
-              <div
-                style={{
-                  textAlign: "center",
-                  color: "#7d5b50",
-                  fontSize: "clamp(16px, 4vw, 20px)",
-                  lineHeight: 1.55,
-                  letterSpacing: "0.02em",
-                  fontFamily:
-                    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-                  marginBottom: "2px",
-                }}
-              >
-                <div>
-                  {menuName}（{menuTime}）
-                </div>
-                <div
-                  style={{
-                    fontSize: "clamp(14px, 3.6vw, 18px)",
-                    color: "#8d7066",
-                    marginTop: "1px",
-                  }}
+        <div style={styles.card}>
+          <div style={styles.listArea}>
+            {reservations.length > 0 ? (
+              reservations.map((reservation) => (
+                <button
+                  key={reservation.id}
+                  type="button"
+                  onClick={() => setSelectedReservation(reservation)}
+                  style={styles.reservationRow}
                 >
-                  {menuPrice}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  color: "#8c6c61",
-                  fontSize: "clamp(11px, 2.9vw, 14px)",
-                  lineHeight: 1.65,
-                  letterSpacing: "0.01em",
-                  fontFamily:
-                    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-                  textAlign: "center",
-                  marginBottom: "8px",
-                }}
-              >
-                {options.length > 0 && (
-                  <>
-                    <div
-                      style={{
-                        marginBottom: "2px",
-                        fontSize: "clamp(12px, 3.1vw, 14px)",
-                      }}
-                    >
-                      オプション
-                    </div>
-                    <div
-                      style={{
-                        color: "#9a7f76",
-                        fontSize: "clamp(10px, 2.7vw, 13px)",
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      {options.map((option, index) => (
-                        <span key={option}>
-                          {index === 0 ? "" : "　"}
-                          {option}
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-
-              {totalPrice && (
-                <div
-                  style={{
-                    textAlign: "center",
-                    color: "#6f4b41",
-                    fontSize: "clamp(16px, 4vw, 19px)",
-                    lineHeight: 1.45,
-                    letterSpacing: "0.02em",
-                    fontFamily:
-                      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-                    marginBottom: "10px",
-                    borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
-                    paddingBottom: "4px",
-                    display: "block",
-                    width: "fit-content",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }}
-                >
-                  合計　{totalPrice}
-                </div>
-              )}
-            </>
-          )}
-
-          <div
-            style={{
-              width: "100%",
-              height: "1px",
-              background: "rgba(120, 89, 74, 0.12)",
-              marginBottom: "10px",
-            }}
-          />
-
-          <div
-            style={{
-              color: "#84675d",
-              fontSize: "clamp(10px, 2.75vw, 13px)",
-              lineHeight: 1.6,
-              letterSpacing: "0.01em",
-              fontFamily:
-                '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              textAlign: "center",
-              marginBottom: "12px",
-            }}
-          >
-            {reservation ? (
-              <>
-                <div>ご来店を心よりお待ちしております🌸</div>
-                <div>
-                  ご不明な点がありましたらお気軽にLINEからお問合せください
-                </div>
-              </>
+                  <div style={styles.rowDate}>
+                    {reservation.reserveDate || ""}
+                  </div>
+                  <div style={styles.rowTime}>
+                    {reservation.reserveTime || ""}
+                  </div>
+                </button>
+              ))
             ) : (
-              <div>現在表示できるご予約はありません。</div>
+              <div style={styles.emptyText}>
+                現在表示できるご予約はありません。
+              </div>
             )}
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              marginBottom: "8px",
-            }}
-          >
-            {reservation && (
-              <>
-                <button
-                  type="button"
-                  onClick={handleChangeReservation}
-                  style={{
-                    width: "100%",
-                    border: "none",
-                    borderRadius: "999px",
-                    background:
-                      "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
-                    color: "#fffdfb",
-                    fontSize: "clamp(16px, 4.2vw, 22px)",
-                    fontWeight: 700,
-                    letterSpacing: "0.03em",
-                    padding: "13px 16px",
-                    cursor: "pointer",
-                    boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
-                    fontFamily:
-                      '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
-                  }}
-                >
-                  予約を変更する
-                </button>
+          <div style={styles.message}>
+            <div>ご来店を心よりお待ちしております🌸</div>
+            <div>ご不明な点がありましたらお気軽にLINEからお問合せください</div>
+          </div>
 
-                <button
-                  type="button"
-                  onClick={handleCancelReservation}
-                  style={{
-                    width: "100%",
-                    borderRadius: "999px",
-                    background: "rgba(255,255,255,0.82)",
-                    color: "#7d5b50",
-                    fontSize: "clamp(15px, 3.9vw, 20px)",
-                    fontWeight: 500,
-                    letterSpacing: "0.03em",
-                    padding: "12px 16px",
-                    cursor: "pointer",
-                    border: "1.5px solid rgba(145, 112, 101, 0.16)",
-                    boxShadow: "none",
-                    fontFamily:
-                      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-                  }}
-                >
-                  予約を取り消す
-                </button>
-              </>
-            )}
-
+          <div style={styles.buttonArea}>
             <button
               type="button"
               onClick={() => {
                 window.location.href = "/";
               }}
-              style={{
-                width: "100%",
-                border: "none",
-                background: "transparent",
-                color: "#8d7066",
-                fontSize: "clamp(13px, 3.1vw, 15px)",
-                letterSpacing: "0.04em",
-                cursor: "pointer",
-                padding: "0",
-                fontFamily:
-                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-              }}
+              style={styles.backButton}
             >
               戻る
             </button>
           </div>
 
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: 0,
-            }}
-          >
+          <div style={styles.historyLinkWrap}>
             <button
               type="button"
               onClick={() => {
                 window.location.href = "/reserve/history";
               }}
-              style={{
-                border: "none",
-                background: "transparent",
-                color: "#8f766a",
-                fontSize: "clamp(12px, 2.95vw, 14px)",
-                letterSpacing: "0.03em",
-                cursor: "pointer",
-                padding: "4px 6px",
-                fontFamily:
-                  '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-                textDecoration: "underline",
-                textUnderlineOffset: "3px",
-              }}
+              style={styles.historyLink}
             >
               過去のご予約を見る
             </button>
           </div>
         </div>
       </div>
+
+      {selectedReservation && (
+        <div
+          style={styles.modalOverlay}
+          onClick={() => setSelectedReservation(null)}
+        >
+          <div style={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setSelectedReservation(null)}
+              style={styles.closeButton}
+            >
+              ×
+            </button>
+
+            <div style={styles.modalDateBox}>
+              <div style={styles.modalDate}>
+                ご予約日時：{selectedReservation.reserveDate || ""}
+              </div>
+              <div style={styles.modalTime}>
+                {selectedReservation.reserveTime || ""}
+              </div>
+            </div>
+
+            <div style={styles.modalMenu}>
+              <div>
+                {selectedReservation.menuName || ""}
+                {selectedReservation.menuTime
+                  ? `（${selectedReservation.menuTime}）`
+                  : ""}
+              </div>
+              {selectedReservation.price && (
+                <div style={styles.modalPrice}>{selectedReservation.price}</div>
+              )}
+            </div>
+
+            {Array.isArray(selectedReservation.options) &&
+              selectedReservation.options.length > 0 && (
+                <div style={styles.modalOptions}>
+                  <div style={styles.optionTitle}>オプション</div>
+                  <div style={styles.optionText}>
+                    {selectedReservation.options.join("　")}
+                  </div>
+                </div>
+              )}
+
+            {selectedReservation.totalPrice && (
+              <div style={styles.totalPrice}>
+                合計　{selectedReservation.totalPrice}
+              </div>
+            )}
+
+            <div style={styles.modalDivider} />
+
+            <button
+              type="button"
+              onClick={() => handleChangeReservation(selectedReservation)}
+              style={styles.changeButton}
+            >
+              この予約を変更する
+            </button>
+
+            <button
+              type="button"
+              onClick={() => handleCancelReservation(selectedReservation)}
+              style={styles.cancelButton}
+            >
+              この予約を取り消す
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    backgroundImage: "url('/images/mokume.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "repeat",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    padding: "24px 16px 24px",
+    boxSizing: "border-box",
+  },
+
+  wrap: {
+    position: "relative",
+    width: "100%",
+    maxWidth: "390px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+
+  hederaWrap: {
+    position: "absolute",
+    top: "-6px",
+    left: 0,
+    width: "100%",
+    height: "92px",
+    overflow: "hidden",
+    pointerEvents: "none",
+    zIndex: 3,
+  },
+
+  hederaImage: {
+    width: "100%",
+    height: "auto",
+    display: "block",
+    userSelect: "none",
+  },
+
+  titleBox: {
+    position: "relative",
+    zIndex: 2,
+    width: "68%",
+    maxWidth: "250px",
+    height: "44px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: "12px",
+    marginBottom: "14px",
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,248,243,0.46) 55%, rgba(255,245,239,0.34) 100%)",
+    borderRadius: "18px",
+    backdropFilter: "blur(5px)",
+    WebkitBackdropFilter: "blur(5px)",
+    boxShadow:
+      "0 3px 10px rgba(120, 90, 70, 0.04), inset 0 1px 0 rgba(255,255,255,0.18)",
+    border: "1px solid rgba(255,255,255,0.14)",
+  },
+
+  titleText: {
+    color: "#6e4b41",
+    fontSize: "clamp(16px, 4.2vw, 20px)",
+    fontWeight: 500,
+    letterSpacing: "0.05em",
+    lineHeight: 1.2,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    textShadow: "0 1px 3px rgba(255,255,255,0.18)",
+  },
+
+  card: {
+    position: "relative",
+    zIndex: 2,
+    width: "100%",
+    maxWidth: "340px",
+    background: "rgba(255, 250, 246, 0.9)",
+    borderRadius: "28px",
+    padding: "14px 14px 16px",
+    boxSizing: "border-box",
+    boxShadow: "0 8px 20px rgba(110, 80, 65, 0.06)",
+    backdropFilter: "blur(3px)",
+    WebkitBackdropFilter: "blur(3px)",
+    marginTop: "2px",
+  },
+
+  listArea: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginBottom: "14px",
+  },
+
+  reservationRow: {
+    width: "100%",
+    border: "none",
+    borderRadius: "22px",
+    background: "rgba(255, 255, 255, 0.95)",
+    padding: "12px 10px 11px",
+    textAlign: "center",
+    cursor: "pointer",
+    boxSizing: "border-box",
+  },
+
+  rowDate: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.4vw, 22px)",
+    fontWeight: 600,
+    letterSpacing: "0.02em",
+    lineHeight: 1.35,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  rowTime: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.2vw, 21px)",
+    fontWeight: 600,
+    letterSpacing: "0.01em",
+    lineHeight: 1.3,
+    marginTop: "2px",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  emptyText: {
+    color: "#84675d",
+    fontSize: "clamp(13px, 3.2vw, 15px)",
+    lineHeight: 1.7,
+    textAlign: "center",
+    padding: "20px 8px",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  message: {
+    color: "#84675d",
+    fontSize: "clamp(10px, 2.75vw, 13px)",
+    lineHeight: 1.6,
+    letterSpacing: "0.01em",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    textAlign: "center",
+    marginBottom: "12px",
+  },
+
+  buttonArea: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+    marginBottom: "8px",
+  },
+
+  backButton: {
+    width: "100%",
+    border: "none",
+    background: "transparent",
+    color: "#8d7066",
+    fontSize: "clamp(13px, 3.1vw, 15px)",
+    letterSpacing: "0.04em",
+    cursor: "pointer",
+    padding: "0",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  historyLinkWrap: {
+    textAlign: "center",
+    marginTop: 0,
+  },
+
+  historyLink: {
+    border: "none",
+    background: "transparent",
+    color: "#8f766a",
+    fontSize: "clamp(12px, 2.95vw, 14px)",
+    letterSpacing: "0.03em",
+    cursor: "pointer",
+    padding: "4px 6px",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    textDecoration: "underline",
+    textUnderlineOffset: "3px",
+  },
+
+  modalOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(49, 35, 29, 0.28)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
+    zIndex: 1000,
+    boxSizing: "border-box",
+  },
+
+  modalCard: {
+    position: "relative",
+    width: "100%",
+    maxWidth: "340px",
+    background: "rgba(255, 250, 246, 0.96)",
+    borderRadius: "28px",
+    padding: "18px 14px 16px",
+    boxSizing: "border-box",
+    boxShadow: "0 12px 30px rgba(110, 80, 65, 0.18)",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  closeButton: {
+    position: "absolute",
+    top: "10px",
+    right: "14px",
+    border: "none",
+    background: "transparent",
+    color: "#8d7066",
+    fontSize: "28px",
+    lineHeight: 1,
+    cursor: "pointer",
+  },
+
+  modalDateBox: {
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: "22px",
+    padding: "12px 10px 11px",
+    textAlign: "center",
+    marginBottom: "12px",
+  },
+
+  modalDate: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.4vw, 22px)",
+    fontWeight: 600,
+    lineHeight: 1.35,
+  },
+
+  modalTime: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.2vw, 21px)",
+    fontWeight: 600,
+    lineHeight: 1.3,
+    marginTop: "2px",
+  },
+
+  modalMenu: {
+    textAlign: "center",
+    color: "#7d5b50",
+    fontSize: "clamp(16px, 4vw, 20px)",
+    lineHeight: 1.55,
+    letterSpacing: "0.02em",
+    marginBottom: "8px",
+  },
+
+  modalPrice: {
+    fontSize: "clamp(14px, 3.6vw, 18px)",
+    color: "#8d7066",
+    marginTop: "1px",
+  },
+
+  modalOptions: {
+    color: "#8c6c61",
+    fontSize: "clamp(11px, 2.9vw, 14px)",
+    lineHeight: 1.65,
+    textAlign: "center",
+    marginBottom: "8px",
+  },
+
+  optionTitle: {
+    marginBottom: "2px",
+    fontSize: "clamp(12px, 3.1vw, 14px)",
+  },
+
+  optionText: {
+    color: "#9a7f76",
+    fontSize: "clamp(10px, 2.7vw, 13px)",
+    lineHeight: 1.7,
+  },
+
+  totalPrice: {
+    textAlign: "center",
+    color: "#6f4b41",
+    fontSize: "clamp(16px, 4vw, 19px)",
+    lineHeight: 1.45,
+    letterSpacing: "0.02em",
+    marginBottom: "10px",
+    borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
+    paddingBottom: "4px",
+    width: "fit-content",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+
+  modalDivider: {
+    width: "100%",
+    height: "1px",
+    background: "rgba(120, 89, 74, 0.12)",
+    marginBottom: "12px",
+  },
+
+  changeButton: {
+    width: "100%",
+    border: "none",
+    borderRadius: "999px",
+    background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
+    color: "#fffdfb",
+    fontSize: "clamp(16px, 4.2vw, 22px)",
+    fontWeight: 700,
+    letterSpacing: "0.03em",
+    padding: "13px 16px",
+    cursor: "pointer",
+    boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
+    fontFamily: '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+    marginBottom: "10px",
+  },
+
+  cancelButton: {
+    width: "100%",
+    borderRadius: "999px",
+    background: "rgba(255,255,255,0.82)",
+    color: "#7d5b50",
+    fontSize: "clamp(15px, 3.9vw, 20px)",
+    fontWeight: 500,
+    letterSpacing: "0.03em",
+    padding: "12px 16px",
+    cursor: "pointer",
+    border: "1.5px solid rgba(145, 112, 101, 0.16)",
+    boxShadow: "none",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+};
