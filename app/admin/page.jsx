@@ -11,6 +11,7 @@ const DEFAULT_MENU_NAME = "深整コース 120分";
 const DEFAULT_TREATMENT_MINUTES = 120;
 
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
+const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -126,6 +127,32 @@ function readAvailabilityFromStorage() {
   }
 }
 
+function readReservationsFromStorage() {
+  if (typeof window === "undefined") {
+    return [];
+  }
+
+  try {
+    const saved = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+
+    if (!saved) {
+      return [];
+    }
+
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("localStorageの予約一覧データ読み込みに失敗しました", error);
+    return [];
+  }
+}
+
+function findReservationStart(dateKey, time, reservations) {
+  return reservations.find(
+    (reservation) => reservation?.date === dateKey && reservation?.startTime === time
+  );
+}
+
 function saveAvailabilityToStorage(data) {
   if (typeof window === "undefined") return;
 
@@ -142,6 +169,7 @@ function ReserveDateTimeContent() {
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
   const [mockAvailability, setMockAvailability] = useState(buildMockAvailability);
+  const [reservations, setReservations] = useState([]);
 
   const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
@@ -165,6 +193,22 @@ function ReserveDateTimeContent() {
 
   useEffect(() => {
     setMockAvailability(readAvailabilityFromStorage());
+    setReservations(readReservationsFromStorage());
+  }, []);
+
+  useEffect(() => {
+    const handleStorage = (event) => {
+      if (event.key === AVAILABILITY_STORAGE_KEY) {
+        setMockAvailability(readAvailabilityFromStorage());
+      }
+
+      if (event.key === RESERVATIONS_STORAGE_KEY) {
+        setReservations(readReservationsFromStorage());
+      }
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   const weekDates = useMemo(() => {
@@ -181,7 +225,9 @@ function ReserveDateTimeContent() {
 
   const handleSelect = (dateKey, time) => {
     const withinBusinessHours = canReserveAt(time, treatmentMinutes);
-    if (!withinBusinessHours) return;
+    const reservedStart = findReservationStart(dateKey, time, reservations);
+
+    if (!withinBusinessHours || reservedStart) return;
 
     setMockAvailability((prev) => {
       const currentDay = prev[dateKey] || [];
@@ -321,6 +367,12 @@ function ReserveDateTimeContent() {
                       {weekDates.map((date) => {
                         const dateKey = formatDateKey(date);
 
+                        const reservedStart = findReservationStart(
+                          dateKey,
+                          time,
+                          reservations
+                        );
+
                         const markedAvailable = isStartMarkedAvailable(
                           dateKey,
                           time,
@@ -351,12 +403,26 @@ function ReserveDateTimeContent() {
                             key={`${dateKey}-${time}`}
                             style={{
                               ...styles.slotCell,
-                              ...(isReservable
+                              ...(reservedStart
+                                ? styles.slotCellReserved
+                                : isReservable
                                 ? styles.slotCellAvailable
                                 : styles.slotCellUnavailable),
                             }}
                           >
-                            {withinBusinessHours ? (
+                            {reservedStart ? (
+                              <button
+                                type="button"
+                                disabled
+                                style={{
+                                  ...styles.slotButton,
+                                  ...styles.slotReserved,
+                                }}
+                                title={`${reservedStart.customerName || reservedStart.customer?.name || "お客様"} 様のご予約`}
+                              >
+                                予
+                              </button>
+                            ) : withinBusinessHours ? (
                               <button
                                 onClick={() => handleSelect(dateKey, time)}
                                 style={{
@@ -649,6 +715,10 @@ const styles = {
     background: "#f1ebe6",
   },
 
+  slotCellReserved: {
+    background: "rgba(226, 236, 230, 0.92)",
+  },
+
   slotButton: {
     width: "42px",
     height: "42px",
@@ -682,6 +752,13 @@ const styles = {
 
   slotClosed: {
     color: "#9d918a",
+    boxShadow: "none",
+    transform: "none",
+  },
+
+  slotReserved: {
+    color: "#6f8f7e",
+    cursor: "not-allowed",
     boxShadow: "none",
     transform: "none",
   },
