@@ -10,6 +10,7 @@ const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
+const BUFFER_MINUTES = 60;
 
 function formatJapaneseDate(dateKey) {
   if (!dateKey) return "未選択";
@@ -87,6 +88,36 @@ function readJsonArrayFromStorage(key) {
   }
 }
 
+function getBlockedEndMinutes(startTime, treatmentMinutes) {
+  const startMinutes = timeStringToMinutes(startTime);
+  const closeMinutes = CLOSE_HOUR * 60;
+  const blockedEndMinutes = startMinutes + treatmentMinutes + BUFFER_MINUTES;
+
+  return Math.min(blockedEndMinutes, closeMinutes);
+}
+
+function hasReservationConflict(reservations, rawDate, startTime, totalMinutes) {
+  const newStartMinutes = timeStringToMinutes(startTime);
+  const newEndMinutes = getBlockedEndMinutes(startTime, totalMinutes);
+
+  return reservations.some((reservation) => {
+    if (reservation?.date !== rawDate) return false;
+    if (!reservation?.startTime) return false;
+
+    const existingStartMinutes = timeStringToMinutes(reservation.startTime);
+    const existingTotalMinutes = Number(reservation.totalMinutes) || 60;
+    const existingEndMinutes = getBlockedEndMinutes(
+      reservation.startTime,
+      existingTotalMinutes
+    );
+
+    return (
+      newStartMinutes < existingEndMinutes &&
+      newEndMinutes > existingStartMinutes
+    );
+  });
+}
+
 function ReserveConfirmContent() {
   const searchParams = useSearchParams();
 
@@ -152,33 +183,13 @@ function ReserveConfirmContent() {
   const handleReserve = () => {
     const rawDate = searchParams.get("date") || "";
 
-    const reservationData = {
-      id: `${rawDate}-${startTime}-${Date.now()}`,
-      customerName,
-      customer: userData,
-      menuName,
-      menuTime,
-      options,
-      totalTime,
-      reserveDate,
-      reserveTime,
-      date: rawDate,
-      startTime,
-      endTime,
-      totalMinutes,
-      createdAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      CURRENT_RESERVATION_STORAGE_KEY,
-      JSON.stringify(reservationData)
-    );
+    if (!rawDate || !startTime) {
+      alert("ご予約日時が正しく選択されていません。もう一度日時をお選びください。");
+      window.location.href = "/reserve/datetime";
+      return;
+    }
 
     const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
-    localStorage.setItem(
-      RESERVATIONS_STORAGE_KEY,
-      JSON.stringify([...reservations, reservationData])
-    );
 
     try {
       const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
@@ -187,31 +198,80 @@ function ReserveConfirmContent() {
         ? JSON.parse(savedAvailability)
         : buildInitialAvailability();
 
-      if (
-        parsedAvailability &&
-        typeof parsedAvailability === "object" &&
-        rawDate &&
-        startTime
-      ) {
-        const currentDay = Array.isArray(parsedAvailability[rawDate])
-          ? parsedAvailability[rawDate]
-          : generateTimeSlots();
-
-        const nextAvailability = {
-          ...parsedAvailability,
-          [rawDate]: currentDay.filter((slot) => slot !== startTime),
-        };
-
-        localStorage.setItem(
-          AVAILABILITY_STORAGE_KEY,
-          JSON.stringify(nextAvailability)
-        );
+      if (!parsedAvailability || typeof parsedAvailability !== "object") {
+        alert("予約枠データの確認に失敗しました。もう一度日時をお選びください。");
+        window.location.href = "/reserve/datetime";
+        return;
       }
-    } catch (error) {
-      console.error("予約枠データの更新に失敗しました", error);
-    }
 
-    window.location.href = "/reserve/thanks";
+      const currentDay = Array.isArray(parsedAvailability[rawDate])
+        ? parsedAvailability[rawDate]
+        : generateTimeSlots();
+
+      const hasConflict = hasReservationConflict(
+        reservations,
+        rawDate,
+        startTime,
+        totalMinutes
+      );
+
+      if (!currentDay.includes(startTime) || hasConflict) {
+        alert(
+          "申し訳ありません。この日時はすでに予約済み、または直前に埋まりました。もう一度日時をお選びください。"
+        );
+        window.location.href = "/reserve/datetime";
+        return;
+      }
+
+      const reservationData = {
+        id: `${rawDate}-${startTime}-${Date.now()}`,
+        customerName,
+        customer: userData,
+        menuName,
+        menuTime,
+        options,
+        totalTime,
+        reserveDate,
+        reserveTime,
+        date: rawDate,
+        startTime,
+        endTime,
+        totalMinutes,
+        createdAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem(
+        CURRENT_RESERVATION_STORAGE_KEY,
+        JSON.stringify(reservationData)
+      );
+
+      localStorage.setItem(
+        RESERVATIONS_STORAGE_KEY,
+        JSON.stringify([...reservations, reservationData])
+      );
+
+      const startMinutes = timeStringToMinutes(startTime);
+      const blockedEndMinutes = getBlockedEndMinutes(startTime, totalMinutes);
+
+      const nextAvailability = {
+        ...parsedAvailability,
+        [rawDate]: currentDay.filter((slot) => {
+          const slotMinutes = timeStringToMinutes(slot);
+
+          return slotMinutes < startMinutes || slotMinutes >= blockedEndMinutes;
+        }),
+      };
+
+      localStorage.setItem(
+        AVAILABILITY_STORAGE_KEY,
+        JSON.stringify(nextAvailability)
+      );
+
+      window.location.href = "/reserve/thanks";
+    } catch (error) {
+      console.error("予約確定処理に失敗しました", error);
+      alert("予約確定処理に失敗しました。もう一度お試しください。");
+    }
   };
 
   return (
