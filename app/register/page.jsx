@@ -20,10 +20,19 @@ export default function RegisterPage() {
 
     console.log("新規会員登録", { name, email, phone });
 
+    // 👇 追加ここから
+    const trimmedName = name.trim();
+    const trimmedPhone = phone.trim();
+    const phoneLast4 = trimmedPhone.slice(-4);
+    const userId = `${trimmedName}_${phoneLast4}`;
+    // 👆 追加ここまで
+
     const userData = {
-      name: name.trim(),
+      name: trimmedName,
       email: email.trim(),
-      phone: phone.trim(),
+      phone: trimmedPhone,
+      phoneLast4, // ←追加
+      userId,     // ←追加
       isLoggedIn: true,
       createdAt: new Date().toISOString(),
     };
@@ -49,7 +58,6 @@ export default function RegisterPage() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder=""
               autoComplete="name"
               style={styles.input}
             />
@@ -61,7 +69,6 @@ export default function RegisterPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder=""
               autoComplete="email"
               style={styles.input}
             />
@@ -74,7 +81,6 @@ export default function RegisterPage() {
               inputMode="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder=""
               autoComplete="tel"
               style={styles.input}
             />
