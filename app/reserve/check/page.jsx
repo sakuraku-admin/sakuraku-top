@@ -7,6 +7,61 @@ const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
 const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 
+const OPEN_HOUR = 11;
+const CLOSE_HOUR = 20;
+const BUFFER_MINUTES = 60;
+
+function timeStringToMinutes(time) {
+  if (!time) return 0;
+  const [hour, minute] = time.split(":").map(Number);
+  return hour * 60 + minute;
+}
+
+function generateTimeSlots() {
+  const slots = [];
+  for (let hour = OPEN_HOUR; hour < CLOSE_HOUR; hour++) {
+    slots.push(`${String(hour).padStart(2, "0")}:00`);
+    slots.push(`${String(hour).padStart(2, "0")}:30`);
+  }
+  return slots;
+}
+
+function getBlockedEndMinutes(startTime, treatmentMinutes) {
+  const startMinutes = timeStringToMinutes(startTime);
+  const closeMinutes = CLOSE_HOUR * 60;
+  const blockedEndMinutes = startMinutes + treatmentMinutes + BUFFER_MINUTES;
+
+  return Math.min(blockedEndMinutes, closeMinutes);
+}
+
+function getSlotsToRestore(reservation) {
+  if (!reservation?.startTime) return [];
+
+  const totalMinutes = Number(reservation?.totalMinutes) || 60;
+  const startMinutes = timeStringToMinutes(reservation.startTime);
+  const blockedEndMinutes = getBlockedEndMinutes(
+    reservation.startTime,
+    totalMinutes
+  );
+
+  return generateTimeSlots().filter((slot) => {
+    const slotMinutes = timeStringToMinutes(slot);
+    return slotMinutes >= startMinutes && slotMinutes < blockedEndMinutes;
+  });
+}
+
+function isSameDay(dateKey) {
+  if (!dateKey) return false;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const reservationDate = new Date(dateKey);
+  reservationDate.setHours(0, 0, 0, 0);
+
+  return reservationDate.getTime() === today.getTime();
+}
+
 export default function ReserveCheckPage() {
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
@@ -49,20 +104,20 @@ export default function ReserveCheckPage() {
   const restoreAvailabilitySlot = (targetReservation) => {
     const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
 
-    if (
-      savedAvailability &&
-      targetReservation.date &&
-      targetReservation.startTime
-    ) {
+    if (!savedAvailability || !targetReservation?.date) return;
+
+    try {
       const availability = JSON.parse(savedAvailability);
 
       const currentDay = Array.isArray(availability[targetReservation.date])
         ? availability[targetReservation.date]
         : [];
 
-      const restoredDay = currentDay.includes(targetReservation.startTime)
-        ? currentDay
-        : [...currentDay, targetReservation.startTime].sort();
+      const slotsToRestore = getSlotsToRestore(targetReservation);
+
+      const restoredDay = Array.from(
+        new Set([...currentDay, ...slotsToRestore])
+      ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
 
       const nextAvailability = {
         ...availability,
@@ -73,6 +128,8 @@ export default function ReserveCheckPage() {
         AVAILABILITY_STORAGE_KEY,
         JSON.stringify(nextAvailability)
       );
+    } catch (error) {
+      console.error("空き枠の復元に失敗しました", error);
     }
   };
 
@@ -110,6 +167,11 @@ export default function ReserveCheckPage() {
   };
 
   const handleChangeReservation = (targetReservation) => {
+    if (isSameDay(targetReservation?.date)) {
+      alert("当日の変更はLINEにてご連絡ください。");
+      return;
+    }
+
     try {
       removeReservation(targetReservation);
       window.location.href = "/menu";
@@ -120,6 +182,11 @@ export default function ReserveCheckPage() {
   };
 
   const handleCancelReservation = (targetReservation) => {
+    if (isSameDay(targetReservation?.date)) {
+      alert("当日のキャンセルはLINEにてご連絡ください。");
+      return;
+    }
+
     const confirmed = window.confirm("ご予約を取り消しますか？");
     if (!confirmed) return;
 
