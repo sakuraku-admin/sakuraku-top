@@ -170,6 +170,7 @@ function ReserveDateTimeContent() {
   const [selected, setSelected] = useState(null);
   const [mockAvailability, setMockAvailability] = useState(buildMockAvailability);
   const [reservations, setReservations] = useState([]);
+  const [selectedReservation, setSelectedReservation] = useState(null);
 
   const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
@@ -413,7 +414,7 @@ function ReserveDateTimeContent() {
                             {reservedStart ? (
                               <button
                                 type="button"
-                                disabled
+                                onClick={() => setSelectedReservation(reservedStart)}
                                 style={{
                                   ...styles.slotButton,
                                   ...styles.slotReserved,
@@ -453,6 +454,83 @@ function ReserveDateTimeContent() {
           </div>
         </section>
       </div>
+
+      {selectedReservation && (
+        <div
+          style={styles.modalOverlay}
+          onClick={() => setSelectedReservation(null)}
+        >
+          <div style={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setSelectedReservation(null)}
+              style={styles.modalCloseButton}
+              aria-label="閉じる"
+            >
+              ×
+            </button>
+
+            <div style={styles.modalTitle}>ご予約詳細</div>
+
+            <div style={styles.modalDateBox}>
+              <div style={styles.modalDate}>
+                {selectedReservation.reserveDate || selectedReservation.date || ""}
+              </div>
+              <div style={styles.modalTime}>
+                {selectedReservation.reserveTime || selectedReservation.startTime || ""}
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>お客様</div>
+              <div style={styles.modalValue}>
+                {selectedReservation.customerName ||
+                  selectedReservation.customer?.name ||
+                  "お名前未登録"}{" "}
+                様
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>コース</div>
+              <div style={styles.modalValue}>
+                {selectedReservation.menuName || ""}
+                {selectedReservation.menuTime
+                  ? `（${selectedReservation.menuTime}）`
+                  : ""}
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>所要時間</div>
+              <div style={styles.modalValue}>
+                {selectedReservation.totalTime ||
+                  (selectedReservation.totalMinutes
+                    ? `${selectedReservation.totalMinutes}分`
+                    : "未登録")}
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>オプション</div>
+              <div style={styles.modalOptionValue}>
+                {Array.isArray(selectedReservation.options) &&
+                selectedReservation.options.length > 0
+                  ? selectedReservation.options.join("　")
+                  : "なし"}
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSelectedReservation(null)}
+              style={styles.modalCloseBottom}
+            >
+              閉じる
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
@@ -758,7 +836,7 @@ const styles = {
 
   slotReserved: {
     color: "#6f8f7e",
-    cursor: "not-allowed",
+    cursor: "pointer",
     boxShadow: "none",
     transform: "none",
   },
@@ -799,5 +877,119 @@ const styles = {
     background: "#ccbdb7",
     cursor: "not-allowed",
     boxShadow: "none",
+  },
+
+
+  modalOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(49, 35, 29, 0.28)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
+    zIndex: 1000,
+    boxSizing: "border-box",
+  },
+
+  modalCard: {
+    position: "relative",
+    width: "100%",
+    maxWidth: "340px",
+    background: "rgba(255, 250, 246, 0.96)",
+    borderRadius: "28px",
+    padding: "18px 14px 16px",
+    boxSizing: "border-box",
+    boxShadow: "0 12px 30px rgba(110, 80, 65, 0.18)",
+    fontFamily:
+      '\"Hiragino Mincho ProN\", \"Yu Mincho\", \"MS PMincho\", serif',
+  },
+
+  modalCloseButton: {
+    position: "absolute",
+    top: "10px",
+    right: "14px",
+    border: "none",
+    background: "transparent",
+    color: "#8d7066",
+    fontSize: "28px",
+    lineHeight: 1,
+    cursor: "pointer",
+  },
+
+  modalTitle: {
+    textAlign: "center",
+    color: "#6e4b41",
+    fontSize: "1.1rem",
+    fontWeight: 700,
+    letterSpacing: "0.06em",
+    marginBottom: "12px",
+  },
+
+  modalDateBox: {
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: "22px",
+    padding: "12px 10px 11px",
+    textAlign: "center",
+    marginBottom: "12px",
+  },
+
+  modalDate: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.4vw, 22px)",
+    fontWeight: 600,
+    lineHeight: 1.35,
+  },
+
+  modalTime: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.2vw, 21px)",
+    fontWeight: 600,
+    lineHeight: 1.3,
+    marginTop: "2px",
+  },
+
+  modalInfoBlock: {
+    textAlign: "center",
+    marginBottom: "10px",
+  },
+
+  modalLabel: {
+    color: "#9a7f76",
+    fontSize: "0.76rem",
+    lineHeight: 1.5,
+    marginBottom: "2px",
+  },
+
+  modalValue: {
+    color: "#6f4b41",
+    fontSize: "0.98rem",
+    fontWeight: 700,
+    lineHeight: 1.6,
+  },
+
+  modalOptionValue: {
+    color: "#8c6c61",
+    fontSize: "0.82rem",
+    lineHeight: 1.7,
+    textAlign: "center",
+  },
+
+  modalCloseBottom: {
+    width: "100%",
+    border: "none",
+    borderRadius: "999px",
+    background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
+    color: "#fffdfb",
+    fontSize: "1rem",
+    fontWeight: 700,
+    letterSpacing: "0.03em",
+    padding: "12px 16px",
+    cursor: "pointer",
+    boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
+    fontFamily: '\"Hiragino Kaku Gothic ProN\", \"Yu Gothic\", sans-serif',
+    marginTop: "4px",
   },
 };
