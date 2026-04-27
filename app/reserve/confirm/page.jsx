@@ -96,6 +96,16 @@ function getBlockedEndMinutes(startTime, treatmentMinutes) {
   return Math.min(blockedEndMinutes, closeMinutes);
 }
 
+function getBlockedSlots(startTime, treatmentMinutes) {
+  const startMinutes = timeStringToMinutes(startTime);
+  const blockedEndMinutes = getBlockedEndMinutes(startTime, treatmentMinutes);
+
+  return generateTimeSlots().filter((slot) => {
+    const slotMinutes = timeStringToMinutes(slot);
+    return slotMinutes >= startMinutes && slotMinutes < blockedEndMinutes;
+  });
+}
+
 function hasReservationConflict(reservations, rawDate, startTime, totalMinutes) {
   const newStartMinutes = timeStringToMinutes(startTime);
   const newEndMinutes = getBlockedEndMinutes(startTime, totalMinutes);
@@ -192,6 +202,7 @@ function ReserveConfirmContent() {
     const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
 
     try {
+      // 予約確定ボタンを押した瞬間に、最新の空き枠データを読み直す
       const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
 
       const parsedAvailability = savedAvailability
@@ -208,6 +219,12 @@ function ReserveConfirmContent() {
         ? parsedAvailability[rawDate]
         : generateTimeSlots();
 
+      const blockedSlots = getBlockedSlots(startTime, totalMinutes);
+
+      const isEveryBlockedSlotAvailable = blockedSlots.every((slot) =>
+        currentDay.includes(slot)
+      );
+
       const hasConflict = hasReservationConflict(
         reservations,
         rawDate,
@@ -215,9 +232,9 @@ function ReserveConfirmContent() {
         totalMinutes
       );
 
-      if (!currentDay.includes(startTime) || hasConflict) {
+      if (!isEveryBlockedSlotAvailable || hasConflict) {
         alert(
-          "申し訳ありません。この日時はすでに予約済み、または直前に埋まりました。もう一度日時をお選びください。"
+          "申し訳ありません。この時間はすでに埋まりました。日時を選び直してください。"
         );
         window.location.href = "/reserve/datetime";
         return;
@@ -250,16 +267,9 @@ function ReserveConfirmContent() {
         JSON.stringify([...reservations, reservationData])
       );
 
-      const startMinutes = timeStringToMinutes(startTime);
-      const blockedEndMinutes = getBlockedEndMinutes(startTime, totalMinutes);
-
       const nextAvailability = {
         ...parsedAvailability,
-        [rawDate]: currentDay.filter((slot) => {
-          const slotMinutes = timeStringToMinutes(slot);
-
-          return slotMinutes < startMinutes || slotMinutes >= blockedEndMinutes;
-        }),
+        [rawDate]: currentDay.filter((slot) => !blockedSlots.includes(slot)),
       };
 
       localStorage.setItem(
