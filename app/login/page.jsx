@@ -17,9 +17,14 @@ export default function LoginPage() {
       return;
     }
 
+    const trimmedName = customerName.trim();
+    const trimmedPhoneLast4 = phoneLast4.trim();
+    const userId = `${trimmedName}_${trimmedPhoneLast4}`;
+
     const userData = {
-      name: customerName.trim(),
-      phoneLast4: phoneLast4.trim(),
+      name: trimmedName,
+      phoneLast4: trimmedPhoneLast4,
+      userId,
       isLoggedIn: true,
       loggedInAt: new Date().toISOString(),
     };
