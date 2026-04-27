@@ -163,6 +163,27 @@ function saveAvailabilityToStorage(data) {
   }
 }
 
+function getReservationBlockedEndTime(reservation) {
+  const treatmentMinutes = Number(reservation?.totalMinutes) || 60;
+  return getBlockedEndTime(
+    reservation?.startTime || "",
+    treatmentMinutes,
+    BUFFER_MINUTES
+  );
+}
+
+function getSlotsToRestore(reservation) {
+  if (!reservation?.startTime) return [];
+
+  const startMinutes = timeStringToMinutes(reservation.startTime);
+  const blockedEndMinutes = getReservationBlockedEndTime(reservation);
+
+  return generateTimeSlots().filter((slot) => {
+    const slotMinutes = timeStringToMinutes(slot);
+    return slotMinutes >= startMinutes && slotMinutes < blockedEndMinutes;
+  });
+}
+
 function ReserveDateTimeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -250,6 +271,65 @@ function ReserveDateTimeContent() {
     });
 
     setSelected({ dateKey, time });
+  };
+
+  const handleAdminCancelReservation = (targetReservation) => {
+    if (!targetReservation) return;
+
+    const customerName =
+      targetReservation.customerName ||
+      targetReservation.customer?.name ||
+      "お客様";
+
+    const confirmed = window.confirm(
+      `${customerName} 様のご予約をキャンセルしますか？`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+      const allReservations = savedReservations
+        ? JSON.parse(savedReservations)
+        : [];
+
+      const updatedReservations = Array.isArray(allReservations)
+        ? allReservations.filter((item) => item.id !== targetReservation.id)
+        : [];
+
+      localStorage.setItem(
+        RESERVATIONS_STORAGE_KEY,
+        JSON.stringify(updatedReservations)
+      );
+
+      setReservations((prev) =>
+        prev.filter((item) => item.id !== targetReservation.id)
+      );
+
+      setMockAvailability((prev) => {
+        const dateKey = targetReservation.date;
+        const currentDay = Array.isArray(prev[dateKey]) ? prev[dateKey] : [];
+        const slotsToRestore = getSlotsToRestore(targetReservation);
+
+        const restoredDay = Array.from(
+          new Set([...currentDay, ...slotsToRestore])
+        ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
+
+        const nextAvailability = {
+          ...prev,
+          [dateKey]: restoredDay,
+        };
+
+        saveAvailabilityToStorage(nextAvailability);
+        return nextAvailability;
+      });
+
+      setSelectedReservation(null);
+      alert("ご予約をキャンセルしました");
+    } catch (error) {
+      console.error("管理画面での予約キャンセルに失敗しました", error);
+      alert("予約キャンセル処理に失敗しました。もう一度お試しください。");
+    }
   };
 
   const handleGoConfirm = () => {
@@ -520,6 +600,14 @@ function ReserveDateTimeContent() {
                   : "なし"}
               </div>
             </div>
+
+            <button
+              type="button"
+              onClick={() => handleAdminCancelReservation(selectedReservation)}
+              style={styles.modalCancelButton}
+            >
+              この予約をキャンセルする
+            </button>
 
             <button
               type="button"
@@ -975,6 +1063,24 @@ const styles = {
     fontSize: "0.82rem",
     lineHeight: 1.7,
     textAlign: "center",
+  },
+
+  modalCancelButton: {
+    width: "100%",
+    borderRadius: "999px",
+    background: "rgba(255,255,255,0.82)",
+    color: "#7d5b50",
+    fontSize: "0.95rem",
+    fontWeight: 500,
+    letterSpacing: "0.03em",
+    padding: "12px 16px",
+    cursor: "pointer",
+    border: "1.5px solid rgba(145, 112, 101, 0.16)",
+    boxShadow: "none",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    marginTop: "4px",
+    marginBottom: "10px",
   },
 
   modalCloseBottom: {
