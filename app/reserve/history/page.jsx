@@ -7,7 +7,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { db } from "../../lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
 const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
