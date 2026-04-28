@@ -1,70 +1,127 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import {
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+import { db } from "../../../lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
 const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
+
+function getCreatedAtValue(item) {
+  if (typeof item?.createdAtLocal === "string") return item.createdAtLocal;
+  if (typeof item?.createdAt === "string") return item.createdAt;
+  if (item?.createdAt?.toDate) return item.createdAt.toDate().toISOString();
+  return "";
+}
+
+function formatReservationHistory(item) {
+  return {
+    id: item.id || `${item.date}-${item.startTime}`,
+    date: item.reserveDate || "",
+    course: `${item.menuName || ""}${item.menuTime ? `（${item.menuTime}）` : ""}`,
+    option: Array.isArray(item.options) ? item.options.join("\n") : "",
+    createdAt: getCreatedAtValue(item),
+  };
+}
+
+function sortHistoryNewestFirst(a, b) {
+  if (!a.createdAt || !b.createdAt) return 0;
+  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+}
+
+function readLocalHistory(parsedUser) {
+  const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+
+  if (!savedReservations) {
+    return [];
+  }
+
+  const parsedReservations = JSON.parse(savedReservations);
+
+  if (!Array.isArray(parsedReservations)) {
+    return [];
+  }
+
+  return parsedReservations
+    .filter((item) => {
+      const reservationName = item?.customerName || item?.customer?.name || "";
+
+      if (item?.customerId && parsedUser?.userId) {
+        return item.customerId === parsedUser.userId;
+      }
+
+      return reservationName === parsedUser.name;
+    })
+    .map(formatReservationHistory)
+    .sort(sortHistoryNewestFirst);
+}
 
 export default function ReserveHistoryPage() {
   const [historyList, setHistoryList] = useState([]);
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+    const loadHistory = async () => {
+      try {
+        const savedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-      if (!savedUser) {
-        window.location.href = "/register";
-        return;
-      }
+        if (!savedUser) {
+          window.location.href = "/register";
+          return;
+        }
 
-      const parsedUser = JSON.parse(savedUser);
+        const parsedUser = JSON.parse(savedUser);
 
-      if (!parsedUser?.isLoggedIn) {
-        window.location.href = "/register";
-        return;
-      }
+        if (!parsedUser?.isLoggedIn) {
+          window.location.href = "/register";
+          return;
+        }
 
-      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+        if (!parsedUser?.userId) {
+          setHistoryList(readLocalHistory(parsedUser));
+          return;
+        }
 
-      if (!savedReservations) {
-        setHistoryList([]);
-        return;
-      }
+        const reservationsQuery = query(
+          collection(db, "reservations"),
+          where("customerId", "==", parsedUser.userId)
+        );
 
-      const parsedReservations = JSON.parse(savedReservations);
+        const snapshot = await getDocs(reservationsQuery);
 
-      if (Array.isArray(parsedReservations)) {
-        const userReservations = parsedReservations.filter((item) => {
-          const reservationName =
-            item?.customerName || item?.customer?.name || "";
-
-          if (item?.customerId && parsedUser?.userId) {
-            return item.customerId === parsedUser.userId;
-          }
-
-          return reservationName === parsedUser.name;
-        });
-
-        const formattedHistory = userReservations
-          .map((item) => ({
-            id: item.id || `${item.date}-${item.startTime}`,
-            date: item.reserveDate || "",
-            course: `${item.menuName || ""}${item.menuTime ? `（${item.menuTime}）` : ""}`,
-            option: Array.isArray(item.options)
-              ? item.options.join("\n")
-              : "",
-            createdAt: item.createdAt || "",
+        const firestoreHistory = snapshot.docs
+          .map((docSnap) => ({
+            id: docSnap.id,
+            ...docSnap.data(),
           }))
-          .sort((a, b) => {
-            if (!a.createdAt || !b.createdAt) return 0;
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          });
+          .filter((item) => item.status !== "cancelled")
+          .map(formatReservationHistory)
+          .sort(sortHistoryNewestFirst);
 
-        setHistoryList(formattedHistory);
+        if (firestoreHistory.length > 0) {
+          setHistoryList(firestoreHistory);
+          return;
+        }
+
+        setHistoryList(readLocalHistory(parsedUser));
+      } catch (error) {
+        console.error("履歴データの読み込みに失敗しました", error);
+
+        try {
+          const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+          const parsedUser = savedUser ? JSON.parse(savedUser) : null;
+          setHistoryList(parsedUser ? readLocalHistory(parsedUser) : []);
+        } catch {
+          setHistoryList([]);
+        }
       }
-    } catch (error) {
-      console.error("履歴データの読み込みに失敗しました", error);
-    }
+    };
+
+    loadHistory();
   }, []);
 
   return (
