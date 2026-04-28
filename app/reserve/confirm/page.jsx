@@ -2,6 +2,16 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import app from "../../lib/firebase";
+import {
+  collection,
+  doc,
+  getFirestore,
+  runTransaction,
+  serverTimestamp,
+} from "firebase/firestore";
+
+const db = getFirestore(app);
 
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 const USER_STORAGE_KEY = "sakurakuUser";
@@ -106,33 +116,12 @@ function getBlockedSlots(startTime, treatmentMinutes) {
   });
 }
 
-function hasReservationConflict(reservations, rawDate, startTime, totalMinutes) {
-  const newStartMinutes = timeStringToMinutes(startTime);
-  const newEndMinutes = getBlockedEndMinutes(startTime, totalMinutes);
-
-  return reservations.some((reservation) => {
-    if (reservation?.date !== rawDate) return false;
-    if (!reservation?.startTime) return false;
-
-    const existingStartMinutes = timeStringToMinutes(reservation.startTime);
-    const existingTotalMinutes = Number(reservation.totalMinutes) || 60;
-    const existingEndMinutes = getBlockedEndMinutes(
-      reservation.startTime,
-      existingTotalMinutes
-    );
-
-    return (
-      newStartMinutes < existingEndMinutes &&
-      newEndMinutes > existingStartMinutes
-    );
-  });
-}
-
 function ReserveConfirmContent() {
   const searchParams = useSearchParams();
 
   const [customerName, setCustomerName] = useState("");
   const [userData, setUserData] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     try {
@@ -190,7 +179,9 @@ function ReserveConfirmContent() {
   const reserveTime =
     startTime && endTime ? `${startTime}〜${endTime}` : "未選択";
 
-  const handleReserve = () => {
+  const handleReserve = async () => {
+    if (isSubmitting) return;
+
     const rawDate = searchParams.get("date") || "";
 
     if (!rawDate || !startTime) {
@@ -199,10 +190,11 @@ function ReserveConfirmContent() {
       return;
     }
 
-    const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
+    setIsSubmitting(true);
 
     try {
-      // 予約確定ボタンを押した瞬間に、最新の空き枠データを読み直す
+      const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
+
       const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
 
       const parsedAvailability = savedAvailability
@@ -215,33 +207,17 @@ function ReserveConfirmContent() {
         return;
       }
 
-      const currentDay = Array.isArray(parsedAvailability[rawDate])
+      const localCurrentDay = Array.isArray(parsedAvailability[rawDate])
         ? parsedAvailability[rawDate]
         : generateTimeSlots();
 
       const blockedSlots = getBlockedSlots(startTime, totalMinutes);
 
-      const isEveryBlockedSlotAvailable = blockedSlots.every((slot) =>
-        currentDay.includes(slot)
-      );
+      const reservationRef = doc(collection(db, "reservations"));
+      const availabilityRef = doc(db, "availability", rawDate);
 
-      const hasConflict = hasReservationConflict(
-        reservations,
-        rawDate,
-        startTime,
-        totalMinutes
-      );
-
-      if (!isEveryBlockedSlotAvailable || hasConflict) {
-        alert(
-          "申し訳ありません。この時間はすでに埋まりました。日時を選び直してください。"
-        );
-        window.location.href = "/reserve/datetime";
-        return;
-      }
-
-      const reservationData = {
-        id: `${rawDate}-${startTime}-${Date.now()}`,
+      const reservationDataForStorage = {
+        id: reservationRef.id,
         customerName,
         customerId: userData?.userId || null,
         customer: userData,
@@ -255,22 +231,59 @@ function ReserveConfirmContent() {
         startTime,
         endTime,
         totalMinutes,
+        status: "active",
         createdAt: new Date().toISOString(),
       };
 
+      const nextDay = await runTransaction(db, async (transaction) => {
+        const availabilitySnap = await transaction.get(availabilityRef);
+
+        const firestoreDay =
+          availabilitySnap.exists() &&
+          Array.isArray(availabilitySnap.data()?.slots)
+            ? availabilitySnap.data().slots
+            : localCurrentDay;
+
+        const isEveryBlockedSlotAvailable = blockedSlots.every((slot) =>
+          firestoreDay.includes(slot)
+        );
+
+        if (!isEveryBlockedSlotAvailable) {
+          throw new Error("SLOT_ALREADY_BOOKED");
+        }
+
+        const updatedSlots = firestoreDay.filter(
+          (slot) => !blockedSlots.includes(slot)
+        );
+
+        transaction.set(availabilityRef, {
+          date: rawDate,
+          slots: updatedSlots,
+          updatedAt: serverTimestamp(),
+        });
+
+        transaction.set(reservationRef, {
+          ...reservationDataForStorage,
+          createdAt: serverTimestamp(),
+          createdAtLocal: reservationDataForStorage.createdAt,
+        });
+
+        return updatedSlots;
+      });
+
       localStorage.setItem(
         CURRENT_RESERVATION_STORAGE_KEY,
-        JSON.stringify(reservationData)
+        JSON.stringify(reservationDataForStorage)
       );
 
       localStorage.setItem(
         RESERVATIONS_STORAGE_KEY,
-        JSON.stringify([...reservations, reservationData])
+        JSON.stringify([...reservations, reservationDataForStorage])
       );
 
       const nextAvailability = {
         ...parsedAvailability,
-        [rawDate]: currentDay.filter((slot) => !blockedSlots.includes(slot)),
+        [rawDate]: nextDay,
       };
 
       localStorage.setItem(
@@ -281,7 +294,17 @@ function ReserveConfirmContent() {
       window.location.href = "/reserve/thanks";
     } catch (error) {
       console.error("予約確定処理に失敗しました", error);
+
+      if (error?.message === "SLOT_ALREADY_BOOKED") {
+        alert(
+          "申し訳ありません。この時間はすでに埋まりました。日時を選び直してください。"
+        );
+        window.location.href = "/reserve/datetime";
+        return;
+      }
+
       alert("予約確定処理に失敗しました。もう一度お試しください。");
+      setIsSubmitting(false);
     }
   };
 
@@ -329,10 +352,14 @@ function ReserveConfirmContent() {
 
         <button
           type="button"
-          style={styles.reserveButton}
+          style={{
+            ...styles.reserveButton,
+            ...(isSubmitting ? styles.reserveButtonDisabled : {}),
+          }}
           onClick={handleReserve}
+          disabled={isSubmitting}
         >
-          この内容で予約する
+          {isSubmitting ? "予約中..." : "この内容で予約する"}
         </button>
 
         <div style={styles.attentionArea}>
@@ -524,6 +551,11 @@ const styles = {
     padding: "16px 16px",
     cursor: "pointer",
     boxShadow: "0 8px 18px rgba(228, 138, 122, 0.18)",
+  },
+
+  reserveButtonDisabled: {
+    opacity: 0.68,
+    cursor: "not-allowed",
   },
 
   attentionArea: {
