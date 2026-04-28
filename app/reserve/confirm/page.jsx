@@ -243,6 +243,7 @@ function ReserveConfirmContent() {
       const reservationData = {
         id: `${rawDate}-${startTime}-${Date.now()}`,
         customerName,
+        customerId: userData?.userId || null,
         customer: userData,
         menuName,
         menuTime,
