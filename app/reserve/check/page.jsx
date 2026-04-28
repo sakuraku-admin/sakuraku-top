@@ -91,6 +91,11 @@ export default function ReserveCheckPage() {
         const userReservations = parsedReservations.filter((item) => {
           const reservationName =
             item?.customerName || item?.customer?.name || "";
+
+          if (item?.customerId && parsedUser?.userId) {
+            return item.customerId === parsedUser.userId;
+          }
+
           return reservationName === parsedUser.name;
         });
 
