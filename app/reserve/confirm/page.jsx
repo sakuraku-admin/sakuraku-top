@@ -2,16 +2,13 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import app from "../../lib/firebase";
+import { db } from "../../lib/firebase";
 import {
   collection,
   doc,
-  getFirestore,
   runTransaction,
   serverTimestamp,
 } from "firebase/firestore";
-
-const db = getFirestore(app);
 
 const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 const USER_STORAGE_KEY = "sakurakuUser";
