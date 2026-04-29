@@ -123,11 +123,12 @@ function OptionMenuContent() {
 
   return (
     <main style={styles.page}>
-      <button type="button" onClick={handleBack} style={styles.backButton}>
-        ⇦戻る
-      </button>
+      <div style={styles.contentWrap}>
+        <button type="button" onClick={handleBack} style={styles.backButton}>
+          ⇦戻る
+        </button>
 
-      <div style={styles.phone}>
+        <div style={styles.phone}>
         <div style={styles.scrollArea}>
           <div style={styles.headerArea}>
             <p style={styles.headerSub}>OPTION MENU</p>
@@ -276,6 +277,7 @@ function OptionMenuContent() {
               この内容で次へ
             </button>
           </section>
+          </div>
         </div>
       </div>
     </main>
@@ -301,29 +303,33 @@ const styles = {
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
-    padding: "36px 20px 52px",
+    padding: "0 20px 52px",
     boxSizing: "border-box",
+  },
+
+  contentWrap: {
+    width: "100%",
+    maxWidth: "400px",
     position: "relative",
+    paddingTop: "34px",
+    boxSizing: "border-box",
   },
 
   backButton: {
     position: "absolute",
-    top: "16px",
-    left: "18px",
+    top: "8px",
+    left: "0",
     zIndex: 5,
     border: "none",
-    background: "rgba(255, 248, 246, 0.36)",
+    background: "transparent",
     color: "rgba(90, 58, 44, 0.86)",
     fontSize: "14px",
     fontWeight: 700,
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-    padding: "6px 10px",
-    borderRadius: "999px",
+    padding: "0",
     cursor: "pointer",
     letterSpacing: "0.04em",
-    backdropFilter: "blur(6px)",
-    WebkitBackdropFilter: "blur(6px)",
   },
 
   phone: {
