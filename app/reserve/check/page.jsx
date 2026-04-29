@@ -427,7 +427,6 @@ export default function ReserveCheckPage() {
 
             <div style={styles.modalDateBox}>
               <div style={styles.modalDate}>
-                <span style={styles.modalDateLabel}>ご予約日時：</span>
                 {selectedReservation.reserveDate || ""}
               </div>
               <div style={styles.modalTime}>
