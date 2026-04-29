@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -61,19 +63,33 @@ export default function AdminListPage() {
   const [allReservations, setAllReservations] = useState([]);
 
   useEffect(() => {
-    try {
-      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-      const parsedReservations = savedReservations
-        ? JSON.parse(savedReservations)
-        : [];
+    let isMounted = true;
 
-      if (Array.isArray(parsedReservations)) {
-        setAllReservations(parsedReservations.map(formatReservationForAdmin));
+    const loadReservations = async () => {
+      try {
+        const firestoreReservations = await readReservationsFromFirestore();
+
+        if (!isMounted) return;
+
+        setAllReservations(
+          firestoreReservations.map(formatReservationForAdmin)
+        );
+      } catch (error) {
+        console.error("Firestoreの予約一覧データ読み込みに失敗しました", error);
+
+        const localReservations = readReservationsFromStorage();
+
+        if (!isMounted) return;
+
+        setAllReservations(localReservations.map(formatReservationForAdmin));
       }
-    } catch (error) {
-      console.error("予約一覧データの読み込みに失敗しました", error);
-      setAllReservations([]);
-    }
+    };
+
+    loadReservations();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const dateKey = formatDateKey(selectedDate);
