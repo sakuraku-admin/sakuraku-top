@@ -62,6 +62,10 @@ function OptionMenuContent() {
     setSelectedHead((prev) => !prev);
   };
 
+  const handleBack = () => {
+    router.back();
+  };
+
   const handleNext = () => {
     const courseId = searchParams.get("courseId") || "";
     const courseName = searchParams.get("courseName") || "整体コース";
@@ -121,6 +125,10 @@ function OptionMenuContent() {
     <main style={styles.page}>
       <div style={styles.phone}>
         <div style={styles.scrollArea}>
+          <button type="button" onClick={handleBack} style={styles.backButton}>
+            ⇦戻る
+          </button>
+
           <div style={styles.headerArea}>
             <p style={styles.headerSub}>OPTION MENU</p>
             <h1 style={styles.headerTitle}>オプション選択</h1>
@@ -317,6 +325,20 @@ const styles = {
     padding: "24px 16px 32px",
     boxSizing: "border-box",
     scrollbarWidth: "thin",
+  },
+
+  backButton: {
+    border: "none",
+    background: "transparent",
+    color: "rgba(90, 58, 44, 0.82)",
+    fontSize: "14px",
+    fontWeight: 700,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    padding: "0",
+    margin: "0 0 14px 0",
+    cursor: "pointer",
+    letterSpacing: "0.04em",
   },
 
   headerArea: {
