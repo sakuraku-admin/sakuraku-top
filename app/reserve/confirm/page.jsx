@@ -280,8 +280,6 @@ function ReserveConfirmContent() {
     try {
       const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
 
-      const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
-
       const parsedAvailability = savedAvailability
         ? JSON.parse(savedAvailability)
         : buildInitialAvailability();
