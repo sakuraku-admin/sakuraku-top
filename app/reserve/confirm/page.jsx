@@ -334,7 +334,7 @@ function ReserveConfirmContent() {
           availabilitySnap.exists() &&
           Array.isArray(availabilitySnap.data()?.slots)
             ? availabilitySnap.data().slots
-            : localCurrentDay;
+            : generateTimeSlots();
 
         const isEveryBlockedSlotAvailable = blockedSlots.every((slot) =>
           firestoreDay.includes(slot)
