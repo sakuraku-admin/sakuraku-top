@@ -50,6 +50,10 @@ function OptionMenuContent() {
     );
   }, [selectedShape, selectedHead]);
 
+  const handleBack = () => {
+    router.back();
+  };
+
   const handleMagSelect = () => {
     setSelectedMag((prev) => !prev);
   };
@@ -60,10 +64,6 @@ function OptionMenuContent() {
 
   const handleHeadSelect = () => {
     setSelectedHead((prev) => !prev);
-  };
-
-  const handleBack = () => {
-    router.back();
   };
 
   const handleNext = () => {
@@ -123,12 +123,12 @@ function OptionMenuContent() {
 
   return (
     <main style={styles.page}>
+      <button type="button" onClick={handleBack} style={styles.backButton}>
+        ⇦戻る
+      </button>
+
       <div style={styles.phone}>
         <div style={styles.scrollArea}>
-          <button type="button" onClick={handleBack} style={styles.backButton}>
-            ⇦戻る
-          </button>
-
           <div style={styles.headerArea}>
             <p style={styles.headerSub}>OPTION MENU</p>
             <h1 style={styles.headerTitle}>オプション選択</h1>
@@ -303,6 +303,27 @@ const styles = {
     alignItems: "flex-start",
     padding: "36px 20px 52px",
     boxSizing: "border-box",
+    position: "relative",
+  },
+
+  backButton: {
+    position: "absolute",
+    top: "16px",
+    left: "18px",
+    zIndex: 5,
+    border: "none",
+    background: "rgba(255, 248, 246, 0.36)",
+    color: "rgba(90, 58, 44, 0.86)",
+    fontSize: "14px",
+    fontWeight: 700,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    padding: "6px 10px",
+    borderRadius: "999px",
+    cursor: "pointer",
+    letterSpacing: "0.04em",
+    backdropFilter: "blur(6px)",
+    WebkitBackdropFilter: "blur(6px)",
   },
 
   phone: {
@@ -325,20 +346,6 @@ const styles = {
     padding: "24px 16px 32px",
     boxSizing: "border-box",
     scrollbarWidth: "thin",
-  },
-
-  backButton: {
-    border: "none",
-    background: "transparent",
-    color: "rgba(90, 58, 44, 0.82)",
-    fontSize: "14px",
-    fontWeight: 700,
-    fontFamily:
-      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-    padding: "0",
-    margin: "0 0 14px 0",
-    cursor: "pointer",
-    letterSpacing: "0.04em",
   },
 
   headerArea: {
