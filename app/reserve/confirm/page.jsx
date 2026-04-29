@@ -106,6 +106,44 @@ function isDeepCourseName(name) {
   return String(name || "").includes("深整");
 }
 
+function priceTextFromParam(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (raw.includes("円")) return raw;
+
+  const numberText = raw.replace(/[^0-9]/g, "");
+  if (!numberText) return raw;
+
+  return `${Number(numberText).toLocaleString()}円`;
+}
+
+function priceNumberFromParam(value) {
+  const numberText = String(value || "").replace(/[^0-9]/g, "");
+  return numberText ? Number(numberText) : 0;
+}
+
+function getTotalPriceText(coursePriceRaw, optionPriceRaw) {
+  const total =
+    priceNumberFromParam(coursePriceRaw) + priceNumberFromParam(optionPriceRaw);
+
+  return total > 0 ? `${total.toLocaleString()}円` : "";
+}
+
+function getDisplayOptionName(option) {
+  return String(option || "")
+    .replace(/[　 ]*\d+分/g, "")
+    .replace(/[　 ]*\d{1,3}(,\d{3})*円/g, "")
+    .trim();
+}
+
+function getDisplayOptions(options) {
+  return options.map(getDisplayOptionName).filter(Boolean);
+}
+
+function getFirestoreSafeValue(value) {
+  return value === undefined ? "" : value;
+}
+
 function getBlockedEndMinutes(startTime, treatmentMinutes) {
   const startMinutes = timeStringToMinutes(startTime);
   const closeMinutes = CLOSE_HOUR * 60;
@@ -177,6 +215,13 @@ function ReserveConfirmContent() {
     : [];
 
   const hasOptions = options.length > 0;
+  const displayOptions = getDisplayOptions(options);
+
+  const coursePriceRaw = searchParams.get("price") || "";
+  const optionPriceRaw = searchParams.get("optionPrice") || "";
+  const coursePrice = priceTextFromParam(coursePriceRaw);
+  const optionPrice = priceTextFromParam(optionPriceRaw);
+  const totalPrice = getTotalPriceText(coursePriceRaw, optionPriceRaw);
 
   const totalMinutes =
     Number.parseInt(
@@ -264,10 +309,14 @@ function ReserveConfirmContent() {
         menuName,
         menuTime,
         courseMinutes,
+        coursePrice: getFirestoreSafeValue(coursePrice),
+        price: getFirestoreSafeValue(coursePrice),
         options,
         optionMinutes,
         optionTime,
+        optionPrice: getFirestoreSafeValue(optionPrice),
         totalTime,
+        totalPrice: getFirestoreSafeValue(totalPrice),
         reserveDate,
         reserveTime,
         date: rawDate,
@@ -362,6 +411,9 @@ function ReserveConfirmContent() {
           <div style={styles.courseRow}>
             <div style={styles.courseName}>{menuName}</div>
             <div style={styles.totalTime}>所要時間：{menuTime}</div>
+            {coursePrice && (
+              <div style={styles.priceText}>金額：{coursePrice}</div>
+            )}
           </div>
 
           {!isDeepCourse && (
@@ -372,7 +424,7 @@ function ReserveConfirmContent() {
                 <div style={styles.optionLabel}>オプション</div>
                 <div style={styles.optionList}>
                   {hasOptions ? (
-                    options.map((option) => (
+                    displayOptions.map((option) => (
                       <span key={option} style={styles.optionItem}>
                         {option}
                       </span>
@@ -385,13 +437,18 @@ function ReserveConfirmContent() {
                 {hasOptions && optionMinutes > 0 && (
                   <div style={styles.optionTime}>所要時間：{optionTime}</div>
                 )}
+
+                {hasOptions && optionPrice && (
+                  <div style={styles.optionPrice}>金額：{optionPrice}</div>
+                )}
               </div>
 
               {hasOptions && (
                 <>
                   <div style={styles.dividerBelowOption} />
                   <div style={styles.totalSummary}>
-                    合計所要時間：{totalTime}
+                    <div>合計所要時間：{totalTime}</div>
+                    {totalPrice && <div>合計金額：{totalPrice}</div>}
                   </div>
                 </>
               )}
@@ -521,6 +578,15 @@ const styles = {
     textAlign: "center",
   },
 
+  priceText: {
+    color: "#6f5046",
+    fontSize: "0.98rem",
+    fontWeight: 700,
+    lineHeight: 1.5,
+    textAlign: "center",
+    letterSpacing: "0.03em",
+  },
+
   divider: {
     height: "1px",
     background: "rgba(211, 182, 168, 0.72)",
@@ -566,6 +632,15 @@ const styles = {
   optionTime: {
     color: "#81685b",
     fontSize: "0.9rem",
+    lineHeight: 1.5,
+    textAlign: "center",
+    marginTop: "2px",
+  },
+
+  optionPrice: {
+    color: "#6f5046",
+    fontSize: "0.9rem",
+    fontWeight: 700,
     lineHeight: 1.5,
     textAlign: "center",
     marginTop: "2px",
