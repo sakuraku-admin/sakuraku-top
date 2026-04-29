@@ -451,7 +451,11 @@ export default function ReserveCheckPage() {
                 <div style={styles.modalOptions}>
                   <div style={styles.optionTitle}>オプション</div>
                   <div style={styles.optionText}>
-                    {selectedReservation.options.join("　")}
+                    {selectedReservation.options.map((option) => (
+                      <div key={option} style={styles.optionItem}>
+                        ・{option}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
@@ -835,6 +839,10 @@ const styles = {
     color: "#9a7f76",
     fontSize: "clamp(10px, 2.7vw, 13px)",
     lineHeight: 1.7,
+  },
+
+  optionItem: {
+    marginTop: "2px",
   },
 
   totalPrice: {
