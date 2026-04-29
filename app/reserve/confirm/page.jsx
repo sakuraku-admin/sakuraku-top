@@ -403,6 +403,16 @@ function ReserveConfirmContent() {
   return (
     <main style={styles.page}>
       <div style={styles.container}>
+        <button
+          type="button"
+          onClick={() => {
+            window.location.href = buildDatetimeReturnUrl();
+          }}
+          style={styles.backLink}
+        >
+          ⇦戻る
+        </button>
+
         <div style={styles.titleText}>ご予約内容の確認</div>
 
         <div style={styles.nameText}>{customerName} 様</div>
@@ -517,6 +527,22 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "10px",
+  },
+
+  backLink: {
+    alignSelf: "flex-start",
+    marginLeft: "6px",
+    marginBottom: "-2px",
+    background: "transparent",
+    border: "none",
+    color: "#8d7066",
+    fontSize: "0.9rem",
+    fontWeight: 500,
+    letterSpacing: "0.03em",
+    cursor: "pointer",
+    padding: "2px 0",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
   titleText: {
