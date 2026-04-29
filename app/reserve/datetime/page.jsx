@@ -2,6 +2,15 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { db } from "../../lib/firebase";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -10,7 +19,6 @@ const BUFFER_MINUTES = 60;
 const DEFAULT_MENU_NAME = "深整コース 120分";
 const DEFAULT_TREATMENT_MINUTES = 120;
 
-const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 const USER_STORAGE_KEY = "sakurakuUser";
 
 function addDays(date, days) {
@@ -102,28 +110,90 @@ function isToday(dateKey) {
   return dateKey === todayKey;
 }
 
-function readAvailabilityFromStorage() {
-  if (typeof window === "undefined") {
-    return buildMockAvailability();
-  }
+function getBlockedSlots(startTime, treatmentMinutes) {
+  const startMinutes = timeStringToMinutes(startTime);
+  const blockedEndMinutes = getBlockedEndTime(
+    startTime,
+    treatmentMinutes,
+    BUFFER_MINUTES
+  );
 
+  return generateTimeSlots().filter((slot) => {
+    const slotMinutes = timeStringToMinutes(slot);
+    return slotMinutes >= startMinutes && slotMinutes < blockedEndMinutes;
+  });
+}
+
+function hasReservationConflict(reservations, rawDate, startTime, totalMinutes) {
+  const newStartMinutes = timeStringToMinutes(startTime);
+  const newEndMinutes = getBlockedEndTime(
+    startTime,
+    totalMinutes,
+    BUFFER_MINUTES
+  );
+
+  return reservations.some((reservation) => {
+    if (reservation?.date !== rawDate) return false;
+    if (!reservation?.startTime) return false;
+    if (reservation?.status && reservation.status !== "active") return false;
+
+    const existingStartMinutes = timeStringToMinutes(reservation.startTime);
+    const existingTotalMinutes = Number(reservation.totalMinutes) || 60;
+    const existingEndMinutes = getBlockedEndTime(
+      reservation.startTime,
+      existingTotalMinutes,
+      BUFFER_MINUTES
+    );
+
+    return (
+      newStartMinutes < existingEndMinutes &&
+      newEndMinutes > existingStartMinutes
+    );
+  });
+}
+
+async function readAvailabilityFromFirestore(dateKeys) {
+  const nextAvailability = buildMockAvailability();
+
+  await Promise.all(
+    dateKeys.map(async (dateKey) => {
+      try {
+        const availabilityRef = doc(db, "availability", dateKey);
+        const availabilitySnap = await getDoc(availabilityRef);
+
+        if (
+          availabilitySnap.exists() &&
+          Array.isArray(availabilitySnap.data()?.slots)
+        ) {
+          nextAvailability[dateKey] = availabilitySnap.data().slots;
+        }
+      } catch (error) {
+        console.error(`${dateKey} の予約枠データ読み込みに失敗しました`, error);
+      }
+    })
+  );
+
+  return nextAvailability;
+}
+
+async function readReservationsFromFirestore(dateKeys) {
   try {
-    const saved = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
+    const reservationsRef = collection(db, "reservations");
+    const reservationsQuery = query(
+      reservationsRef,
+      where("date", "in", dateKeys)
+    );
+    const snapshot = await getDocs(reservationsQuery);
 
-    if (!saved) {
-      return buildMockAvailability();
-    }
-
-    const parsed = JSON.parse(saved);
-
-    if (!parsed || typeof parsed !== "object") {
-      return buildMockAvailability();
-    }
-
-    return parsed;
+    return snapshot.docs
+      .map((reservationDoc) => ({
+        id: reservationDoc.id,
+        ...reservationDoc.data(),
+      }))
+      .filter((reservation) => !reservation.status || reservation.status === "active");
   } catch (error) {
-    console.error("localStorageの予約枠データ読み込みに失敗しました", error);
-    return buildMockAvailability();
+    console.error("Firestoreの予約一覧データ読み込みに失敗しました", error);
+    return [];
   }
 }
 
@@ -135,6 +205,7 @@ function ReserveDateTimeContent() {
   const [mockAvailability, setMockAvailability] = useState(() =>
     buildMockAvailability()
   );
+  const [reservations, setReservations] = useState([]);
 
   const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
@@ -176,24 +247,26 @@ function ReserveDateTimeContent() {
     }
   }, [router]);
 
-  useEffect(() => {
-    setMockAvailability(readAvailabilityFromStorage());
-  }, []);
-
-  useEffect(() => {
-    const handleStorage = (event) => {
-      if (event.key === AVAILABILITY_STORAGE_KEY) {
-        setMockAvailability(readAvailabilityFromStorage());
-      }
-    };
-
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
-
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
   }, [weekStart]);
+
+  useEffect(() => {
+    const loadFirestoreData = async () => {
+      const dateKeys = weekDates.map((date) => formatDateKey(date));
+
+      const [availabilityData, reservationData] = await Promise.all([
+        readAvailabilityFromFirestore(dateKeys),
+        readReservationsFromFirestore(dateKeys),
+      ]);
+
+      setMockAvailability(availabilityData);
+      setReservations(reservationData);
+      setSelected(null);
+    };
+
+    loadFirestoreData();
+  }, [weekDates]);
 
   const handlePrevWeek = () => {
     setWeekStart((prev) => addDays(prev, -7));
@@ -207,7 +280,8 @@ function ReserveDateTimeContent() {
     const isReservable =
       !isToday(dateKey) &&
       isStartMarkedAvailable(dateKey, time, mockAvailability) &&
-      canReserveAt(time, treatmentMinutes);
+      canReserveAt(time, treatmentMinutes) &&
+      !hasReservationConflict(reservations, dateKey, time, treatmentMinutes);
 
     if (!isReservable) return;
 
@@ -355,7 +429,13 @@ function ReserveDateTimeContent() {
                         const isReservable =
                           !isToday(dateKey) &&
                           markedAvailable &&
-                          withinBusinessHours;
+                          withinBusinessHours &&
+                          !hasReservationConflict(
+                            reservations,
+                            dateKey,
+                            time,
+                            treatmentMinutes
+                          );
 
                         const isSelected =
                           selected?.dateKey === dateKey &&
