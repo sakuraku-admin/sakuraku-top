@@ -105,6 +105,16 @@ function isStartMarkedAvailable(dateKey, time, mockAvailability) {
   return dayStarts.includes(time);
 }
 
+function areAllBlockedSlotsAvailable(dateKey, startTime, treatmentMinutes, mockAvailability) {
+  const dayStarts = Array.isArray(mockAvailability[dateKey])
+    ? mockAvailability[dateKey]
+    : [];
+
+  const blockedSlots = getBlockedSlots(startTime, treatmentMinutes);
+
+  return blockedSlots.every((slot) => dayStarts.includes(slot));
+}
+
 function isToday(dateKey) {
   const todayKey = formatDateKey(new Date());
   return dateKey === todayKey;
@@ -279,7 +289,7 @@ function ReserveDateTimeContent() {
   const handleSelect = (dateKey, time) => {
     const isReservable =
       !isToday(dateKey) &&
-      isStartMarkedAvailable(dateKey, time, mockAvailability) &&
+      areAllBlockedSlotsAvailable(dateKey, time, treatmentMinutes, mockAvailability) &&
       canReserveAt(time, treatmentMinutes) &&
       !hasReservationConflict(reservations, dateKey, time, treatmentMinutes);
 
@@ -416,9 +426,10 @@ function ReserveDateTimeContent() {
                       {weekDates.map((date) => {
                         const dateKey = formatDateKey(date);
 
-                        const markedAvailable = isStartMarkedAvailable(
+                        const allBlockedSlotsAvailable = areAllBlockedSlotsAvailable(
                           dateKey,
                           time,
+                          treatmentMinutes,
                           mockAvailability
                         );
                         const withinBusinessHours = canReserveAt(
@@ -428,7 +439,7 @@ function ReserveDateTimeContent() {
 
                         const isReservable =
                           !isToday(dateKey) &&
-                          markedAvailable &&
+                          allBlockedSlotsAvailable &&
                           withinBusinessHours &&
                           !hasReservationConflict(
                             reservations,
