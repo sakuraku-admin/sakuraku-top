@@ -2,6 +2,17 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { db } from "../lib/firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+  where,
+} from "firebase/firestore";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -9,9 +20,6 @@ const BUFFER_MINUTES = 60;
 
 const DEFAULT_MENU_NAME = "深整コース 120分";
 const DEFAULT_TREATMENT_MINUTES = 120;
-
-const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
-const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -102,47 +110,44 @@ function isToday(dateKey) {
   return dateKey === todayKey;
 }
 
-function readAvailabilityFromStorage() {
-  if (typeof window === "undefined") {
-    return buildMockAvailability();
-  }
+function buildAvailabilityFromFirestoreDocs(docs) {
+  const base = buildMockAvailability();
 
+  docs.forEach((snap) => {
+    const data = snap.data();
+    if (Array.isArray(data?.slots)) {
+      base[snap.id] = data.slots;
+    }
+  });
+
+  return base;
+}
+
+async function readAvailabilityFromFirestore() {
   try {
-    const saved = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
-
-    if (!saved) {
-      return buildMockAvailability();
-    }
-
-    const parsed = JSON.parse(saved);
-
-    if (!parsed || typeof parsed !== "object") {
-      return buildMockAvailability();
-    }
-
-    return parsed;
+    const snapshot = await getDocs(collection(db, "availability"));
+    return buildAvailabilityFromFirestoreDocs(snapshot.docs);
   } catch (error) {
-    console.error("localStorageの予約枠データ読み込みに失敗しました", error);
+    console.error("Firestoreの予約枠データ読み込みに失敗しました", error);
     return buildMockAvailability();
   }
 }
 
-function readReservationsFromStorage() {
-  if (typeof window === "undefined") {
-    return [];
-  }
-
+async function readReservationsFromFirestore() {
   try {
-    const saved = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
+    const reservationsQuery = query(
+      collection(db, "reservations"),
+      where("status", "==", "active")
+    );
 
-    if (!saved) {
-      return [];
-    }
+    const snapshot = await getDocs(reservationsQuery);
 
-    const parsed = JSON.parse(saved);
-    return Array.isArray(parsed) ? parsed : [];
+    return snapshot.docs.map((snap) => ({
+      id: snap.id,
+      ...snap.data(),
+    }));
   } catch (error) {
-    console.error("localStorageの予約一覧データ読み込みに失敗しました", error);
+    console.error("Firestoreの予約一覧データ読み込みに失敗しました", error);
     return [];
   }
 }
@@ -151,16 +156,6 @@ function findReservationStart(dateKey, time, reservations) {
   return reservations.find(
     (reservation) => reservation?.date === dateKey && reservation?.startTime === time
   );
-}
-
-function saveAvailabilityToStorage(data) {
-  if (typeof window === "undefined") return;
-
-  try {
-    localStorage.setItem(AVAILABILITY_STORAGE_KEY, JSON.stringify(data));
-  } catch (error) {
-    console.error("localStorageの予約枠データ保存に失敗しました", error);
-  }
 }
 
 function getReservationBlockedEndTime(reservation) {
@@ -214,23 +209,17 @@ function ReserveDateTimeContent() {
   const timeSlots = useMemo(() => generateTimeSlots(), []);
 
   useEffect(() => {
-    setMockAvailability(readAvailabilityFromStorage());
-    setReservations(readReservationsFromStorage());
-  }, []);
+    const loadFirestoreData = async () => {
+      const [availabilityData, reservationData] = await Promise.all([
+        readAvailabilityFromFirestore(),
+        readReservationsFromFirestore(),
+      ]);
 
-  useEffect(() => {
-    const handleStorage = (event) => {
-      if (event.key === AVAILABILITY_STORAGE_KEY) {
-        setMockAvailability(readAvailabilityFromStorage());
-      }
-
-      if (event.key === RESERVATIONS_STORAGE_KEY) {
-        setReservations(readReservationsFromStorage());
-      }
+      setMockAvailability(availabilityData);
+      setReservations(reservationData);
     };
 
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
+    loadFirestoreData();
   }, []);
 
   const weekDates = useMemo(() => {
@@ -245,35 +234,47 @@ function ReserveDateTimeContent() {
     setWeekStart((prev) => addDays(prev, 7));
   };
 
-  const handleSelect = (dateKey, time) => {
+  const handleSelect = async (dateKey, time) => {
     const withinBusinessHours = canReserveAt(time, treatmentMinutes);
     const reservedStart = findReservationStart(dateKey, time, reservations);
 
     if (!withinBusinessHours || reservedStart) return;
 
-    setMockAvailability((prev) => {
-      const currentDay = prev[dateKey] || [];
-      const isOpen = currentDay.includes(time);
+    const currentDay = mockAvailability[dateKey] || generateTimeSlots();
+    const isOpen = currentDay.includes(time);
 
-      const nextDay = isOpen
-        ? currentDay.filter((slot) => slot !== time)
-        : [...currentDay, time].sort(
-            (a, b) => timeStringToMinutes(a) - timeStringToMinutes(b)
-          );
+    const nextDay = isOpen
+      ? currentDay.filter((slot) => slot !== time)
+      : [...currentDay, time].sort(
+          (a, b) => timeStringToMinutes(a) - timeStringToMinutes(b)
+        );
 
-      const nextAvailability = {
-        ...prev,
-        [dateKey]: nextDay,
-      };
+    const nextAvailability = {
+      ...mockAvailability,
+      [dateKey]: nextDay,
+    };
 
-      saveAvailabilityToStorage(nextAvailability);
-      return nextAvailability;
-    });
-
+    setMockAvailability(nextAvailability);
     setSelected({ dateKey, time });
+
+    try {
+      await setDoc(
+        doc(db, "availability", dateKey),
+        {
+          date: dateKey,
+          slots: nextDay,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error("Firestoreの予約枠データ保存に失敗しました", error);
+      alert("予約枠の保存に失敗しました。もう一度お試しください。");
+      setMockAvailability(mockAvailability);
+    }
   };
 
-  const handleAdminCancelReservation = (targetReservation) => {
+  const handleAdminCancelReservation = async (targetReservation) => {
     if (!targetReservation) return;
 
     const customerName =
@@ -288,41 +289,50 @@ function ReserveDateTimeContent() {
     if (!confirmed) return;
 
     try {
-      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-      const allReservations = savedReservations
-        ? JSON.parse(savedReservations)
-        : [];
+      const reservationRef = doc(db, "reservations", targetReservation.id);
+      const availabilityRef = doc(db, "availability", targetReservation.date);
 
-      const updatedReservations = Array.isArray(allReservations)
-        ? allReservations.filter((item) => item.id !== targetReservation.id)
-        : [];
+      const restoredDay = await runTransaction(db, async (transaction) => {
+        const availabilitySnap = await transaction.get(availabilityRef);
 
-      localStorage.setItem(
-        RESERVATIONS_STORAGE_KEY,
-        JSON.stringify(updatedReservations)
-      );
+        const currentDay =
+          availabilitySnap.exists() &&
+          Array.isArray(availabilitySnap.data()?.slots)
+            ? availabilitySnap.data().slots
+            : mockAvailability[targetReservation.date] || generateTimeSlots();
+
+        const slotsToRestore = getSlotsToRestore(targetReservation);
+
+        const nextDay = Array.from(
+          new Set([...currentDay, ...slotsToRestore])
+        ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
+
+        transaction.update(reservationRef, {
+          status: "cancelled",
+          cancelledAt: serverTimestamp(),
+        });
+
+        transaction.set(
+          availabilityRef,
+          {
+            date: targetReservation.date,
+            slots: nextDay,
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+
+        return nextDay;
+      });
 
       setReservations((prev) =>
         prev.filter((item) => item.id !== targetReservation.id)
       );
 
-      setMockAvailability((prev) => {
-        const dateKey = targetReservation.date;
-        const currentDay = Array.isArray(prev[dateKey]) ? prev[dateKey] : [];
-        const slotsToRestore = getSlotsToRestore(targetReservation);
-
-        const restoredDay = Array.from(
-          new Set([...currentDay, ...slotsToRestore])
-        ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
-
-        const nextAvailability = {
-          ...prev,
-          [dateKey]: restoredDay,
-        };
-
-        saveAvailabilityToStorage(nextAvailability);
-        return nextAvailability;
-      });
+      setMockAvailability((prev) => ({
+        ...prev,
+        [targetReservation.date]: restoredDay,
+      }));
 
       setSelectedReservation(null);
       alert("ご予約をキャンセルしました");
