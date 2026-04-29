@@ -95,6 +95,17 @@ function readJsonArrayFromStorage(key) {
   }
 }
 
+function cleanCourseName(name) {
+  return String(name || "")
+    .replace(/[　 ]*\d+分/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isDeepCourseName(name) {
+  return String(name || "").includes("深整");
+}
+
 function getBlockedEndMinutes(startTime, treatmentMinutes) {
   const startMinutes = timeStringToMinutes(startTime);
   const closeMinutes = CLOSE_HOUR * 60;
@@ -148,26 +159,36 @@ function ReserveConfirmContent() {
     }
   }, []);
 
-  const menuName = searchParams.get("courseName") || "整体コース";
-  const menuTime = `${searchParams.get("duration") || "60"}分`;
+  const rawMenuName = searchParams.get("courseName") || "整体コース";
+  const menuName = cleanCourseName(rawMenuName) || "整体コース";
+  const isDeepCourse = isDeepCourseName(menuName);
+
+  const courseMinutes =
+    Number.parseInt(searchParams.get("duration") || "60", 10) || 60;
+  const menuTime = `${courseMinutes}分`;
+
+  const optionMinutes =
+    Number.parseInt(searchParams.get("optionMinutes") || "0", 10) || 0;
+  const optionTime = optionMinutes > 0 ? `${optionMinutes}分` : "";
 
   const selectedOptionsParam = searchParams.get("selectedOptions") || "";
   const options = selectedOptionsParam
     ? selectedOptionsParam.split("、").filter(Boolean)
     : [];
 
-  const totalTime = `${
-    searchParams.get("totalMinutes") || searchParams.get("duration") || "60"
-  }分`;
+  const hasOptions = options.length > 0;
+
+  const totalMinutes =
+    Number.parseInt(
+      searchParams.get("totalMinutes") || String(courseMinutes + optionMinutes),
+      10
+    ) || courseMinutes + optionMinutes;
+
+  const totalTime = `${totalMinutes}分`;
 
   const reserveDate = formatJapaneseDate(searchParams.get("date"));
 
   const startTime = searchParams.get("time") || "";
-  const totalMinutes =
-    Number.parseInt(
-      searchParams.get("totalMinutes") || searchParams.get("duration") || "60",
-      10
-    ) || 60;
 
   const endTime = startTime
     ? minutesToTimeString(timeStringToMinutes(startTime) + totalMinutes)
@@ -176,6 +197,28 @@ function ReserveConfirmContent() {
   const reserveTime =
     startTime && endTime ? `${startTime}〜${endTime}` : "未選択";
 
+  const buildDatetimeReturnUrl = () => {
+    const params = new URLSearchParams();
+    const keys = [
+      "courseId",
+      "duration",
+      "optionMinutes",
+      "selectedOptions",
+      "optionPrice",
+      "price",
+      "type",
+    ];
+
+    params.set("courseName", menuName);
+
+    keys.forEach((key) => {
+      const value = searchParams.get(key);
+      if (value) params.set(key, value);
+    });
+
+    return `/reserve/datetime?${params.toString()}`;
+  };
+
   const handleReserve = async () => {
     if (isSubmitting) return;
 
@@ -183,7 +226,7 @@ function ReserveConfirmContent() {
 
     if (!rawDate || !startTime) {
       alert("ご予約日時が正しく選択されていません。もう一度日時をお選びください。");
-      window.location.href = "/reserve/datetime";
+      window.location.href = buildDatetimeReturnUrl();
       return;
     }
 
@@ -200,7 +243,7 @@ function ReserveConfirmContent() {
 
       if (!parsedAvailability || typeof parsedAvailability !== "object") {
         alert("予約枠データの確認に失敗しました。もう一度日時をお選びください。");
-        window.location.href = "/reserve/datetime";
+        window.location.href = buildDatetimeReturnUrl();
         return;
       }
 
@@ -220,7 +263,10 @@ function ReserveConfirmContent() {
         customer: userData,
         menuName,
         menuTime,
+        courseMinutes,
         options,
+        optionMinutes,
+        optionTime,
         totalTime,
         reserveDate,
         reserveTime,
@@ -296,7 +342,7 @@ function ReserveConfirmContent() {
         alert(
           "申し訳ありません。この時間はすでに埋まりました。日時を選び直してください。"
         );
-        window.location.href = "/reserve/datetime";
+        window.location.href = buildDatetimeReturnUrl();
         return;
       }
 
@@ -314,28 +360,43 @@ function ReserveConfirmContent() {
 
         <section style={styles.mainCard}>
           <div style={styles.courseRow}>
-            <div style={styles.courseName}>
-              {menuName}　{menuTime}
-            </div>
-            <div style={styles.totalTime}>所要時間：{totalTime}</div>
+            <div style={styles.courseName}>{menuName}</div>
+            <div style={styles.totalTime}>所要時間：{menuTime}</div>
           </div>
 
-          <div style={styles.divider} />
+          {!isDeepCourse && (
+            <>
+              <div style={styles.divider} />
 
-          <div style={styles.optionSection}>
-            <div style={styles.optionLabel}>オプション</div>
-            <div style={styles.optionList}>
-              {options.length > 0 ? (
-                options.map((option) => (
-                  <span key={option} style={styles.optionItem}>
-                    {option}
-                  </span>
-                ))
-              ) : (
-                <span style={styles.optionItem}>なし</span>
+              <div style={styles.optionSection}>
+                <div style={styles.optionLabel}>オプション</div>
+                <div style={styles.optionList}>
+                  {hasOptions ? (
+                    options.map((option) => (
+                      <span key={option} style={styles.optionItem}>
+                        {option}
+                      </span>
+                    ))
+                  ) : (
+                    <span style={styles.optionItem}>なし</span>
+                  )}
+                </div>
+
+                {hasOptions && optionMinutes > 0 && (
+                  <div style={styles.optionTime}>所要時間：{optionTime}</div>
+                )}
+              </div>
+
+              {hasOptions && (
+                <>
+                  <div style={styles.dividerBelowOption} />
+                  <div style={styles.totalSummary}>
+                    合計所要時間：{totalTime}
+                  </div>
+                </>
               )}
-            </div>
-          </div>
+            </>
+          )}
 
           <div style={styles.dividerBelowOption} />
 
@@ -500,6 +561,24 @@ const styles = {
 
   optionItem: {
     whiteSpace: "nowrap",
+  },
+
+  optionTime: {
+    color: "#81685b",
+    fontSize: "0.9rem",
+    lineHeight: 1.5,
+    textAlign: "center",
+    marginTop: "2px",
+  },
+
+  totalSummary: {
+    color: "#6f5046",
+    fontSize: "0.96rem",
+    fontWeight: 700,
+    lineHeight: 1.5,
+    textAlign: "center",
+    letterSpacing: "0.03em",
+    margin: "-4px 0 10px",
   },
 
   dividerBelowOption: {
