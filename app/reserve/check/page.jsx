@@ -108,6 +108,9 @@ function readCurrentReservationFromStorage() {
 export default function ReserveCheckPage() {
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
+  const [pendingCancelReservation, setPendingCancelReservation] = useState(null);
+  const [isCancelProcessing, setIsCancelProcessing] = useState(false);
+  const [noticeMessage, setNoticeMessage] = useState("");
 
   useEffect(() => {
     const loadReservations = async () => {
@@ -307,21 +310,33 @@ export default function ReserveCheckPage() {
     }
   };
 
-  const handleCancelReservation = async (targetReservation) => {
+  const handleCancelReservation = (targetReservation) => {
     if (isSameDay(targetReservation?.date)) {
       alert("当日のキャンセルはLINEにてご連絡ください。");
       return;
     }
 
-    const confirmed = window.confirm("ご予約を取り消しますか？");
-    if (!confirmed) return;
+    setPendingCancelReservation(targetReservation);
+  };
+
+  const handleCloseCancelConfirm = () => {
+    if (isCancelProcessing) return;
+    setPendingCancelReservation(null);
+  };
+
+  const handleConfirmCancelReservation = async () => {
+    if (!pendingCancelReservation || isCancelProcessing) return;
 
     try {
-      await removeReservation(targetReservation);
-      alert("ご予約を取り消しました");
+      setIsCancelProcessing(true);
+      await removeReservation(pendingCancelReservation);
+      setPendingCancelReservation(null);
+      setNoticeMessage("ご予約を取り消しました");
     } catch (error) {
       console.error("予約の取り消しに失敗しました", error);
       alert("予約の取り消しに失敗しました。もう一度お試しください。");
+    } finally {
+      setIsCancelProcessing(false);
     }
   };
 
@@ -463,6 +478,68 @@ export default function ReserveCheckPage() {
               style={styles.cancelButton}
             >
               この予約を取り消す
+            </button>
+          </div>
+        </div>
+      )}
+
+      {pendingCancelReservation && (
+        <div
+          style={styles.confirmOverlay}
+          onClick={handleCloseCancelConfirm}
+        >
+          <div
+            style={styles.confirmCard}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={styles.confirmTitle}>ご予約を取り消しますか？</div>
+            <div style={styles.confirmText}>
+              取り消した予約枠は、再度ご予約可能な状態に戻ります。
+            </div>
+
+            <button
+              type="button"
+              onClick={handleConfirmCancelReservation}
+              disabled={isCancelProcessing}
+              style={{
+                ...styles.confirmOkButton,
+                ...(isCancelProcessing ? styles.confirmButtonDisabled : {}),
+              }}
+            >
+              {isCancelProcessing ? "取り消し中..." : "取り消す"}
+            </button>
+
+            <button
+              type="button"
+              onClick={handleCloseCancelConfirm}
+              disabled={isCancelProcessing}
+              style={{
+                ...styles.confirmCancelButton,
+                ...(isCancelProcessing ? styles.confirmButtonDisabled : {}),
+              }}
+            >
+              戻る
+            </button>
+          </div>
+        </div>
+      )}
+
+      {noticeMessage && (
+        <div
+          style={styles.confirmOverlay}
+          onClick={() => setNoticeMessage("")}
+        >
+          <div
+            style={styles.confirmCard}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={styles.confirmTitle}>{noticeMessage}</div>
+            <button
+              type="button"
+              onClick={() => setNoticeMessage("")}
+              style={styles.confirmOkButton}
+            >
+              OK
             </button>
           </div>
         </div>
@@ -805,5 +882,87 @@ const styles = {
     boxShadow: "none",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  confirmOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(49, 35, 29, 0.34)",
+    backdropFilter: "blur(3px)",
+    WebkitBackdropFilter: "blur(3px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "22px",
+    zIndex: 2000,
+    boxSizing: "border-box",
+  },
+
+  confirmCard: {
+    width: "100%",
+    maxWidth: "320px",
+    background: "rgba(255, 250, 246, 0.98)",
+    borderRadius: "28px",
+    padding: "24px 18px 18px",
+    boxSizing: "border-box",
+    boxShadow: "0 14px 34px rgba(110, 80, 65, 0.2)",
+    border: "1px solid rgba(255,255,255,0.48)",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+    textAlign: "center",
+  },
+
+  confirmTitle: {
+    color: "#6e4b41",
+    fontSize: "clamp(18px, 4.6vw, 22px)",
+    fontWeight: 700,
+    lineHeight: 1.55,
+    letterSpacing: "0.04em",
+    marginBottom: "10px",
+  },
+
+  confirmText: {
+    color: "#8a7167",
+    fontSize: "clamp(12px, 3.2vw, 14px)",
+    lineHeight: 1.75,
+    letterSpacing: "0.02em",
+    marginBottom: "18px",
+  },
+
+  confirmOkButton: {
+    width: "100%",
+    border: "none",
+    borderRadius: "999px",
+    background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
+    color: "#fffdfb",
+    fontSize: "clamp(16px, 4vw, 20px)",
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    padding: "13px 16px",
+    cursor: "pointer",
+    boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
+    fontFamily: '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+    marginBottom: "10px",
+  },
+
+  confirmCancelButton: {
+    width: "100%",
+    borderRadius: "999px",
+    background: "rgba(255,255,255,0.82)",
+    color: "#7d5b50",
+    fontSize: "clamp(15px, 3.8vw, 19px)",
+    fontWeight: 500,
+    letterSpacing: "0.04em",
+    padding: "12px 16px",
+    cursor: "pointer",
+    border: "1.5px solid rgba(145, 112, 101, 0.16)",
+    boxShadow: "none",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  confirmButtonDisabled: {
+    opacity: 0.62,
+    cursor: "not-allowed",
   },
 };
