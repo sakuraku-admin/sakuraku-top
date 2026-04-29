@@ -1,6 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { db } from "../../lib/firebase";
+import {
+  collection,
+  doc,
+  getDocs,
+  query,
+  runTransaction,
+  serverTimestamp,
+  where,
+} from "firebase/firestore";
 
 const USER_STORAGE_KEY = "sakurakuUser";
 const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
@@ -62,108 +72,219 @@ function isSameDay(dateKey) {
   return reservationDate.getTime() === today.getTime();
 }
 
+function isActiveReservation(reservation) {
+  return reservation?.status !== "cancelled";
+}
+
+function sortReservationsByDateTime(a, b) {
+  const aKey = `${a?.date || ""} ${a?.startTime || ""}`;
+  const bKey = `${b?.date || ""} ${b?.startTime || ""}`;
+  return aKey.localeCompare(bKey);
+}
+
+function readJsonArrayFromStorage(key) {
+  try {
+    const saved = localStorage.getItem(key);
+    if (!saved) return [];
+
+    const parsed = JSON.parse(saved);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error(`${key} の読み込みに失敗しました`, error);
+    return [];
+  }
+}
+
+function readCurrentReservationFromStorage() {
+  try {
+    const saved = localStorage.getItem(CURRENT_RESERVATION_STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (error) {
+    console.error("現在予約の読み込みに失敗しました", error);
+    return null;
+  }
+}
+
 export default function ReserveCheckPage() {
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
   useEffect(() => {
+    const loadReservations = async () => {
+      try {
+        const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+
+        if (!savedUser) {
+          window.location.href = "/register";
+          return;
+        }
+
+        const parsedUser = JSON.parse(savedUser);
+
+        if (!parsedUser?.isLoggedIn) {
+          window.location.href = "/register";
+          return;
+        }
+
+        let userReservations = [];
+
+        if (parsedUser?.userId) {
+          const reservationsQuery = query(
+            collection(db, "reservations"),
+            where("customerId", "==", parsedUser.userId)
+          );
+          const snapshot = await getDocs(reservationsQuery);
+
+          userReservations = snapshot.docs
+            .map((reservationDoc) => ({
+              id: reservationDoc.id,
+              ...reservationDoc.data(),
+            }))
+            .filter(isActiveReservation)
+            .sort(sortReservationsByDateTime);
+        }
+
+        if (userReservations.length === 0) {
+          const localReservations = readJsonArrayFromStorage(
+            RESERVATIONS_STORAGE_KEY
+          );
+          const currentReservation = readCurrentReservationFromStorage();
+          const combinedReservations = currentReservation
+            ? [currentReservation, ...localReservations]
+            : localReservations;
+
+          userReservations = combinedReservations
+            .filter((item) => {
+              const reservationName =
+                item?.customerName || item?.customer?.name || "";
+
+              if (item?.customerId && parsedUser?.userId) {
+                return item.customerId === parsedUser.userId;
+              }
+
+              return reservationName === parsedUser.name;
+            })
+            .filter(isActiveReservation)
+            .filter((item, index, self) => {
+              const itemId = item?.id || `${item?.date}-${item?.startTime}`;
+              return (
+                self.findIndex(
+                  (other) =>
+                    (other?.id || `${other?.date}-${other?.startTime}`) ===
+                    itemId
+                ) === index
+              );
+            })
+            .sort(sortReservationsByDateTime);
+        }
+
+        setReservations(userReservations);
+      } catch (error) {
+        console.error("予約情報の読み込みに失敗しました", error);
+        setReservations([]);
+      }
+    };
+
+    loadReservations();
+  }, []);
+
+  const removeLocalReservationBackup = (targetReservation) => {
     try {
-      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
-
-      if (!savedUser) {
-        window.location.href = "/register";
-        return;
-      }
-
-      const parsedUser = JSON.parse(savedUser);
-
-      if (!parsedUser?.isLoggedIn) {
-        window.location.href = "/register";
-        return;
-      }
-
       const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-      const parsedReservations = savedReservations
+      const allReservations = savedReservations
         ? JSON.parse(savedReservations)
         : [];
 
-      if (Array.isArray(parsedReservations)) {
-        const userReservations = parsedReservations.filter((item) => {
-          const reservationName =
-            item?.customerName || item?.customer?.name || "";
-
-          if (item?.customerId && parsedUser?.userId) {
-            return item.customerId === parsedUser.userId;
-          }
-
-          return reservationName === parsedUser.name;
-        });
-
-        setReservations(userReservations);
-      }
-    } catch (error) {
-      console.error("予約情報の読み込みに失敗しました", error);
-    }
-  }, []);
-
-  const restoreAvailabilitySlot = (targetReservation) => {
-    const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
-
-    if (!savedAvailability || !targetReservation?.date) return;
-
-    try {
-      const availability = JSON.parse(savedAvailability);
-
-      const currentDay = Array.isArray(availability[targetReservation.date])
-        ? availability[targetReservation.date]
+      const updatedReservations = Array.isArray(allReservations)
+        ? allReservations.filter((item) => item.id !== targetReservation.id)
         : [];
 
-      const slotsToRestore = getSlotsToRestore(targetReservation);
+      localStorage.setItem(
+        RESERVATIONS_STORAGE_KEY,
+        JSON.stringify(updatedReservations)
+      );
+
+      const savedCurrent = localStorage.getItem(CURRENT_RESERVATION_STORAGE_KEY);
+
+      if (savedCurrent) {
+        const currentReservation = JSON.parse(savedCurrent);
+
+        if (currentReservation?.id === targetReservation.id) {
+          localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
+        }
+      }
+    } catch (error) {
+      console.error("localStorage側の予約削除に失敗しました", error);
+    }
+  };
+
+  const removeReservation = async (targetReservation) => {
+    if (!targetReservation?.id || !targetReservation?.date) return;
+
+    const reservationRef = doc(db, "reservations", targetReservation.id);
+    const availabilityRef = doc(db, "availability", targetReservation.date);
+    const slotsToRestore = getSlotsToRestore(targetReservation);
+
+    await runTransaction(db, async (transaction) => {
+      const availabilitySnap = await transaction.get(availabilityRef);
+
+      const currentDay =
+        availabilitySnap.exists() &&
+        Array.isArray(availabilitySnap.data()?.slots)
+          ? availabilitySnap.data().slots
+          : [];
 
       const restoredDay = Array.from(
         new Set([...currentDay, ...slotsToRestore])
       ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
 
-      const nextAvailability = {
-        ...availability,
-        [targetReservation.date]: restoredDay,
-      };
-
-      localStorage.setItem(
-        AVAILABILITY_STORAGE_KEY,
-        JSON.stringify(nextAvailability)
+      transaction.set(
+        availabilityRef,
+        {
+          date: targetReservation.date,
+          slots: restoredDay,
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
       );
-    } catch (error) {
-      console.error("空き枠の復元に失敗しました", error);
-    }
-  };
 
-  const removeReservation = (targetReservation) => {
-    const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-    const allReservations = savedReservations
-      ? JSON.parse(savedReservations)
-      : [];
+      transaction.set(
+        reservationRef,
+        {
+          status: "cancelled",
+          cancelledAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        },
+        { merge: true }
+      );
+    });
 
-    const updatedReservations = Array.isArray(allReservations)
-      ? allReservations.filter((item) => item.id !== targetReservation.id)
-      : [];
+    removeLocalReservationBackup(targetReservation);
 
-    localStorage.setItem(
-      RESERVATIONS_STORAGE_KEY,
-      JSON.stringify(updatedReservations)
-    );
+    try {
+      const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
 
-    const savedCurrent = localStorage.getItem(CURRENT_RESERVATION_STORAGE_KEY);
+      if (savedAvailability) {
+        const availability = JSON.parse(savedAvailability);
+        const currentDay = Array.isArray(availability[targetReservation.date])
+          ? availability[targetReservation.date]
+          : [];
 
-    if (savedCurrent) {
-      const currentReservation = JSON.parse(savedCurrent);
+        const restoredDay = Array.from(
+          new Set([...currentDay, ...slotsToRestore])
+        ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
 
-      if (currentReservation?.id === targetReservation.id) {
-        localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
+        localStorage.setItem(
+          AVAILABILITY_STORAGE_KEY,
+          JSON.stringify({
+            ...availability,
+            [targetReservation.date]: restoredDay,
+          })
+        );
       }
+    } catch (error) {
+      console.error("localStorage側の空き枠復元に失敗しました", error);
     }
-
-    restoreAvailabilitySlot(targetReservation);
 
     setReservations((prev) =>
       prev.filter((item) => item.id !== targetReservation.id)
@@ -171,14 +292,14 @@ export default function ReserveCheckPage() {
     setSelectedReservation(null);
   };
 
-  const handleChangeReservation = (targetReservation) => {
+  const handleChangeReservation = async (targetReservation) => {
     if (isSameDay(targetReservation?.date)) {
       alert("当日の変更はLINEにてご連絡ください。");
       return;
     }
 
     try {
-      removeReservation(targetReservation);
+      await removeReservation(targetReservation);
       window.location.href = "/menu";
     } catch (error) {
       console.error("予約変更処理に失敗しました", error);
@@ -186,7 +307,7 @@ export default function ReserveCheckPage() {
     }
   };
 
-  const handleCancelReservation = (targetReservation) => {
+  const handleCancelReservation = async (targetReservation) => {
     if (isSameDay(targetReservation?.date)) {
       alert("当日のキャンセルはLINEにてご連絡ください。");
       return;
@@ -196,7 +317,7 @@ export default function ReserveCheckPage() {
     if (!confirmed) return;
 
     try {
-      removeReservation(targetReservation);
+      await removeReservation(targetReservation);
       alert("ご予約を取り消しました");
     } catch (error) {
       console.error("予約の取り消しに失敗しました", error);
