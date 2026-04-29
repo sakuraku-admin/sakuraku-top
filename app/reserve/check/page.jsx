@@ -427,7 +427,8 @@ export default function ReserveCheckPage() {
 
             <div style={styles.modalDateBox}>
               <div style={styles.modalDate}>
-                ご予約日時：{selectedReservation.reserveDate || ""}
+                <span style={styles.modalDateLabel}>ご予約日時：</span>
+                {selectedReservation.reserveDate || ""}
               </div>
               <div style={styles.modalTime}>
                 {selectedReservation.reserveTime || ""}
@@ -787,6 +788,12 @@ const styles = {
     fontSize: "clamp(16px, 4.4vw, 22px)",
     fontWeight: 600,
     lineHeight: 1.35,
+  },
+
+  modalDateLabel: {
+    fontSize: "clamp(12px, 3.2vw, 14px)",
+    fontWeight: 500,
+    color: "#8a7167",
   },
 
   modalTime: {
