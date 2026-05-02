@@ -1,16 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  collection,
-  getDocs,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
-const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
 function getCreatedAtValue(item) {
   if (typeof item?.createdAtLocal === "string") return item.createdAtLocal;
@@ -34,33 +28,6 @@ function sortHistoryNewestFirst(a, b) {
   return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
 }
 
-function readLocalHistory(parsedUser) {
-  const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-
-  if (!savedReservations) {
-    return [];
-  }
-
-  const parsedReservations = JSON.parse(savedReservations);
-
-  if (!Array.isArray(parsedReservations)) {
-    return [];
-  }
-
-  return parsedReservations
-    .filter((item) => {
-      const reservationName = item?.customerName || item?.customer?.name || "";
-
-      if (item?.customerId && parsedUser?.userId) {
-        return item.customerId === parsedUser.userId;
-      }
-
-      return reservationName === parsedUser.name;
-    })
-    .map(formatReservationHistory)
-    .sort(sortHistoryNewestFirst);
-}
-
 export default function ReserveHistoryPage() {
   const [historyList, setHistoryList] = useState([]);
 
@@ -82,7 +49,7 @@ export default function ReserveHistoryPage() {
         }
 
         if (!parsedUser?.userId) {
-          setHistoryList(readLocalHistory(parsedUser));
+          setHistoryList([]);
           return;
         }
 
@@ -102,22 +69,10 @@ export default function ReserveHistoryPage() {
           .map(formatReservationHistory)
           .sort(sortHistoryNewestFirst);
 
-        if (firestoreHistory.length > 0) {
-          setHistoryList(firestoreHistory);
-          return;
-        }
-
-        setHistoryList(readLocalHistory(parsedUser));
+        setHistoryList(firestoreHistory);
       } catch (error) {
         console.error("履歴データの読み込みに失敗しました", error);
-
-        try {
-          const savedUser = localStorage.getItem(USER_STORAGE_KEY);
-          const parsedUser = savedUser ? JSON.parse(savedUser) : null;
-          setHistoryList(parsedUser ? readLocalHistory(parsedUser) : []);
-        } catch {
-          setHistoryList([]);
-        }
+        setHistoryList([]);
       }
     };
 
