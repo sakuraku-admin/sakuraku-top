@@ -69,7 +69,7 @@ function minutesToTimeString(totalMinutes) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
-function buildMockAvailability() {
+function buildavailability() {
   const today = new Date();
   const data = {};
   const allSlots = generateTimeSlots();
@@ -100,14 +100,14 @@ function getBlockedEndTime(startTime, treatmentMinutes, bufferMinutes) {
   return Math.min(blockedEnd, close);
 }
 
-function isStartMarkedAvailable(dateKey, time, mockAvailability) {
-  const dayStarts = mockAvailability[dateKey] || [];
+function isStartMarkedAvailable(dateKey, time, availability) {
+  const dayStarts = availability[dateKey] || [];
   return dayStarts.includes(time);
 }
 
-function areAllBlockedSlotsAvailable(dateKey, startTime, treatmentMinutes, mockAvailability) {
-  const dayStarts = Array.isArray(mockAvailability[dateKey])
-    ? mockAvailability[dateKey]
+function areAllBlockedSlotsAvailable(dateKey, startTime, treatmentMinutes, availability) {
+  const dayStarts = Array.isArray(availability[dateKey])
+    ? availability[dateKey]
     : [];
 
   const blockedSlots = getBlockedSlots(startTime, treatmentMinutes);
@@ -163,7 +163,7 @@ function hasReservationConflict(reservations, rawDate, startTime, totalMinutes) 
 }
 
 async function readAvailabilityFromFirestore(dateKeys) {
-  const nextAvailability = buildMockAvailability();
+  const nextAvailability = buildavailability();
 
   await Promise.all(
     dateKeys.map(async (dateKey) => {
@@ -212,8 +212,8 @@ function ReserveDateTimeContent() {
   const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
-  const [mockAvailability, setMockAvailability] = useState(() =>
-    buildMockAvailability()
+  const [availability, setavailability] = useState(() =>
+    buildavailability()
   );
   const [reservations, setReservations] = useState([]);
 
@@ -270,7 +270,7 @@ function ReserveDateTimeContent() {
         readReservationsFromFirestore(dateKeys),
       ]);
 
-      setMockAvailability(availabilityData);
+      setavailability(availabilityData);
       setReservations(reservationData);
       setSelected(null);
     };
@@ -289,7 +289,7 @@ function ReserveDateTimeContent() {
   const handleSelect = (dateKey, time) => {
     const isReservable =
       !isToday(dateKey) &&
-      areAllBlockedSlotsAvailable(dateKey, time, treatmentMinutes, mockAvailability) &&
+      areAllBlockedSlotsAvailable(dateKey, time, treatmentMinutes, availability) &&
       canReserveAt(time, treatmentMinutes) &&
       !hasReservationConflict(reservations, dateKey, time, treatmentMinutes);
 
@@ -430,7 +430,7 @@ function ReserveDateTimeContent() {
                           dateKey,
                           time,
                           treatmentMinutes,
-                          mockAvailability
+                          availability
                         );
                         const withinBusinessHours = canReserveAt(
                           time,
