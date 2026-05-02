@@ -69,7 +69,7 @@ function minutesToTimeString(totalMinutes) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
-function buildavailability() {
+function buildAvailability() {
   const today = new Date();
   const data = {};
   const allSlots = generateTimeSlots();
@@ -163,7 +163,7 @@ function hasReservationConflict(reservations, rawDate, startTime, totalMinutes) 
 }
 
 async function readAvailabilityFromFirestore(dateKeys) {
-  const nextAvailability = buildavailability();
+  const nextAvailability = buildAvailability();
 
   await Promise.all(
     dateKeys.map(async (dateKey) => {
@@ -213,7 +213,7 @@ function ReserveDateTimeContent() {
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
   const [availability, setavailability] = useState(() =>
-    buildavailability()
+    buildAvailability()
   );
   const [reservations, setReservations] = useState([]);
 
