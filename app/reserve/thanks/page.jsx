@@ -1,66 +1,87 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
-const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
 
-export default function ThanksPage() {
-  const [menuName, setMenuName] = useState("整体コース");
-  const [menuTime, setMenuTime] = useState("60分");
+function ThanksContent() {
+  const searchParams = useSearchParams();
+
+  const [menuName, setMenuName] = useState("");
+  const [menuTime, setMenuTime] = useState("");
   const [options, setOptions] = useState([]);
-  const [reserveDate, setReserveDate] = useState("未選択");
-  const [reserveTime, setReserveTime] = useState("未選択");
+  const [reserveDate, setReserveDate] = useState("");
+  const [reserveTime, setReserveTime] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isReservationLoaded, setIsReservationLoaded] = useState(false);
 
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+    const loadReservation = async () => {
+      try {
+        const savedUser = localStorage.getItem(USER_STORAGE_KEY);
 
-      if (!savedUser) {
-        window.location.href = "/register";
-        return;
-      }
+        if (!savedUser) {
+          window.location.href = "/register";
+          return;
+        }
 
-      const parsedUser = JSON.parse(savedUser);
+        const parsedUser = JSON.parse(savedUser);
 
-      if (!parsedUser?.isLoggedIn) {
-        window.location.href = "/register";
-        return;
-      }
-    } catch (error) {
-      console.error("お客様情報の読み込みに失敗しました", error);
-      window.location.href = "/register";
-    }
-  }, []);
+        if (!parsedUser?.isLoggedIn) {
+          window.location.href = "/register";
+          return;
+        }
 
-  useEffect(() => {
-    const savedReservation = localStorage.getItem(
-      CURRENT_RESERVATION_STORAGE_KEY
-    );
-    if (!savedReservation) return;
+        const reservationId = searchParams.get("id");
 
-    try {
-      const reservationData = JSON.parse(savedReservation);
+        if (!reservationId) {
+          setIsLoading(false);
+          setIsReservationLoaded(false);
+          return;
+        }
 
-      if (reservationData.menuName) {
-        setMenuName(reservationData.menuName);
+        const reservationRef = doc(db, "reservations", reservationId);
+        const reservationSnap = await getDoc(reservationRef);
+
+        if (!reservationSnap.exists()) {
+          setIsLoading(false);
+          setIsReservationLoaded(false);
+          return;
+        }
+
+        const reservationData = reservationSnap.data();
+
+        if (
+          parsedUser?.userId &&
+          reservationData?.customerId &&
+          reservationData.customerId !== parsedUser.userId
+        ) {
+          setIsLoading(false);
+          setIsReservationLoaded(false);
+          return;
+        }
+
+        setMenuName(reservationData.menuName || "");
+        setMenuTime(reservationData.menuTime || "");
+        setOptions(
+          Array.isArray(reservationData.options) ? reservationData.options : []
+        );
+        setReserveDate(reservationData.reserveDate || "");
+        setReserveTime(reservationData.reserveTime || "");
+        setIsReservationLoaded(true);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("予約データの読み込みに失敗しました", error);
+        setIsLoading(false);
+        setIsReservationLoaded(false);
       }
-      if (reservationData.menuTime) {
-        setMenuTime(reservationData.menuTime);
-      }
-      if (Array.isArray(reservationData.options)) {
-        setOptions(reservationData.options);
-      }
-      if (reservationData.reserveDate) {
-        setReserveDate(reservationData.reserveDate);
-      }
-      if (reservationData.reserveTime) {
-        setReserveTime(reservationData.reserveTime);
-      }
-    } catch (error) {
-      console.error("予約データの読み込みに失敗しました", error);
-    }
-  }, []);
+    };
+
+    loadReservation();
+  }, [searchParams]);
 
   const hasOptions = options && options.length > 0;
 
@@ -77,28 +98,41 @@ export default function ThanksPage() {
 
         <section style={styles.infoCard}>
           <div style={styles.pinkCard}>
-            <div style={styles.datePill}>
-              <div style={styles.dateLabel}>ご予約日時</div>
-              <div style={styles.dateValue}>
-                {reserveDate}　{reserveTime}
-              </div>
-            </div>
-
-            <div style={styles.subInfo}>
-              <div style={styles.menuText}>
-                {menuName}（{menuTime}）
-              </div>
-
-              {hasOptions && (
-                <div style={styles.optionBlock}>
-                  {options.map((option) => (
-                    <div key={option} style={styles.optionItem}>
-                      {option}
-                    </div>
-                  ))}
+            {isLoading ? (
+              <div style={styles.loadingText}>ご予約内容を確認しています。</div>
+            ) : isReservationLoaded ? (
+              <>
+                <div style={styles.datePill}>
+                  <div style={styles.dateLabel}>ご予約日時</div>
+                  <div style={styles.dateValue}>
+                    {reserveDate}　{reserveTime}
+                  </div>
                 </div>
-              )}
-            </div>
+
+                <div style={styles.subInfo}>
+                  <div style={styles.menuText}>
+                    {menuName}
+                    {menuTime ? `（${menuTime}）` : ""}
+                  </div>
+
+                  {hasOptions && (
+                    <div style={styles.optionBlock}>
+                      {options.map((option) => (
+                        <div key={option} style={styles.optionItem}>
+                          {option}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div style={styles.loadingText}>
+                ご予約内容の確認に失敗しました。
+                <br />
+                予約履歴ページよりご確認ください。
+              </div>
+            )}
           </div>
 
           <div style={styles.noteArea}>
@@ -123,6 +157,14 @@ export default function ThanksPage() {
         </button>
       </div>
     </main>
+  );
+}
+
+export default function ThanksPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh" }} />}>
+      <ThanksContent />
+    </Suspense>
   );
 }
 
@@ -236,6 +278,14 @@ const styles = {
   optionItem: {
     textAlign: "center",
     marginTop: "2px",
+  },
+
+  loadingText: {
+    color: "#6a4337",
+    fontSize: "0.9rem",
+    lineHeight: 1.8,
+    padding: "22px 8px",
+    textAlign: "center",
   },
 
   noteArea: {
