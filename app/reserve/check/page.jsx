@@ -13,9 +13,6 @@ import {
 } from "firebase/firestore";
 
 const USER_STORAGE_KEY = "sakurakuUser";
-const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
-const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
-const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -82,29 +79,6 @@ function sortReservationsByDateTime(a, b) {
   return aKey.localeCompare(bKey);
 }
 
-function readJsonArrayFromStorage(key) {
-  try {
-    const saved = localStorage.getItem(key);
-    if (!saved) return [];
-
-    const parsed = JSON.parse(saved);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    console.error(`${key} の読み込みに失敗しました`, error);
-    return [];
-  }
-}
-
-function readCurrentReservationFromStorage() {
-  try {
-    const saved = localStorage.getItem(CURRENT_RESERVATION_STORAGE_KEY);
-    return saved ? JSON.parse(saved) : null;
-  } catch (error) {
-    console.error("現在予約の読み込みに失敗しました", error);
-    return null;
-  }
-}
-
 export default function ReserveCheckPage() {
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
@@ -129,57 +103,24 @@ export default function ReserveCheckPage() {
           return;
         }
 
-        let userReservations = [];
-
-        if (parsedUser?.userId) {
-          const reservationsQuery = query(
-            collection(db, "reservations"),
-            where("customerId", "==", parsedUser.userId)
-          );
-          const snapshot = await getDocs(reservationsQuery);
-
-          userReservations = snapshot.docs
-            .map((reservationDoc) => ({
-              id: reservationDoc.id,
-              ...reservationDoc.data(),
-            }))
-            .filter(isActiveReservation)
-            .sort(sortReservationsByDateTime);
+        if (!parsedUser?.userId) {
+          setReservations([]);
+          return;
         }
 
-        if (userReservations.length === 0) {
-          const localReservations = readJsonArrayFromStorage(
-            RESERVATIONS_STORAGE_KEY
-          );
-          const currentReservation = readCurrentReservationFromStorage();
-          const combinedReservations = currentReservation
-            ? [currentReservation, ...localReservations]
-            : localReservations;
+        const reservationsQuery = query(
+          collection(db, "reservations"),
+          where("customerId", "==", parsedUser.userId)
+        );
+        const snapshot = await getDocs(reservationsQuery);
 
-          userReservations = combinedReservations
-            .filter((item) => {
-              const reservationName =
-                item?.customerName || item?.customer?.name || "";
-
-              if (item?.customerId && parsedUser?.userId) {
-                return item.customerId === parsedUser.userId;
-              }
-
-              return reservationName === parsedUser.name;
-            })
-            .filter(isActiveReservation)
-            .filter((item, index, self) => {
-              const itemId = item?.id || `${item?.date}-${item?.startTime}`;
-              return (
-                self.findIndex(
-                  (other) =>
-                    (other?.id || `${other?.date}-${other?.startTime}`) ===
-                    itemId
-                ) === index
-              );
-            })
-            .sort(sortReservationsByDateTime);
-        }
+        const userReservations = snapshot.docs
+          .map((reservationDoc) => ({
+            id: reservationDoc.id,
+            ...reservationDoc.data(),
+          }))
+          .filter(isActiveReservation)
+          .sort(sortReservationsByDateTime);
 
         setReservations(userReservations);
       } catch (error) {
@@ -190,36 +131,6 @@ export default function ReserveCheckPage() {
 
     loadReservations();
   }, []);
-
-  const removeLocalReservationBackup = (targetReservation) => {
-    try {
-      const savedReservations = localStorage.getItem(RESERVATIONS_STORAGE_KEY);
-      const allReservations = savedReservations
-        ? JSON.parse(savedReservations)
-        : [];
-
-      const updatedReservations = Array.isArray(allReservations)
-        ? allReservations.filter((item) => item.id !== targetReservation.id)
-        : [];
-
-      localStorage.setItem(
-        RESERVATIONS_STORAGE_KEY,
-        JSON.stringify(updatedReservations)
-      );
-
-      const savedCurrent = localStorage.getItem(CURRENT_RESERVATION_STORAGE_KEY);
-
-      if (savedCurrent) {
-        const currentReservation = JSON.parse(savedCurrent);
-
-        if (currentReservation?.id === targetReservation.id) {
-          localStorage.removeItem(CURRENT_RESERVATION_STORAGE_KEY);
-        }
-      }
-    } catch (error) {
-      console.error("localStorage側の予約削除に失敗しました", error);
-    }
-  };
 
   const removeReservation = async (targetReservation) => {
     if (!targetReservation?.id || !targetReservation?.date) return;
@@ -262,32 +173,6 @@ export default function ReserveCheckPage() {
       );
     });
 
-    removeLocalReservationBackup(targetReservation);
-
-    try {
-      const savedAvailability = localStorage.getItem(AVAILABILITY_STORAGE_KEY);
-
-      if (savedAvailability) {
-        const availability = JSON.parse(savedAvailability);
-        const currentDay = Array.isArray(availability[targetReservation.date])
-          ? availability[targetReservation.date]
-          : [];
-
-        const restoredDay = Array.from(
-          new Set([...currentDay, ...slotsToRestore])
-        ).sort((a, b) => timeStringToMinutes(a) - timeStringToMinutes(b));
-
-        localStorage.setItem(
-          AVAILABILITY_STORAGE_KEY,
-          JSON.stringify({
-            ...availability,
-            [targetReservation.date]: restoredDay,
-          })
-        );
-      }
-    } catch (error) {
-      console.error("localStorage側の空き枠復元に失敗しました", error);
-    }
 
     setReservations((prev) =>
       prev.filter((item) => item.id !== targetReservation.id)
