@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
 function addDays(date, days) {
@@ -35,16 +35,24 @@ function getCourseMinutes(course) {
   return match ? Number(match[1]) : 60;
 }
 
-const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
+async function readReservationsFromFirestore() {
+  const snapshot = await getDocs(collection(db, "reservations"));
+
+  return snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data(),
+  }));
+}
 
 function formatReservationForAdmin(item) {
   const menuName = item?.menuName || "";
   const menuTime = item?.menuTime || "";
   const course = `${menuName}${menuTime ? ` ${menuTime}` : ""}`.trim();
 
-  const options = Array.isArray(item?.options) && item.options.length > 0
-    ? item.options.join(" / ")
-    : "なし";
+  const options =
+    Array.isArray(item?.options) && item.options.length > 0
+      ? item.options.join(" / ")
+      : "なし";
 
   return {
     id: item?.id || `${item?.date || ""}-${item?.startTime || ""}`,
@@ -56,7 +64,6 @@ function formatReservationForAdmin(item) {
     totalMinutes: item?.totalMinutes || getCourseMinutes(course),
   };
 }
-
 
 export default function AdminListPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -72,16 +79,16 @@ export default function AdminListPage() {
         if (!isMounted) return;
 
         setAllReservations(
-          firestoreReservations.map(formatReservationForAdmin)
+          firestoreReservations
+            .filter((item) => item.status !== "cancelled")
+            .map(formatReservationForAdmin)
         );
       } catch (error) {
         console.error("Firestoreの予約一覧データ読み込みに失敗しました", error);
 
-        const localReservations = readReservationsFromStorage();
-
         if (!isMounted) return;
 
-        setAllReservations(localReservations.map(formatReservationForAdmin));
+        setAllReservations([]);
       }
     };
 
