@@ -212,7 +212,7 @@ function ReserveDateTimeContent() {
   const searchParams = useSearchParams();
   const [weekStart, setWeekStart] = useState(getTodayStart());
   const [selected, setSelected] = useState(null);
-  const [availability, setavailability] = useState(() =>
+  const [availability, setAvailability] = useState(() =>
     buildAvailability()
   );
   const [reservations, setReservations] = useState([]);
@@ -270,7 +270,7 @@ function ReserveDateTimeContent() {
         readReservationsFromFirestore(dateKeys),
       ]);
 
-      setavailability(availabilityData);
+      setAvailability(availabilityData);
       setReservations(reservationData);
       setSelected(null);
     };
