@@ -10,10 +10,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-const AVAILABILITY_STORAGE_KEY = "sakurakuAvailability";
 const USER_STORAGE_KEY = "sakurakuUser";
-const CURRENT_RESERVATION_STORAGE_KEY = "sakurakuCurrentReservation";
-const RESERVATIONS_STORAGE_KEY = "sakurakuReservations";
 
 const OPEN_HOUR = 11;
 const CLOSE_HOUR = 20;
@@ -53,46 +50,6 @@ function generateTimeSlots() {
     slots.push(`${String(hour).padStart(2, "0")}:30`);
   }
   return slots;
-}
-
-function addDays(date, days) {
-  const next = new Date(date);
-  next.setDate(next.getDate() + days);
-  return next;
-}
-
-function formatDateKey(date) {
-  const y = date.getFullYear();
-  const m = `${date.getMonth() + 1}`.padStart(2, "0");
-  const d = `${date.getDate()}`.padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
-function buildInitialAvailability() {
-  const today = new Date();
-  const data = {};
-  const allSlots = generateTimeSlots();
-
-  for (let i = 0; i < 42; i++) {
-    const date = addDays(today, i);
-    const dateKey = formatDateKey(date);
-    data[dateKey] = allSlots;
-  }
-
-  return data;
-}
-
-function readJsonArrayFromStorage(key) {
-  try {
-    const saved = localStorage.getItem(key);
-    if (!saved) return [];
-
-    const parsed = JSON.parse(saved);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (error) {
-    console.error(`${key} の読み込みに失敗しました`, error);
-    return [];
-  }
 }
 
 function cleanCourseName(name) {
@@ -278,28 +235,12 @@ function ReserveConfirmContent() {
     setIsSubmitting(true);
 
     try {
-      const reservations = readJsonArrayFromStorage(RESERVATIONS_STORAGE_KEY);
-
-      const parsedAvailability = savedAvailability
-        ? JSON.parse(savedAvailability)
-        : buildInitialAvailability();
-
-      if (!parsedAvailability || typeof parsedAvailability !== "object") {
-        alert("予約枠データの確認に失敗しました。もう一度日時をお選びください。");
-        window.location.href = buildDatetimeReturnUrl();
-        return;
-      }
-
-      const localCurrentDay = Array.isArray(parsedAvailability[rawDate])
-        ? parsedAvailability[rawDate]
-        : generateTimeSlots();
-
       const blockedSlots = getBlockedSlots(startTime, totalMinutes);
 
       const reservationRef = doc(collection(db, "reservations"));
       const availabilityRef = doc(db, "availability", rawDate);
 
-      const reservationDataForStorage = {
+      const reservationData = {
         id: reservationRef.id,
         customerName,
         customerId: userData?.userId || null,
@@ -322,10 +263,10 @@ function ReserveConfirmContent() {
         endTime,
         totalMinutes,
         status: "active",
-        createdAt: new Date().toISOString(),
+        createdAtLocal: new Date().toISOString(),
       };
 
-      const nextDay = await runTransaction(db, async (transaction) => {
+      await runTransaction(db, async (transaction) => {
         const availabilitySnap = await transaction.get(availabilityRef);
 
         const firestoreDay =
@@ -353,35 +294,12 @@ function ReserveConfirmContent() {
         });
 
         transaction.set(reservationRef, {
-          ...reservationDataForStorage,
+          ...reservationData,
           createdAt: serverTimestamp(),
-          createdAtLocal: reservationDataForStorage.createdAt,
         });
-
-        return updatedSlots;
       });
 
-      localStorage.setItem(
-        CURRENT_RESERVATION_STORAGE_KEY,
-        JSON.stringify(reservationDataForStorage)
-      );
-
-      localStorage.setItem(
-        RESERVATIONS_STORAGE_KEY,
-        JSON.stringify([...reservations, reservationDataForStorage])
-      );
-
-      const nextAvailability = {
-        ...parsedAvailability,
-        [rawDate]: nextDay,
-      };
-
-      localStorage.setItem(
-        AVAILABILITY_STORAGE_KEY,
-        JSON.stringify(nextAvailability)
-      );
-
-      window.location.href = "/reserve/thanks";
+      window.location.href = `/reserve/thanks?id=${reservationRef.id}`;
     } catch (error) {
       console.error("予約確定処理に失敗しました", error);
 
