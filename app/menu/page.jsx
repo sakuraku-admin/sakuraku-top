@@ -304,23 +304,23 @@ export default function MenuPage() {
             >
               ×
             </button>
+<div style={styles.popupMainCard}>
+  <div style={styles.popupShortDescription}>
+    {selectedMenu.shortDescription}
+  </div>
+</div>
 
-            <div style={styles.popupHeader}>
-              <div style={styles.popupHeaderLabel}>
-                {selectedMenu.categoryLabel}
-              </div>
-            </div>
+<div style={styles.popupHeader}>
+  <div style={styles.popupHeaderLabel}>
+    {selectedMenu.categoryLabel}　{selectedMenu.duration}
+  </div>
+</div>
 
-            <div style={styles.popupMainCard}>
-              <div style={styles.popupTopRow}>
-                <div style={styles.popupDuration}>{selectedMenu.duration}</div>
-                <div style={styles.popupPrice}>{selectedMenu.price}</div>
-              </div>
-
-              <div style={styles.popupShortDescription}>
-                {selectedMenu.shortDescription}
-              </div>
-            </div>
+<div style={styles.popupMainCard}>
+  <div style={styles.popupTopRow}>
+    <div style={styles.popupPrice}>{selectedMenu.price}</div>
+  </div>
+</div>
 
             {selectedMenu.featureRows && (
               <div style={styles.popupFeatureBlock}>
