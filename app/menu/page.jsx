@@ -334,10 +334,6 @@ export default function MenuPage() {
   </div>
 )}
 
-                    <span style={styles.popupFeatureBracket}>】</span>
-                  </div>
-                ))}
-
                 {selectedMenu.customAdjustLines && (
                   <div style={styles.popupCustomAdjustNote}>
                     {selectedMenu.customAdjustLines.map((line, index) => (
