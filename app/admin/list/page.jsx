@@ -55,19 +55,32 @@ function formatReservationForAdmin(item) {
       : "なし";
 
   return {
+    ...item,
     id: item?.id || `${item?.date || ""}-${item?.startTime || ""}`,
     date: item?.date || "",
     time: item?.startTime || "",
+    reserveDate: item?.reserveDate || "",
+    reserveTime: item?.reserveTime || "",
     customerName: item?.customerName || item?.customer?.name || "お名前未登録",
     course: course || "コース未選択",
+    menuName,
+    menuTime,
     options,
+    optionList: Array.isArray(item?.options) ? item.options : [],
     totalMinutes: item?.totalMinutes || getCourseMinutes(course),
+    totalTime:
+      item?.totalTime ||
+      (item?.totalMinutes ? `${item.totalMinutes}分` : ""),
+    price: item?.price || item?.coursePrice || "",
+    totalPrice: item?.totalPrice || "",
+    customer: item?.customer || null,
   };
 }
 
 export default function AdminListPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [allReservations, setAllReservations] = useState([]);
+  const [selectedReservation, setSelectedReservation] = useState(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -216,7 +229,12 @@ export default function AdminListPage() {
           {reservations.length > 0 ? (
             <div style={styles.listInner}>
               {reservations.map((item) => (
-                <div key={item.id} style={styles.itemCard}>
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setSelectedReservation(item)}
+                  style={styles.itemCard}
+                >
                   <div style={styles.timeCol}>{item.time}</div>
 
                   <div style={styles.infoCol}>
@@ -224,7 +242,7 @@ export default function AdminListPage() {
                     <div style={styles.courseText}>{item.course}</div>
                     <div style={styles.optionText}>{item.options}</div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           ) : (
@@ -234,6 +252,100 @@ export default function AdminListPage() {
           )}
         </section>
       </div>
+
+      {selectedReservation && (
+        <div
+          style={styles.modalOverlay}
+          onClick={() => setSelectedReservation(null)}
+        >
+          <div style={styles.modalCard} onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={() => setSelectedReservation(null)}
+              style={styles.modalCloseButton}
+              aria-label="閉じる"
+            >
+              ×
+            </button>
+
+            <div style={styles.modalTitle}>ご予約詳細</div>
+
+            <div style={styles.modalDateBox}>
+              <div style={styles.modalDate}>
+                {selectedReservation.reserveDate || selectedReservation.date || ""}
+              </div>
+              <div style={styles.modalTime}>
+                {selectedReservation.reserveTime ||
+                  selectedReservation.time ||
+                  ""}
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>お客様</div>
+              <div style={styles.modalValue}>
+                {selectedReservation.customerName || "お名前未登録"} 様
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>コース</div>
+              <div style={styles.modalValue}>
+                {selectedReservation.menuName || selectedReservation.course || ""}
+                {selectedReservation.menuTime
+                  ? `（${selectedReservation.menuTime}）`
+                  : ""}
+              </div>
+              {selectedReservation.price && (
+                <div style={styles.modalSubValue}>
+                  {selectedReservation.price}
+                </div>
+              )}
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>所要時間</div>
+              <div style={styles.modalValue}>
+                {selectedReservation.totalTime ||
+                  (selectedReservation.totalMinutes
+                    ? `${selectedReservation.totalMinutes}分`
+                    : "未登録")}
+              </div>
+            </div>
+
+            <div style={styles.modalInfoBlock}>
+              <div style={styles.modalLabel}>オプション</div>
+              <div style={styles.modalOptionValue}>
+                {selectedReservation.optionList &&
+                selectedReservation.optionList.length > 0
+                  ? selectedReservation.optionList.join("　")
+                  : "なし"}
+              </div>
+            </div>
+
+            {selectedReservation.totalPrice && (
+              <div style={styles.modalTotalPrice}>
+                合計　{selectedReservation.totalPrice}
+              </div>
+            )}
+
+            <div style={styles.memoPreviewBox}>
+              <div style={styles.modalLabel}>接客メモ</div>
+              <div style={styles.memoPreviewText}>
+                今後ここに接客メモ・施術後メモを追加できます。
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setSelectedReservation(null)}
+              style={styles.modalCloseBottom}
+            >
+              閉じる
+            </button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
@@ -437,6 +549,7 @@ const styles = {
   },
 
   itemCard: {
+    width: "100%",
     display: "grid",
     gridTemplateColumns: "72px 1fr",
     gap: "10px",
@@ -446,6 +559,8 @@ const styles = {
     borderRadius: "18px",
     padding: "12px",
     boxSizing: "border-box",
+    cursor: "pointer",
+    textAlign: "left",
   },
 
   timeCol: {
@@ -502,5 +617,155 @@ const styles = {
     fontSize: "0.95rem",
     lineHeight: 1.8,
     textAlign: "center",
+  },
+
+  modalOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(49, 35, 29, 0.28)",
+    backdropFilter: "blur(2px)",
+    WebkitBackdropFilter: "blur(2px)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "20px",
+    zIndex: 1000,
+    boxSizing: "border-box",
+  },
+
+  modalCard: {
+    position: "relative",
+    width: "100%",
+    maxWidth: "340px",
+    background: "rgba(255, 250, 246, 0.96)",
+    borderRadius: "28px",
+    padding: "18px 14px 16px",
+    boxSizing: "border-box",
+    boxShadow: "0 12px 30px rgba(110, 80, 65, 0.18)",
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  },
+
+  modalCloseButton: {
+    position: "absolute",
+    top: "10px",
+    right: "14px",
+    border: "none",
+    background: "transparent",
+    color: "#8d7066",
+    fontSize: "28px",
+    lineHeight: 1,
+    cursor: "pointer",
+  },
+
+  modalTitle: {
+    textAlign: "center",
+    color: "#6e4b41",
+    fontSize: "1.1rem",
+    fontWeight: 700,
+    letterSpacing: "0.06em",
+    marginBottom: "12px",
+  },
+
+  modalDateBox: {
+    background: "rgba(255, 255, 255, 0.95)",
+    borderRadius: "22px",
+    padding: "12px 10px 11px",
+    textAlign: "center",
+    marginBottom: "12px",
+  },
+
+  modalDate: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.4vw, 22px)",
+    fontWeight: 600,
+    lineHeight: 1.35,
+  },
+
+  modalTime: {
+    color: "#6a4337",
+    fontSize: "clamp(16px, 4.2vw, 21px)",
+    fontWeight: 600,
+    lineHeight: 1.3,
+    marginTop: "2px",
+  },
+
+  modalInfoBlock: {
+    textAlign: "center",
+    marginBottom: "10px",
+  },
+
+  modalLabel: {
+    color: "#9a7f76",
+    fontSize: "0.76rem",
+    lineHeight: 1.5,
+    marginBottom: "2px",
+  },
+
+  modalValue: {
+    color: "#6f4b41",
+    fontSize: "0.98rem",
+    fontWeight: 700,
+    lineHeight: 1.6,
+  },
+
+  modalSubValue: {
+    color: "#8d7066",
+    fontSize: "0.86rem",
+    lineHeight: 1.5,
+    marginTop: "2px",
+  },
+
+  modalOptionValue: {
+    color: "#8c6c61",
+    fontSize: "0.82rem",
+    lineHeight: 1.7,
+    textAlign: "center",
+  },
+
+  modalTotalPrice: {
+    textAlign: "center",
+    color: "#6f4b41",
+    fontSize: "0.98rem",
+    lineHeight: 1.45,
+    letterSpacing: "0.02em",
+    marginBottom: "10px",
+    borderBottom: "1px solid rgba(120, 89, 74, 0.25)",
+    paddingBottom: "4px",
+    width: "fit-content",
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
+
+  memoPreviewBox: {
+    background: "rgba(255,255,255,0.68)",
+    border: "1px solid rgba(145, 112, 101, 0.12)",
+    borderRadius: "18px",
+    padding: "10px 12px",
+    marginTop: "8px",
+    marginBottom: "12px",
+    textAlign: "center",
+  },
+
+  memoPreviewText: {
+    color: "#8c6c61",
+    fontSize: "0.78rem",
+    lineHeight: 1.7,
+  },
+
+  modalCloseBottom: {
+    width: "100%",
+    border: "none",
+    borderRadius: "999px",
+    background: "linear-gradient(180deg, #dfa4b5 0%, #d291a4 100%)",
+    color: "#fffdfb",
+    fontSize: "1rem",
+    fontWeight: 700,
+    letterSpacing: "0.03em",
+    padding: "12px 16px",
+    cursor: "pointer",
+    boxShadow: "0 7px 16px rgba(210, 140, 160, 0.13)",
+    fontFamily: '"Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif',
+    marginTop: "4px",
   },
 };
