@@ -312,11 +312,17 @@ export default function MenuPage() {
               <div style={styles.popupDescriptionGradientTop} />
               <div style={styles.popupDescriptionPanel}>
                 <div style={styles.popupDescription}>
-                  {selectedMenu.descriptionLines.map((line, index) => (
-                    <div key={index} style={styles.popupDescriptionLine}>
-                      {line}
-                    </div>
-                  ))}
+                 {selectedMenu.descriptionLines.map((line, index) => (
+  <div
+    key={index}
+    style={{
+      ...styles.popupDescriptionLine,
+      color: index === 0 ? "#9bbfa6" : undefined
+    }}
+  >
+    {line}
+  </div>
+))}
                 </div>
 
                 <div style={styles.popupTea}>{selectedMenu.teaText}</div>
