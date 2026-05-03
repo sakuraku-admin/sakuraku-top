@@ -312,17 +312,29 @@ export default function MenuPage() {
               <div style={styles.popupDescriptionGradientTop} />
               <div style={styles.popupDescriptionPanel}>
                 <div style={styles.popupDescription}>
-                 {selectedMenu.descriptionLines.map((line, index) => (
-  <div
-    key={index}
-    style={{
-      ...styles.popupDescriptionLine,
-      color: index === 0 ? "#9bbfa6" : undefined
-    }}
-  >
-    {line}
-  </div>
-))}
+                 {selectedMenu.descriptionLines.map((line, index) => {
+  const isConditionLine = line.includes("お身体の状態に合わせて");
+
+  return (
+    <div
+      key={index}
+      style={{
+        ...styles.popupDescriptionLine,
+        color: isConditionLine
+          ? "#6f5a50"
+          : index === 0
+          ? "#9bbfa6"
+          : undefined,
+        textDecoration: isConditionLine ? "underline" : "none",
+        textUnderlineOffset: isConditionLine ? "4px" : undefined,
+        whiteSpace: isConditionLine ? "nowrap" : "normal",
+        fontSize: isConditionLine ? "clamp(13px, 2.1vw, 18px)" : undefined,
+      }}
+    >
+      {line}
+    </div>
+  );
+})}
                 </div>
 
                 <div style={styles.popupTea}>{selectedMenu.teaText}</div>
