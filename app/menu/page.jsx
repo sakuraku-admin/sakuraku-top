@@ -55,15 +55,6 @@ const menuItems = [
     duration: "90分",
     price: "9000円",
     shortDescription: "お疲れ・お辛い箇所の集中ケアに",
-    featureRows: [
-      [
-        { text: "整体", color: "#8fb8c4" },
-        { text: "オイル", color: "#f1b15d" },
-        { text: "マグバーム", color: "#f08aa2" },
-        { text: "ホットストーン", color: "#d9877d" },
-        { text: "よもぎ蒸しパッド", color: "#78c488" },
-      ],
-    ],
     customAdjustLines: [
       "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
       "ご希望に応じて施術内容を柔軟に調整いたします。",
@@ -83,15 +74,6 @@ const menuItems = [
     duration: "120分",
     price: "12000円",
     shortDescription: "しっかり温め、巡らせる深部ケアに",
-    featureRows: [
-      [
-        { text: "整体", color: "#8fb8c4" },
-        { text: "オイル", color: "#f1b15d" },
-        { text: "マグバーム", color: "#f08aa2" },
-        { text: "ホットストーン", color: "#d9877d" },
-        { text: "よもぎ蒸しパッド", color: "#78c488" },
-      ],
-    ],
     customAdjustLines: [
       "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
       "ご希望に応じて施術内容を柔軟に調整いたします。",
@@ -111,21 +93,6 @@ const menuItems = [
     duration: "180分",
     price: "19800円",
     shortDescription: "全身しっかり整えたい方へ",
-    featureRows: [
-      [
-        { text: "整体", color: "#8fb8c4" },
-        { text: "オイル", color: "#f1b15d" },
-        { text: "マグバーム", color: "#f08aa2" },
-        { text: "ホットストーン", color: "#d9877d" },
-        { text: "よもぎ蒸しパッド", color: "#78c488" },
-      ],
-      [
-        { text: "アイマスク", color: "#9ab7ee" },
-        { text: "発汗シート", color: "#e7a36f" },
-        { text: "ホットタオル", color: "#b99ae7" },
-        { text: "美容マスク", color: "#81c9c9" },
-      ],
-    ],
     customAdjustLines: [
       "頭から足先まで、気になる箇所を全身リセット！",
       "自分へのご褒美や特別なケアに◎",
@@ -722,49 +689,6 @@ const styles = {
 
   popupFeatureBlock: {
     marginBottom: "0px",
-  },
-
-  popupFeatureRow: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexWrap: "nowrap",
-    gap: "0px",
-    marginBottom: "4px",
-    overflowX: "auto",
-    overflowY: "hidden",
-    whiteSpace: "nowrap",
-    scrollbarWidth: "none",
-    msOverflowStyle: "none",
-  },
-
-  popupFeatureItem: {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    whiteSpace: "nowrap",
-    lineHeight: 1,
-    fontFamily: '"Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif',
-    letterSpacing: "0.01em",
-    opacity: 0.96,
-    flex: "0 0 auto",
-  },
-
-  popupFeatureBracket: {
-    fontSize: "clamp(12px, 1.9vw, 15px)",
-    color: "#3f312b",
-    fontWeight: "700",
-    flex: "0 0 auto",
-  },
-
-  popupFeatureLabel: {
-    fontSize: "clamp(12px, 2.0vw, 15px)",
-    fontWeight: "700",
-  },
-
-  popupFeatureSpacer: {
-    fontSize: "clamp(10px, 1.7vw, 13px)",
-    color: "transparent",
   },
 
   popupCustomAdjustNote: {
