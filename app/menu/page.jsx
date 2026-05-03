@@ -758,14 +758,17 @@ const styles = {
 
   popupTea: {
     textAlign: "center",
-    color: "#dd7e4a",
-    fontSize: "clamp(18px, 3vw, 26px)",
-    lineHeight: 1.5,
-    marginBottom: "0px",
-    fontFamily:
-      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
-    letterSpacing: "0.06em",
-  },
+  color: "#dd7e4a",
+  fontSize: "clamp(14px, 3.2vw, 22px)",
+  lineHeight: 1.5,
+  marginBottom: "0px",
+  fontFamily:
+    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  letterSpacing: "0.03em",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "clip",
+},
 
   reserveButton: {
     width: "100%",
