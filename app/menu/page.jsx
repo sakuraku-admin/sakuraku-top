@@ -111,21 +111,7 @@ const menuItems = [
     duration: "180分",
     price: "19800円",
     shortDescription: "全身フルケア、特別なひとときを",
-    featureRows: [
-      [
-        { text: "整体", color: "#8fb8c4" },
-        { text: "オイル", color: "#f1b15d" },
-        { text: "マグバーム", color: "#f08aa2" },
-        { text: "ホットストーン", color: "#d9877d" },
-        { text: "よもぎ蒸しパッド", color: "#78c488" },
-      ],
-      [
-        { text: "アイマスク", color: "#9ab7ee" },
-        { text: "発汗シート", color: "#e7a36f" },
-        { text: "ホットタオル", color: "#b99ae7" },
-        { text: "美容マスク", color: "#81c9c9" },
-      ],
-    ],
+    
     customAdjustLines: [
       "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
       "ご希望に応じて施術内容を柔軟に調整いたします。",
