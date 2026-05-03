@@ -322,17 +322,28 @@ export default function MenuPage() {
               </div>
             </div>
 
-           {selectedMenu.customAdjustLines && (
-  <div style={styles.popupFeatureBlock}>
-    <div style={styles.popupCustomAdjustNote}>
-      {selectedMenu.customAdjustLines.map((line, index) => (
-        <div key={index} style={styles.popupCustomAdjustLine}>
-          {line}
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+            {selectedMenu.featureRows && (
+              <div style={styles.popupFeatureBlock}>
+                {selectedMenu.featureRows.map((row, rowIndex) => (
+                  <div key={rowIndex} style={styles.popupFeatureRow}>
+                    <span style={styles.popupFeatureBracket}>【</span>
+
+                    {row.map((feature, featureIndex) => (
+                      <span key={featureIndex} style={styles.popupFeatureItem}>
+                        <span
+                          style={{
+                            ...styles.popupFeatureLabel,
+                            color: feature.color,
+                          }}
+                        >
+                          {feature.text}
+                        </span>
+                        {featureIndex !== row.length - 1 && (
+                          <span style={styles.popupFeatureSpacer}>　</span>
+                        )}
+                      </span>
+                    ))}
+
                     <span style={styles.popupFeatureBracket}>】</span>
                   </div>
                 ))}
