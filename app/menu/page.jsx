@@ -291,7 +291,14 @@ export default function MenuPage() {
 
             {selectedMenu.customAdjustLines && (
               <div style={styles.popupFeatureBlock}>
-                <div style={{ ...styles.popupCustomAdjustNote, fontSize: "clamp(18px, 3vw, 26px)", color: "#e3a39a" }}>
+                <div style={{
+  ...styles.popupCustomAdjustNote,
+  fontSize: "clamp(14px, 2.4vw, 20px)",
+  color: "#e3a39a",
+  lineHeight: 1.8,
+  whiteSpace: "normal",
+  wordBreak: "keep-all"
+}}>
                   {selectedMenu.customAdjustLines.map((line, index) => (
                     <div key={index} style={styles.popupCustomAdjustLine}>
                       {line}
