@@ -312,17 +312,17 @@ export default function MenuPage() {
             </div>
 
             <div style={styles.popupMainCard}>
-               <div style={styles.popupShortDescription}>
-                {selectedMenu.shortDescription}
-              </div>
-              
-　　　　　　　　　<div style={styles.popupTopRow}>
+              <div style={styles.popupTopRow}>
                 <div style={styles.popupDuration}>{selectedMenu.duration}</div>
                 <div style={styles.popupPrice}>{selectedMenu.price}</div>
               </div>
+
+              <div style={styles.popupShortDescription}>
+                {selectedMenu.shortDescription}
+              </div>
             </div>
 
-            {selectedMenu.customAdjustLines && (
+           {selectedMenu.customAdjustLines && (
   <div style={styles.popupFeatureBlock}>
     <div style={styles.popupCustomAdjustNote}>
       {selectedMenu.customAdjustLines.map((line, index) => (
@@ -333,6 +333,9 @@ export default function MenuPage() {
     </div>
   </div>
 )}
+                    <span style={styles.popupFeatureBracket}>】</span>
+                  </div>
+                ))}
 
                 {selectedMenu.customAdjustLines && (
                   <div style={styles.popupCustomAdjustNote}>
