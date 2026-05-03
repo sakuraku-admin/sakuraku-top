@@ -312,9 +312,9 @@ export default function MenuPage() {
             </div>
 
             <div style={styles.popupMainCard}>
-              <div style={styles.popupShortDescription}>
-                {selectedMenu.shortDescription}
-              </div>
+             <div style={{ ...styles.popupShortDescription, marginBottom: "10px" }}>
+  {selectedMenu.shortDescription}
+</div>
 
               <div style={styles.popupTopRow}>
                 <div style={styles.popupDuration}>{selectedMenu.duration}</div>
