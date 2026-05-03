@@ -329,6 +329,7 @@ export default function MenuPage() {
         textUnderlineOffset: isConditionLine ? "4px" : undefined,
         whiteSpace: isConditionLine ? "nowrap" : "normal",
         fontSize: isConditionLine ? "clamp(11px, 2vw, 16px)" : undefined,
+        fontWeight: isConditionLine ? 600 : undefined,
       }}
     >
       {line}
