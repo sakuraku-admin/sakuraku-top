@@ -111,7 +111,21 @@ const menuItems = [
     duration: "180分",
     price: "19800円",
     shortDescription: "全身フルケア、特別なひとときを",
-    
+    featureRows: [
+      [
+        { text: "整体", color: "#8fb8c4" },
+        { text: "オイル", color: "#f1b15d" },
+        { text: "マグバーム", color: "#f08aa2" },
+        { text: "ホットストーン", color: "#d9877d" },
+        { text: "よもぎ蒸しパッド", color: "#78c488" },
+      ],
+      [
+        { text: "アイマスク", color: "#9ab7ee" },
+        { text: "発汗シート", color: "#e7a36f" },
+        { text: "ホットタオル", color: "#b99ae7" },
+        { text: "美容マスク", color: "#81c9c9" },
+      ],
+    ],
     customAdjustLines: [
       "お身体の状態に合わせて、最適な組み合わせで施術を行います。",
       "ご希望に応じて施術内容を柔軟に調整いたします。",
@@ -298,51 +312,25 @@ export default function MenuPage() {
             </div>
 
             <div style={styles.popupMainCard}>
-  <div style={styles.popupShortDescription}>
-    {selectedMenu.shortDescription}
-  </div>
+              <div style={styles.popupShortDescription}>
+                {selectedMenu.shortDescription}
+              </div>
 
-  <div style={styles.popupTopRow}>
-    <div style={styles.popupDuration}>{selectedMenu.duration}</div>
-    <div style={styles.popupPrice}>{selectedMenu.price}</div>
-  </div>
-</div>
+              <div style={styles.popupTopRow}>
+                <div style={styles.popupDuration}>{selectedMenu.duration}</div>
+                <div style={styles.popupPrice}>{selectedMenu.price}</div>
+              </div>
+            </div>
 
-            {selectedMenu.featureRows && (
+            {selectedMenu.customAdjustLines && (
               <div style={styles.popupFeatureBlock}>
-                {selectedMenu.featureRows.map((row, rowIndex) => (
-                  <div key={rowIndex} style={styles.popupFeatureRow}>
-                    <span style={styles.popupFeatureBracket}>【</span>
-
-                    {row.map((feature, featureIndex) => (
-                      <span key={featureIndex} style={styles.popupFeatureItem}>
-                        <span
-                          style={{
-                            ...styles.popupFeatureLabel,
-                            color: feature.color,
-                          }}
-                        >
-                          {feature.text}
-                        </span>
-                        {featureIndex !== row.length - 1 && (
-                          <span style={styles.popupFeatureSpacer}>　</span>
-                        )}
-                      </span>
-                    ))}
-
-                    <span style={styles.popupFeatureBracket}>】</span>
-                  </div>
-                ))}
-
-                {selectedMenu.customAdjustLines && (
-                  <div style={styles.popupCustomAdjustNote}>
-                    {selectedMenu.customAdjustLines.map((line, index) => (
-                      <div key={index} style={styles.popupCustomAdjustLine}>
-                        {line}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div style={styles.popupCustomAdjustNote}>
+                  {selectedMenu.customAdjustLines.map((line, index) => (
+                    <div key={index} style={styles.popupCustomAdjustLine}>
+                      {line}
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
 
