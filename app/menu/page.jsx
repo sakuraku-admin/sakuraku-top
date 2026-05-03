@@ -294,7 +294,7 @@ export default function MenuPage() {
                 <div style={{
   ...styles.popupCustomAdjustNote,
   fontSize: "clamp(14px, 2.4vw, 20px)",
-  color: "#e3a39a",
+  color: "#d98f85",
   lineHeight: 1.8,
   whiteSpace: "normal",
   wordBreak: "keep-all"
@@ -323,7 +323,7 @@ export default function MenuPage() {
         color: isConditionLine
           ? "#6f5a50"
           : index === 0
-          ? "#9bbfa6"
+          ? "#7fae92"
           : undefined,
         textDecoration: isConditionLine ? "underline" : "none",
         textUnderlineOffset: isConditionLine ? "4px" : undefined,
