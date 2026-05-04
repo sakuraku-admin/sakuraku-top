@@ -324,12 +324,15 @@ export default function MenuPage() {
       key={index}
       style={{
         ...styles.popupDescriptionLine,
-       color:
-  line.includes("よもぎ蒸しパッド")
-    ? "#7fae92"
-    : isConditionLine
-    ? "#6f5a50"
-    : undefined,
+        color:
+    line.includes("トークセン")
+      ? "#c47a5a" // 明るい赤茶
+      : line.includes("よもぎ蒸しパッド")
+      ? "#7fae92" // モスグリーン
+      : isConditionLine
+      ? "#6f5a50"
+      : undefined,
+        
         textDecoration: isConditionLine ? "underline" : "none",
         textUnderlineOffset: isConditionLine ? "4px" : undefined,
         whiteSpace: isConditionLine ? "nowrap" : "normal",
