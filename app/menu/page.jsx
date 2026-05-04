@@ -327,7 +327,7 @@ export default function MenuPage() {
         ...styles.popupDescriptionLine,
         color:
     line.includes("トークセン")
-      ? "#c15a4f" // 明るい赤茶
+      ? "#b85a4f" // 明るい赤茶
       : line.includes("よもぎ蒸しパッド")
       ? "#7fae92" // モスグリーン
       : isConditionLine
