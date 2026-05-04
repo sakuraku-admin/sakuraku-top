@@ -323,11 +323,12 @@ export default function MenuPage() {
       key={index}
       style={{
         ...styles.popupDescriptionLine,
-        color: isConditionLine
-          ? "#6f5a50"
-          : index === 0
-          ? "#7fae92"
-          : undefined,
+       color:
+  line.includes("よもぎ蒸しパッド")
+    ? "#7fae92"
+    : isConditionLine
+    ? "#6f5a50"
+    : undefined,
         textDecoration: isConditionLine ? "underline" : "none",
         textUnderlineOffset: isConditionLine ? "4px" : undefined,
         whiteSpace: isConditionLine ? "nowrap" : "normal",
