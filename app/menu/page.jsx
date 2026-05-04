@@ -15,8 +15,8 @@ const menuItems = [
     price: "5000円",
     shortDescription: "定期的なお身体のケアに",
     descriptionLines: [
-      "お辛い箇所を中心にほぐし整え、",
-      "日々のお疲れをやさしく解消していくコース",
+      "お辛い箇所を中心にほぐし整える、",
+      "日々のお疲れ解消コース",
     ],
     teaText: "アフターティー付き",
   },
@@ -30,9 +30,9 @@ const menuItems = [
     shortDescription: "ゆったり整えたい方に",
     descriptionLines: [
       "60分では足りない慢性的なお疲れや不調に対して、",
-      "全身のバランスを見ながら丁寧に整えていく人気コース",
+      "全身のバランスを見ながら整える人気コース",
     ],
-    teaText: "アフターティー付き",
+    teaText: "ウェルカム／アフターティー付き",
   },
   {
     id: "seitai-120",
@@ -41,11 +41,12 @@ const menuItems = [
     name: "120分",
     duration: "120分",
     price: "9000円",
-    shortDescription: "より深く、しっかり整えたい方に",
+    shortDescription: "しっかり整えたい方に",
     descriptionLines: [
-      "整体・ストレッチ・筋膜リリース・自律神経ケアなど、お顔・頭を含めた全身を深く整えていく充実のコース",
+      "整体・ストレッチ・筋膜リリース・自律神経ケア",
+      "お身体の不調原因を探り、しっかり整えていく充実コース",
     ],
-    teaText: "アフターティー付き",
+    teaText: "ウェルカム／アフターティー付き",
   },
   {
     id: "shinsei-kaifuku",
@@ -98,7 +99,7 @@ const menuItems = [
     shortDescription: "全身しっかり整えたい方へ",
     customAdjustLines: [
       "頭から足先まで、気になる箇所を全身リセット！",
-      "自分へのご褒美や特別なケアに◎",
+      "ご自身へのご褒美や特別なケアに◎",
     ],
     descriptionLines: [
       "アイマスク／よもぎ蒸しパッド付き",
