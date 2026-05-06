@@ -182,7 +182,7 @@ function OptionMenuContent() {
                 <div style={styles.choiceName}>30分　4000円</div>
               </div>
               <p style={styles.choiceDescription}>
-                気になる箇所を集中的に。
+                気になる部位を集中ケア
               </p>
               <button
                 type="button"
@@ -214,9 +214,9 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・頭部解放</h2>
             <div style={styles.priceLine}>30分　3000円</div>
             <p style={styles.description}>
-              噛みしめ、眼精疲労、頭痛、お顔周りのコリや歪み、むくみ、フェイスラインが気になる方に。
+              噛みしめ、眼精疲労、頭痛、お顔周りのコリやむくみ、フェイスラインが気になる方に。
               <br />
-              頭蓋筋膜リリース＆お顔～首にかけてしっかりほぐします。
+              お顔と頭蓋を筋膜リリース＆骨格調整して整えます。
               <br />
               （痛みの少ない手技で行います）
             </p>
@@ -238,13 +238,13 @@ function OptionMenuContent() {
                 <>
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
                   {selectedShape === "shape-30" && (
-                    <div>・巡りシェイプケア（30分）</div>
+                    <div>・マグバーム＆ホットストーン（30分）</div>
                   )}
                   {selectedShape === "shape-60" && (
                     <div>・巡りシェイプケア（60分）</div>
                   )}
                   {selectedHead && (
-                    <div>・頭部解放（頭蓋筋膜リリース）</div>
+                    <div>・頭部解放</div>
                   )}
                 </>
               ) : (
