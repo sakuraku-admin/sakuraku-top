@@ -180,7 +180,6 @@ function OptionMenuContent() {
             <div style={styles.choiceCard}>
               <div style={styles.choiceTopRow}>
                 <div style={styles.choiceName}>30分　4000円</div>
-                <div style={styles.choiceTime}>約30分</div>
               </div>
               <p style={styles.choiceDescription}>
                 気になる箇所を集中的に。
@@ -197,7 +196,6 @@ function OptionMenuContent() {
             <div style={styles.choiceCardLast}>
               <div style={styles.choiceTopRow}>
                 <div style={styles.choiceName}>60分　7000円</div>
-                <div style={styles.choiceTime}>約60分</div>
               </div>
               <p style={styles.choiceDescription}>
                 ☆ しっかり流したい方におすすめ
