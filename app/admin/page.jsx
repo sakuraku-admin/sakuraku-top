@@ -187,6 +187,7 @@ function ReserveDateTimeContent() {
   const [mockAvailability, setMockAvailability] = useState(buildMockAvailability);
   const [reservations, setReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
+  const [authChecking, setAuthChecking] = useState(true);
 
   const courseId = searchParams.get("courseId") || "";
   const courseName = searchParams.get("courseName") || DEFAULT_MENU_NAME;
@@ -208,7 +209,34 @@ function ReserveDateTimeContent() {
 
   const timeSlots = useMemo(() => generateTimeSlots(), []);
 
+
   useEffect(() => {
+    const savedUser = localStorage.getItem("sakurakuUser");
+
+    if (!savedUser) {
+      router.replace("/login");
+      return;
+    }
+
+    try {
+      const parsedUser = JSON.parse(savedUser);
+
+      if (parsedUser?.role !== "admin") {
+        router.replace("/");
+        return;
+      }
+
+      setAuthChecking(false);
+    } catch (error) {
+      console.error("管理画面のログイン情報確認に失敗しました", error);
+      localStorage.removeItem("sakurakuUser");
+      router.replace("/login");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (authChecking) return;
+
     const loadFirestoreData = async () => {
       const [availabilityData, reservationData] = await Promise.all([
         readAvailabilityFromFirestore(),
@@ -220,7 +248,7 @@ function ReserveDateTimeContent() {
     };
 
     loadFirestoreData();
-  }, []);
+  }, [authChecking]);
 
   const weekDates = useMemo(() => {
     return Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
@@ -361,6 +389,10 @@ function ReserveDateTimeContent() {
 
     router.push(`/reserve/confirm?${params.toString()}`);
   };
+
+  if (authChecking) {
+    return <main style={styles.page} />;
+  }
 
   return (
     <main style={styles.page}>
