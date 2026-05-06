@@ -397,6 +397,23 @@ function ReserveDateTimeContent() {
   return (
     <main style={styles.page}>
       <div style={styles.container}>
+        <button
+  onClick={() => router.push("/")}
+  style={{
+    background: "none",
+    border: "none",
+    color: "#6f5a4d",
+    fontSize: "0.9rem",
+    cursor: "pointer",
+    marginBottom: "10px",
+    padding: 0,
+    fontFamily:
+      '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  }}
+>
+  ← ホームへ戻る
+</button>
+        
         <h1 style={styles.title}>カレンダー管理</h1>
 
         <div style={styles.switchWrap}>
