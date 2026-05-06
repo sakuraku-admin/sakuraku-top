@@ -27,6 +27,10 @@ export default function RegisterPage() {
     const trimmedPhone = phone.trim();
     const phoneLast4 = trimmedPhone.slice(-4);
     const userId = `${trimmedName}_${phoneLast4}`;
+    const role =
+      trimmedName === "荒木志信" && trimmedPhone === "07084923125"
+        ? "admin"
+        : "user";
     // 👆 追加ここまで
 
     const userData = {
@@ -35,7 +39,7 @@ export default function RegisterPage() {
       phone: trimmedPhone,
       phoneLast4, // ←追加
       userId,     // ←追加
-      role: "customer",
+      role,
       isLoggedIn: true,
       createdAt: new Date().toISOString(),
     };
