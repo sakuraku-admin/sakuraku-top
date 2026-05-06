@@ -88,7 +88,6 @@ function getTotalPriceText(coursePriceRaw, optionPriceRaw) {
 
 function getDisplayOptionName(option) {
   return String(option || "")
-    .replace(/[　 ]*\d+分/g, "")
     .replace(/[　 ]*\d{1,3}(,\d{3})*円/g, "")
     .trim();
 }
