@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
@@ -11,77 +11,44 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [isRegistering, setIsRegistering] = useState(false);
   const router = useRouter();
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (isRegistering) {
+    if (!name.trim() || !email.trim() || !phone.trim()) {
       return;
     }
 
+    console.log("新規会員登録", { name, email, phone });
+
+    // 👇 追加ここから
     const trimmedName = name.trim();
-    const trimmedEmail = email.trim();
     const trimmedPhone = phone.trim();
-
-    if (!trimmedName || !trimmedEmail || !trimmedPhone) {
-      setErrorMessage("お名前・メールアドレス・電話番号を入力してください。");
-      return;
-    }
-
     const phoneLast4 = trimmedPhone.slice(-4);
-
-    if (phoneLast4.length < 4) {
-      setErrorMessage("電話番号は下4桁が確認できるように入力してください。");
-      return;
-    }
-
     const userId = `${trimmedName}_${phoneLast4}`;
-    const firestoreUserId = userId.replace(/\//g, "／");
+    // 👆 追加ここまで
 
-    const userDataForFirestore = {
+    const userData = {
       name: trimmedName,
-      email: trimmedEmail,
+      email: email.trim(),
       phone: trimmedPhone,
-      phoneLast4,
-      userId,
-      role: "customer",
-      updatedAt: serverTimestamp(),
-      createdAt: serverTimestamp(),
-    };
-
-    const userDataForStorage = {
-      name: trimmedName,
-      email: trimmedEmail,
-      phone: trimmedPhone,
-      phoneLast4,
-      userId,
+      phoneLast4, // ←追加
+      userId,     // ←追加
       role: "customer",
       isLoggedIn: true,
       createdAt: new Date().toISOString(),
     };
 
-    try {
-      setIsRegistering(true);
-      setErrorMessage("");
+    await setDoc(doc(db, "users", userId), {
+      ...userData,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    });
 
-      await setDoc(doc(db, "users", firestoreUserId), userDataForFirestore, {
-        merge: true,
-      });
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
 
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userDataForStorage));
-
-      router.push("/");
-    } catch (error) {
-      console.error("新規会員登録エラー", error);
-      setErrorMessage(
-        "登録中にエラーが発生しました。通信状況をご確認のうえ、もう一度お試しください。"
-      );
-    } finally {
-      setIsRegistering(false);
-    }
+    router.push("/");
   };
 
   return (
@@ -128,10 +95,8 @@ export default function RegisterPage() {
             />
           </label>
 
-          {errorMessage && <p style={styles.errorText}>{errorMessage}</p>}
-
-          <button type="submit" style={styles.loginButton} disabled={isRegistering}>
-            {isRegistering ? "登録中..." : "登録"}
+          <button type="submit" style={styles.loginButton}>
+            登録
           </button>
         </form>
 
@@ -232,14 +197,6 @@ const styles = {
     boxSizing: "border-box",
     outline: "none",
     boxShadow: "inset 0 1px 4px rgba(91, 61, 43, 0.05)",
-  },
-
-  errorText: {
-    margin: "-4px 2px 0",
-    color: "#9b3f35",
-    fontSize: "14px",
-    lineHeight: 1.6,
-    letterSpacing: "0.03em",
   },
 
   loginButton: {
