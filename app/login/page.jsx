@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
@@ -9,6 +10,7 @@ const USER_STORAGE_KEY = "sakurakuUser";
 export default function LoginPage() {
   const [customerName, setCustomerName] = useState("");
   const [phoneLast4, setPhoneLast4] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -28,22 +30,29 @@ export default function LoginPage() {
       const userSnap = await getDoc(userRef);
 
       if (!userSnap.exists()) {
-        alert("登録情報が見つかりません");
+        alert("登録情報が見つかりません。新規登録画面へ移動します。");
+        router.push("/register");
         return;
       }
 
       const firestoreUser = userSnap.data();
+      const role = firestoreUser.role === "admin" ? "admin" : "user";
 
       const userData = {
         ...firestoreUser,
+        userId,
+        role,
         isLoggedIn: true,
         loggedInAt: new Date().toISOString(),
       };
 
       localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
 
-      // 👇ホームへ戻す
-      window.location.href = "/";
+      if (role === "admin") {
+        router.push("/admin");
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       console.error("ログインエラー", error);
       alert("ログインに失敗しました");
