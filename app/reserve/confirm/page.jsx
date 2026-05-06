@@ -297,6 +297,52 @@ function ReserveConfirmContent() {
           ...reservationData,
           createdAt: serverTimestamp(),
         });
+
+        if (userData?.email) {
+          const mailRef = doc(collection(db, "mail"));
+          const displayOptionsText =
+            displayOptions.length > 0 ? displayOptions.join("、") : "なし";
+
+          transaction.set(mailRef, {
+            to: userData.email,
+            message: {
+              subject: "【さく楽】ご予約ありがとうございます",
+              text:
+                `${customerName} 様\n\n` +
+                "この度は「さく楽」へご予約いただき、誠にありがとうございます。\n\n" +
+                "下記内容にて、ご予約を承りました。\n\n" +
+                "━━━━━━━━━━━━━━━\n\n" +
+                `【ご予約日時】\n${reserveDate} ${reserveTime}\n\n` +
+                `【コース】\n${menuName} ${menuTime}\n\n` +
+                `【オプション】\n${displayOptionsText}\n\n` +
+                "━━━━━━━━━━━━━━━\n\n" +
+                "当サロンは完全入れ替え制となっております。\n" +
+                "なるべくご予約時間ちょうどを目安にお越しくださいませ。\n\n" +
+                "ご変更・キャンセル等ございましたら、\n" +
+                "LINEよりお気軽にご連絡ください。\n\n" +
+                "当日、お会いできますことを楽しみにしております🌸\n\n" +
+                "さく楽",
+              html:
+                `<p>${customerName} 様</p>` +
+                "<p>この度は「さく楽」へご予約いただき、誠にありがとうございます。</p>" +
+                "<p>下記内容にて、ご予約を承りました。</p>" +
+                "<p>━━━━━━━━━━━━━━━</p>" +
+                `<p><strong>【ご予約日時】</strong><br />${reserveDate} ${reserveTime}</p>` +
+                `<p><strong>【コース】</strong><br />${menuName} ${menuTime}</p>` +
+                `<p><strong>【オプション】</strong><br />${displayOptionsText}</p>` +
+                "<p>━━━━━━━━━━━━━━━</p>" +
+                "<p>当サロンは完全入れ替え制となっております。<br />" +
+                "なるべくご予約時間ちょうどを目安にお越しくださいませ。</p>" +
+                "<p>ご変更・キャンセル等ございましたら、<br />" +
+                "LINEよりお気軽にご連絡ください。</p>" +
+                "<p>当日、お会いできますことを楽しみにしております🌸</p>" +
+                "<p>さく楽</p>",
+            },
+            reservationId: reservationRef.id,
+            customerId: userData?.userId || "",
+            createdAt: serverTimestamp(),
+          });
+        }
       });
 
       window.location.href = `/reserve/thanks?id=${reservationRef.id}`;
