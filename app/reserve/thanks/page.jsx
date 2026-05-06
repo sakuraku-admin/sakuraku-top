@@ -232,14 +232,14 @@ const styles = {
   },
 
   datePill: {
-    maxWidth: "286px",
-    margin: "0 auto 14px",
-    background: "#ffffff",
-    borderRadius: "999px",
-    padding: "10px 16px 12px",
-    boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
-    boxSizing: "border-box",
-  },
+  maxWidth: "286px",
+  margin: "0 auto 14px",
+  background: "rgba(255, 255, 255, 0.62)",
+  borderRadius: "18px",
+  padding: "10px 16px 12px",
+  boxShadow: "0 2px 8px rgba(255,255,255,0.25)",
+  boxSizing: "border-box",
+},
 
   dateLabel: {
     color: "#8a6671",
