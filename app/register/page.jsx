@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
 import { db } from "../lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
@@ -31,6 +31,15 @@ export default function RegisterPage() {
       trimmedName === "荒木志信" && trimmedPhone === "07084923125"
         ? "admin"
         : "user";
+
+    const userRef = doc(db, "users", userId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      alert("ご登録済みです。ログイン画面よりお入りください");
+      router.push("/login");
+      return;
+    }
     // 👆 追加ここまで
 
     const userData = {
@@ -44,7 +53,7 @@ export default function RegisterPage() {
       createdAt: new Date().toISOString(),
     };
 
-    await setDoc(doc(db, "users", userId), {
+    await setDoc(userRef, {
       ...userData,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
