@@ -76,12 +76,12 @@ function OptionMenuContent() {
     const selectedOptions = [];
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
     if (selectedShape === "shape-30") {
-      selectedOptions.push("巡りシェイプケア（30分）");
+      selectedOptions.push("マグバーム＆ホットストーン（30分）");
     }
     if (selectedShape === "shape-60") {
-      selectedOptions.push("巡りシェイプケア（60分）");
+      selectedOptions.push("マグバーム＆ホットストーン（60分）");
     }
-    if (selectedHead) selectedOptions.push("頭部解放（頭蓋筋膜リリース）");
+    if (selectedHead) selectedOptions.push("頭部解放");
 
     const params = new URLSearchParams({
       courseId,
@@ -241,7 +241,7 @@ function OptionMenuContent() {
                     <div>・マグバーム＆ホットストーン（30分）</div>
                   )}
                   {selectedShape === "shape-60" && (
-                    <div>・巡りシェイプケア（60分）</div>
+                    <div>・マグバーム＆ホットストーン（60分）</div>
                   )}
                   {selectedHead && (
                     <div>・頭部解放</div>
