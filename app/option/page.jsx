@@ -159,7 +159,7 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・マグクリーム（塗布）</h2>
             <div style={styles.priceLine}>1部位　1000円</div>
             <p style={styles.description}>
-              お辛い箇所の筋肉をゆるめ、コリ、ハリの緩和と疲労回復を促します。
+              お辛い箇所の筋肉をゆるめ、コリ、ハリの緩和と疲労回復に◎(拭き取らずそのままお帰りいただけます)
             </p>
 
             <button
@@ -174,7 +174,7 @@ function OptionMenuContent() {
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・マグバーム＆ホットストーン</h2>
             <p style={styles.description}>
-              冷え、むくみ、セルライトなどの気になる箇所に◎
+              冷え、むくみ、セルライトなどの気になる箇所をしっかりシェイプケア◎
             </p>
 
             <div style={styles.choiceCard}>
@@ -182,7 +182,7 @@ function OptionMenuContent() {
                 <div style={styles.choiceName}>30分　4000円</div>
               </div>
               <p style={styles.choiceDescription}>
-                気になる部位を集中ケア
+                気になる部位を集中的に
               </p>
               <button
                 type="button"
