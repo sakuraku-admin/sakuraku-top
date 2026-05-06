@@ -159,7 +159,7 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・マグクリーム（塗布）</h2>
             <div style={styles.priceLine}>1部位　1000円</div>
             <p style={styles.description}>
-              お辛い箇所に塗布し、筋肉をゆるめコリ、ハリの緩和と疲労回復を促します。
+              お辛い箇所の筋肉をゆるめ、コリ、ハリの緩和と疲労回復を促します。
             </p>
 
             <button
@@ -172,15 +172,14 @@ function OptionMenuContent() {
           </section>
 
           <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・巡りシェイプケア</h2>
+            <h2 style={styles.sectionTitle}>・マグバーム＆ホットストーン</h2>
             <p style={styles.description}>
-              冷え、むくみ、セルライトなどの気になる箇所を、
-              マグバームとホットオイルでしっかり流して柔らかく整えます。
+              冷え、むくみ、セルライトなどの気になる箇所に◎
             </p>
 
             <div style={styles.choiceCard}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>30分　3000円</div>
+                <div style={styles.choiceName}>30分　4000円</div>
                 <div style={styles.choiceTime}>約30分</div>
               </div>
               <p style={styles.choiceDescription}>
@@ -197,11 +196,11 @@ function OptionMenuContent() {
 
             <div style={styles.choiceCardLast}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>60分　5000円</div>
+                <div style={styles.choiceName}>60分　7000円</div>
                 <div style={styles.choiceTime}>約60分</div>
               </div>
               <p style={styles.choiceDescription}>
-                ☆ 全身しっかり流したい方におすすめ。
+                ☆ しっかり流したい方におすすめ
               </p>
               <button
                 type="button"
@@ -214,12 +213,12 @@ function OptionMenuContent() {
           </section>
 
           <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・頭部解放（頭蓋筋膜リリース）</h2>
+            <h2 style={styles.sectionTitle}>・頭部解放</h2>
             <div style={styles.priceLine}>30分　3000円</div>
             <p style={styles.description}>
-              噛みしめ、眼精疲労、頭痛、お顔周りのコリ、むくみやフェイスラインが気になる方に。
+              噛みしめ、眼精疲労、頭痛、お顔周りのコリや歪み、むくみ、フェイスラインが気になる方に。
               <br />
-              マグバーム・クリームを使用し、お顔と頭部の筋膜、筋肉をしっかりほぐします。
+              頭蓋筋膜リリース＆お顔～首にかけてしっかりほぐします。
               <br />
               （痛みの少ない手技で行います）
             </p>
