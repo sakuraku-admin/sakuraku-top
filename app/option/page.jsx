@@ -159,7 +159,7 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・マグクリーム（塗布）</h2>
             <div style={styles.priceLine}>1部位　1000円</div>
             <p style={styles.description}>
-              お辛い箇所の筋肉をゆるめ、コリ、ハリの緩和と疲労回復に◎(拭き取らずそのままお帰りいただけます)
+              お辛い箇所の筋肉をゆるめ、コリ、ハリの緩和と疲労回復に◎  (拭き取らずそのままお帰りいただけます)
             </p>
 
             <button
@@ -174,7 +174,7 @@ function OptionMenuContent() {
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・マグバーム＆ホットストーン</h2>
             <p style={styles.description}>
-              冷え、むくみ、セルライトなどの気になる箇所をしっかりシェイプケア◎
+              冷え、むくみ、セルライトなどの気になる箇所を温め、しっかり流すシェイプケア
             </p>
 
             <div style={styles.choiceCard}>
@@ -198,7 +198,7 @@ function OptionMenuContent() {
                 <div style={styles.choiceName}>60分　7000円</div>
               </div>
               <p style={styles.choiceDescription}>
-                ☆ しっかり流したい方におすすめ
+                ☆ 色んな部位をしっかり流したい方におすすめ◎
               </p>
               <button
                 type="button"
@@ -217,8 +217,6 @@ function OptionMenuContent() {
               噛みしめ、眼精疲労、頭痛、お顔周りのコリやむくみ、フェイスラインが気になる方に。
               <br />
               お顔と頭蓋を筋膜リリース＆骨格調整して整えます。
-              <br />
-              （痛みの少ない手技で行います）
             </p>
 
             <button
