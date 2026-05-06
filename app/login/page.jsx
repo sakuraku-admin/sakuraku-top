@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 const USER_STORAGE_KEY = "sakurakuUser";
 
@@ -8,7 +10,7 @@ export default function LoginPage() {
   const [customerName, setCustomerName] = useState("");
   const [phoneLast4, setPhoneLast4] = useState("");
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     console.log("ログイン", { customerName, phoneLast4 });
@@ -21,18 +23,31 @@ export default function LoginPage() {
     const trimmedPhoneLast4 = phoneLast4.trim();
     const userId = `${trimmedName}_${trimmedPhoneLast4}`;
 
-    const userData = {
-      name: trimmedName,
-      phoneLast4: trimmedPhoneLast4,
-      userId,
-      isLoggedIn: true,
-      loggedInAt: new Date().toISOString(),
-    };
+    try {
+      const userRef = doc(db, "users", userId);
+      const userSnap = await getDoc(userRef);
 
-    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+      if (!userSnap.exists()) {
+        alert("登録情報が見つかりません");
+        return;
+      }
 
-    // 👇ホームへ戻す
-    window.location.href = "/";
+      const firestoreUser = userSnap.data();
+
+      const userData = {
+        ...firestoreUser,
+        isLoggedIn: true,
+        loggedInAt: new Date().toISOString(),
+      };
+
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+
+      // 👇ホームへ戻す
+      window.location.href = "/";
+    } catch (error) {
+      console.error("ログインエラー", error);
+      alert("ログインに失敗しました");
+    }
   };
 
   const handleResendMail = () => {
