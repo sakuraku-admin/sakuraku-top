@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../lib/firebase";
 
@@ -78,11 +79,39 @@ function formatReservationForAdmin(item) {
 }
 
 export default function AdminListPage() {
+  const router = useRouter();
+  const [isAdminChecked, setIsAdminChecked] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [allReservations, setAllReservations] = useState([]);
   const [selectedReservation, setSelectedReservation] = useState(null);
 
+
   useEffect(() => {
+    const storedUser = localStorage.getItem("sakurakuUser");
+
+    if (!storedUser) {
+      router.replace("/login");
+      return;
+    }
+
+    try {
+      const user = JSON.parse(storedUser);
+
+      if (user?.role !== "admin") {
+        router.replace("/");
+        return;
+      }
+
+      setIsAdminChecked(true);
+    } catch (error) {
+      console.error("管理者確認に失敗しました", error);
+      router.replace("/login");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (!isAdminChecked) return;
+
     let isMounted = true;
 
     const loadReservations = async () => {
@@ -110,7 +139,7 @@ export default function AdminListPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [isAdminChecked]);
 
   const dateKey = formatDateKey(selectedDate);
 
@@ -156,6 +185,10 @@ export default function AdminListPage() {
   const handleToday = () => {
     setSelectedDate(new Date());
   };
+
+  if (!isAdminChecked) {
+    return <main style={styles.page} />;
+  }
 
   return (
     <main style={styles.page}>
