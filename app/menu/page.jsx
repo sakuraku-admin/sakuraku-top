@@ -30,7 +30,7 @@ const menuItems = [
     shortDescription: "ゆったり整えたい方に",
     descriptionLines: [
       "60分では足りない慢性的な不調に対して",
-      "全身のバランスを見ながら整える人気コース",
+      "全身のバランスを見ながら整えるコース",
     ],
     teaText: "ウェルカム／アフターティー付き",
   },
@@ -44,7 +44,7 @@ const menuItems = [
     shortDescription: "しっかり整えたい方に",
     descriptionLines: [
       "お身体全体から不調原因を探り、",
-      "自律神経ケアも含め整えていく充実コース",
+      "自律神経も含め整えていく充実コース",
     ],
     teaText: "ウェルカム／アフターティー付き",
   },
