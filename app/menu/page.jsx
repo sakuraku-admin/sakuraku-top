@@ -148,6 +148,9 @@ export default function MenuPage() {
   );
 
   const closePopup = () => setSelectedMenu(null);
+  const handleBack = () => {
+  router.back();
+};
 
   const handleReserve = () => {
     if (!selectedMenu) return;
