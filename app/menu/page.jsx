@@ -723,11 +723,14 @@ const styles = {
     letterSpacing: "0.04em",
   },
 
-  popupShortDescription: {
-    textAlign: "center",
-    color: "#4b3b33",
-    fontSize: "clamp(19px, 3.4vw, 28px)",
-    lineHeight: 1.5,
+ popupShortDescription: {
+  textAlign: "center",
+  color: "#4b3b33",
+  fontSize: "clamp(16px, 3.2vw, 28px)",
+  lineHeight: 1.5,
+  whiteSpace: "normal",
+  textWrap: "balance",
+  wordBreak: "keep-all",
     fontFamily:
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
