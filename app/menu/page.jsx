@@ -337,7 +337,17 @@ export default function MenuPage() {
         textDecoration: isConditionLine ? "underline" : "none",
         textUnderlineOffset: isConditionLine ? "4px" : undefined,
         whiteSpace: isConditionLine ? "nowrap" : "normal",
-        fontSize: isConditionLine ? "clamp(11px, 2vw, 16px)" : undefined,
+        fontSize:
+  isConditionLine
+    ? "clamp(11px, 2vw, 16px)"
+    : line.includes("整体・オイル・マグバーム・ホットストーン")
+    ? "clamp(13px, 3.1vw, 19px)"
+    : undefined,
+
+whiteSpace:
+  isConditionLine || line.includes("整体・オイル・マグバーム・ホットストーン")
+    ? "nowrap"
+    : "normal",
         fontWeight: isConditionLine ? 600 : undefined,
       }}
     >
