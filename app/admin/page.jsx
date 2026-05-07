@@ -263,7 +263,7 @@ function ReserveDateTimeContent() {
   };
 
   const handleSelect = async (dateKey, time) => {
-    const withinBusinessHours = canReserveAt(time, treatmentMinutes);
+    const withinBusinessHours = true;
     const reservedStart = findReservationStart(dateKey, time, reservations);
 
     if (!withinBusinessHours || reservedStart) return;
