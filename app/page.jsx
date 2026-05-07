@@ -79,7 +79,6 @@ export default function Home() {
   const handleLogout = () => {
     localStorage.removeItem(USER_STORAGE_KEY);
     setCustomerName("");
-    alert("ログアウトしました");
   };
 
   const handleReserveClick = () => {
