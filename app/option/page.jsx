@@ -176,7 +176,7 @@ function OptionMenuContent() {
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・マグバーム＆ホットストーン</h2>
             <p style={styles.description}>
-              冷え、むくみ、セルライトなどの気になる箇所を温め、しっかり流すシェイプケア
+              冷え、むくみ、セルライトなどの気になる箇所を温め、マグバームオイルでしっかり流すシェイプケア
             </p>
 
             <div style={styles.choiceCard}>
