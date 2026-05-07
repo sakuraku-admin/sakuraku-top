@@ -827,4 +827,20 @@ const styles = {
     fontFamily:
       '"Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif',
   },
+  backButton: {
+  position: "absolute",
+  top: "1.2%",
+  left: "14%",
+  zIndex: 5,
+  border: "none",
+  background: "transparent",
+  color: "rgba(90, 58, 44, 0.86)",
+  fontSize: "14px",
+  fontWeight: 700,
+  fontFamily:
+    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+  padding: "0",
+  cursor: "pointer",
+  letterSpacing: "0.04em",
+},
 };
