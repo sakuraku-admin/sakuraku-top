@@ -518,10 +518,7 @@ function ReserveDateTimeContent() {
                           time,
                           mockAvailability
                         );
-                        const withinBusinessHours = canReserveAt(
-                          time,
-                          treatmentMinutes
-                        );
+                        const withinBusinessHours = true;
 
                         const isReservable =
                           !isToday(dateKey) &&
