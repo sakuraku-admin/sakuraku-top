@@ -184,6 +184,13 @@ export default function MenuPage() {
     <>
       <div style={styles.page}>
         <div style={styles.canvas}>
+          <button
+    type="button"
+    onClick={handleBack}
+    style={styles.backButton}
+  >
+    ⇦戻る
+  </button>
           <div style={styles.title}>コースメニュー</div>
           <div style={styles.frame} />
 
