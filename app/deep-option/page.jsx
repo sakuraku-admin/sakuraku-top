@@ -6,7 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 const USER_STORAGE_KEY = "sakurakuUser";
 
 const deepOptions = [
-  "当日お任せカスタマイズ",
   "マグバーム / オイル",
   "よもぎ蒸しパッド",
   "頭部解放",
@@ -121,23 +120,17 @@ function DeepOptionContent() {
 
             <section style={styles.noticeBox}>
               <p style={styles.noticeMain}>
-                ※複数選択できます。
-              </p>
-              <p style={styles.noticeText}>
-                ※料金はすべてコースに含まれております。
-              </p>
-              <p style={styles.noticeText}>
-                ↓↓↓　当日の状態で組みたい方　↓↓↓
+                ↓↓↓ 当日の状態に合わせて選びたい方 ↓↓↓
               </p>
               <div style={styles.includedBadge}>
-                【当日お任せオプション】
+                【 当日お任せカスタマイズ 】
               </div>
             </section>
 
             <section style={styles.block}>
-              <h2 style={styles.sectionTitle}>・カスタマイズ内容</h2>
+              <h2 style={styles.sectionTitle}>深整カスタマイズ用オプション</h2>
               <p style={styles.description}>
-                複数選択できます。気になるものはすべてお選びください。
+                ※複数選択できます。
               </p>
 
               <div style={styles.optionList}>
