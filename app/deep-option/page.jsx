@@ -115,23 +115,22 @@ function DeepOptionContent() {
               <p style={styles.headerSub}>DEEP CUSTOMIZE</p>
               <h1 style={styles.headerTitle}>深整カスタマイズ</h1>
               <p style={styles.headerText}>
-                深整コースは、下記内容を
-                <br />
-                コース料金内で自由に組み合わせできます。
+                ご希望のオプションを自由にお選び下さい。
               </p>
             </div>
 
             <section style={styles.noticeBox}>
               <p style={styles.noticeMain}>
-                気になるものをいくつでもお選びください。
+                ※複数選択できます。
               </p>
               <p style={styles.noticeText}>
-                迷う方は「当日お任せカスタマイズ」をお選びください。
-                <br />
-                当日の状態を見ながら、時間内で最適に組み立てます。
+                ※料金はすべてコースに含まれております。
+              </p>
+              <p style={styles.noticeText}>
+                ↓↓↓　当日の状態で組みたい方　↓↓↓
               </p>
               <div style={styles.includedBadge}>
-                料金はコースに含まれております
+                【当日お任せオプション】
               </div>
             </section>
 
