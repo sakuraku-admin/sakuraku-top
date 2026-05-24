@@ -206,7 +206,7 @@ const styles = {
   page: {
     width: "100%",
     minHeight: "100vh",
-    backgroundImage: "url('/images/option.png')",
+    backgroundImage: "url('/images/deep-option.png')",
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
