@@ -417,6 +417,12 @@ const styles = {
     color: "rgba(90, 58, 44, 0.68)",
   },
 
+  optionSubText: {
+  color: "rgba(90, 58, 44, 0.58)",
+  fontSize: "13px",
+  fontWeight: 600,
+},
+  
   nextButton: {
     width: "100%",
     border: "none",
