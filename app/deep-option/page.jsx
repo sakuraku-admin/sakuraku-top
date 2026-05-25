@@ -130,11 +130,9 @@ function DeepOptionContent() {
               <p style={styles.headerSub}>DEEP CUSTOMIZE</p>
               <h1 style={styles.headerTitle}>深整オプション</h1>
               <p style={styles.headerText}>
-                ご希望のオプションを自由にお選び下さい。
+                ご希望のオプションを自由にお選び下さい。(複数選択可◎)
                 <br />
-                下記の内容は全て深整コース料金に含まれております。
-                <br />
-                複数選択可。
+                深整コースでは追加料金なしでお選びいただけます。
               </p>
             </div>
 
@@ -191,9 +189,9 @@ function DeepOptionContent() {
               </div>
 
               <div style={styles.summaryNote}>
-                ※選択したオプションは「予約確認」にてご確認いただけます。
+                ※選択したオプションは「予約確認」に表示されます。
                 <br />
-                ※当日の状態により施術内容を調整する場合がございます。
+                ※ご選択内容を元に、当日のお身体の状態とコース時間に合わせて最適にカスタマイズ致します。
               </div>
 
               <button
