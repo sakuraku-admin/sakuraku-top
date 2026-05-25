@@ -56,6 +56,20 @@ function DeepOptionContent() {
     );
   };
 
+  const renderOptionLabel = (optionName) => {
+  const match = optionName.match(/^(.+?)(（.+）)$/);
+
+  if (!match) {
+    return optionName;
+  }
+
+  return (
+    <>
+      {match[1]}
+      <span style={styles.optionSubText}>{match[2]}</span>
+    </>
+  );
+};
   const handleNext = () => {
     const courseId = searchParams.get("courseId") || "";
     const courseName = searchParams.get("courseName") || "深整コース";
@@ -155,8 +169,8 @@ function DeepOptionContent() {
                       onClick={() => handleOptionToggle(optionName)}
                       style={optionButtonStyle(selected)}
                     >
-                      {selected ? "✓ " : "□ "}
-                      {optionName}
+                      <span>{selected ? "✓ " : "□ "}</span>
+{renderOptionLabel(optionName)}
                     </button>
                   );
                 })}
