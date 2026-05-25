@@ -6,14 +6,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 const USER_STORAGE_KEY = "sakurakuUser";
 
 const deepOptions = [
-  "マグバーム / オイル",
+  "マグバーム(オイル/ホットストーン)",
   "よもぎ蒸しパッド",
-  "頭部解放",
-  "フェイシャル",
-  "肩甲骨はがし",
-  "腰痛撃退",
-  "チネイザン（腹部マッサージ）",
-  "台湾式足ツボ",
+  "トークセン(深部のコリ撃退)",
+  "頭・顔(頭部解放/噛みしめ/眼精疲労等)",
+  "首・肩(肩コリ/四十肩等)",
+  "肩甲骨(肩甲骨はがし)",
+  "手・腕(腱鞘炎/テニス肘/手の痺れ等)",
+  "腰(腰痛撃退/骨盤調整等)",
+  "お腹（チネイザン/内臓ケア）",
+  "足(むくみ/足底腱膜炎/足ツボ等)",
 ];
 
 function DeepOptionContent() {
@@ -112,15 +114,19 @@ function DeepOptionContent() {
           <div style={styles.scrollArea}>
             <div style={styles.headerArea}>
               <p style={styles.headerSub}>DEEP CUSTOMIZE</p>
-              <h1 style={styles.headerTitle}>深整カスタマイズ</h1>
+              <h1 style={styles.headerTitle}>深整オプション</h1>
               <p style={styles.headerText}>
                 ご希望のオプションを自由にお選び下さい。
+                <br />
+                下記の内容は全て深整コース料金に含まれております。
+                <br />
+                複数選択可。
               </p>
             </div>
 
             <section style={styles.noticeBox}>
               <p style={styles.noticeMain}>
-                ↓ 当日の状態に合わせて選びたい方 ↓
+                ↓ 当日の状態で選びたい方 ↓
               </p>
               <button
   type="button"
@@ -171,9 +177,9 @@ function DeepOptionContent() {
               </div>
 
               <div style={styles.summaryNote}>
-                ※選択内容は、ご予約確認画面に表示されます。
+                ※選択したオプションは「予約確認」にてご確認いただけます。
                 <br />
-                ※当日の状態により、内容を調整する場合がございます。
+                ※当日の状態により施術内容を調整する場合がございます。
               </div>
 
               <button
