@@ -56,8 +56,8 @@ function DeepOptionContent() {
     );
   };
 
-  const renderOptionLabel = (optionName) => {
-  const match = optionName.match(/^(.+?)(（.+）)$/);
+ const renderOptionLabel = (optionName) => {
+  const match = optionName.match(/^(.+?)([（(].+[）)])$/);
 
   if (!match) {
     return optionName;
