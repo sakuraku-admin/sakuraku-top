@@ -120,11 +120,20 @@ function DeepOptionContent() {
 
             <section style={styles.noticeBox}>
               <p style={styles.noticeMain}>
-                ↓↓↓ 当日の状態に合わせて選びたい方 ↓↓↓
+                ↓ 当日の状態に合わせて選びたい方 ↓
               </p>
-              <div style={styles.includedBadge}>
-                【 当日お任せカスタマイズ 】
-              </div>
+              <button
+  type="button"
+  onClick={() => handleOptionToggle("当日お任せカスタマイズ")}
+  style={optionButtonStyle(
+    selectedOptions.includes("当日お任せカスタマイズ")
+  )}
+>
+  {selectedOptions.includes("当日お任せカスタマイズ")
+    ? "✓ "
+    : "□ "}
+  当日お任せカスタマイズ
+</button>
             </section>
 
             <section style={styles.block}>
