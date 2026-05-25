@@ -137,10 +137,6 @@ function DeepOptionContent() {
             </section>
 
             <section style={styles.block}>
-              <h2 style={styles.sectionTitle}>深整カスタマイズ用オプション</h2>
-              <p style={styles.description}>
-                ※複数選択できます。
-              </p>
 
               <div style={styles.optionList}>
                 {deepOptions.map((optionName) => {
