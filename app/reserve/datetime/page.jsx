@@ -590,6 +590,9 @@ const styles = {
     color: "#5a3a2c",
     fontWeight: 700,
     lineHeight: 1.4,
+    whiteSpace: "pre-line",
+wordBreak: "keep-all",
+overflowWrap: "break-word",
   },
 
   calendarInfoCard: {
