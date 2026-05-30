@@ -341,7 +341,7 @@ phone: {
   boxShadow: "0 10px 30px rgba(90, 58, 44, 0.14)",
   backdropFilter: "blur(12px)",
   WebkitBackdropFilter: "blur(12px)",
-
+  overflow: "hidden",
   display: "flex",
   flexDirection: "column",
 },
