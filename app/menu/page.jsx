@@ -168,6 +168,10 @@ export default function MenuPage() {
       router.push(`/option?${params.toString()}`);
       return;
     }
+    if (selectedMenu.type === "shinsei") {
+  router.push(`/deep-option?${params.toString()}`);
+  return;
+}
 
     router.push(`/reserve/datetime?${params.toString()}`);
   };
