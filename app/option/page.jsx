@@ -331,27 +331,29 @@ const styles = {
     letterSpacing: "0.04em",
   },
 
-  phone: {
-    width: "100%",
-    maxWidth: "400px",
-    minHeight: "calc(100vh - 72px)",
-    background: "rgba(255, 248, 246, 0.52)",
-    borderRadius: "28px",
-    border: "1px solid rgba(255, 255, 255, 0.34)",
-    boxShadow: "0 10px 30px rgba(90, 58, 44, 0.14)",
-    backdropFilter: "blur(12px)",
-    WebkitBackdropFilter: "blur(12px)",
-    overflow: "hidden",
-  },
+phone: {
+  width: "100%",
+  maxWidth: "400px",
+  minHeight: "calc(100vh - 72px)",
+  background: "rgba(255, 248, 246, 0.52)",
+  borderRadius: "28px",
+  border: "1px solid rgba(255, 255, 255, 0.34)",
+  boxShadow: "0 10px 30px rgba(90, 58, 44, 0.14)",
+  backdropFilter: "blur(12px)",
+  WebkitBackdropFilter: "blur(12px)",
 
-  scrollArea: {
-    width: "100%",
-    height: "100%",
-    overflowY: "auto",
-    padding: "24px 16px 32px",
-    boxSizing: "border-box",
-    scrollbarWidth: "thin",
-  },
+  display: "flex",
+  flexDirection: "column",
+},
+
+scrollArea: {
+  width: "100%",
+  flex: 1,
+  overflowY: "auto",
+  padding: "24px 16px 32px",
+  boxSizing: "border-box",
+  scrollbarWidth: "thin",
+},
 
   headerArea: {
     marginBottom: "20px",
