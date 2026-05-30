@@ -231,7 +231,10 @@ function ReserveDateTimeContent() {
   const optionMinutes = Number.parseInt(optionMinutesParam, 10) || 0;
   const treatmentMinutes = baseTreatmentMinutes + optionMinutes;
 
-  const displayMenuName = selectedOptionsParam
+ const displayMenuName =
+  typeParam === "shinsei" && selectedOptionsParam
+    ? `${courseName}\n（カスタマイズ選択済）`
+    : selectedOptionsParam
     ? `${courseName}＋${selectedOptionsParam}`
     : courseName;
 
