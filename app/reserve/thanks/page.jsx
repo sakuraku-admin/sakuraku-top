@@ -115,15 +115,21 @@ function ThanksContent() {
                     {menuTime ? `（${menuTime}）` : ""}
                   </div>
 
-                  {hasOptions && (
-                    <div style={styles.optionBlock}>
-                      {options.map((option) => (
-                        <div key={option} style={styles.optionItem}>
-                          {option}
-                        </div>
-                      ))}
-                    </div>
-                  )}
+             {hasOptions && (
+  <div style={styles.optionBlock}>
+    {menuName.includes("深整") ? (
+      <div style={styles.optionItem}>
+        カスタマイズ選択済み
+      </div>
+    ) : (
+      options.map((option) => (
+        <div key={option} style={styles.optionItem}>
+          {option}
+        </div>
+      ))
+    )}
+  </div>
+)}
                 </div>
               </>
             ) : (
