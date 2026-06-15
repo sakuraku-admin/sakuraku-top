@@ -216,9 +216,7 @@ export default function Home() {
   }}
 >
   <span>
-    予約確認
-    <br />
-    変更・キャンセル
+    予約確認／変更
   </span>
 </a>
 
