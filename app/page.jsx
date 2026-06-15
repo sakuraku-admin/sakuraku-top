@@ -209,11 +209,6 @@ export default function Home() {
   href="/reserve/check"
   style={{
     ...subButtonStyle,
-    
-    width: "24%",
-    minWidth: "130px",
-    minHeight: "48px",
-
     position: "absolute",
     left: "50%",
     top: "49.5%",
@@ -229,6 +224,11 @@ export default function Home() {
   href="/info"
   style={{
     ...subButtonStyle,
+       
+    width: "24%",
+    minWidth: "130px",
+    minHeight: "48px",
+
     position: "absolute",
     left: "50%",
     top: "61.5%",
