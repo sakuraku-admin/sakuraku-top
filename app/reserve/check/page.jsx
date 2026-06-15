@@ -269,7 +269,6 @@ export default function ReserveCheckPage() {
           </div>
 
           <div style={styles.message}>
-             <div>テスト：この画面は最新版です</div>
             <div>ご来店を心よりお待ちしております🌸</div>
             <div>ご不明な点がありましたらお気軽にLINEからお問合せください</div>
           </div>
@@ -570,9 +569,9 @@ const styles = {
 
   rowActionText: {
   marginTop: "8px",
-  color: "#9b6b70",
+  color: "#c26a7a",
   fontSize: "clamp(12px, 3.1vw, 15px)",
-  fontWeight: 600,
+  fontWeight: 700,
   letterSpacing: "0.03em",
   lineHeight: 1.5,
   textDecoration: "underline",
