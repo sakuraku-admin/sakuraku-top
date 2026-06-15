@@ -244,19 +244,22 @@ export default function ReserveCheckPage() {
           <div style={styles.listArea}>
             {reservations.length > 0 ? (
               reservations.map((reservation) => (
-                <button
-                  key={reservation.id}
-                  type="button"
-                  onClick={() => setSelectedReservation(reservation)}
-                  style={styles.reservationRow}
-                >
-                  <div style={styles.rowDate}>
-                    {reservation.reserveDate || ""}
-                  </div>
-                  <div style={styles.rowTime}>
-                    {reservation.reserveTime || ""}
-                  </div>
-                </button>
+ <button
+  key={reservation.id}
+  type="button"
+  onClick={() => setSelectedReservation(reservation)}
+  style={styles.reservationRow}
+>
+  <div style={styles.rowDate}>
+    {reservation.reserveDate || ""}
+  </div>
+  <div style={styles.rowTime}>
+    {reservation.reserveTime || ""}
+  </div>
+  <div style={styles.rowActionText}>
+    この予約を確認・変更する
+  </div>
+</button>
               ))
             ) : (
               <div style={styles.emptyText}>
@@ -564,6 +567,19 @@ const styles = {
       '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
   },
 
+  rowActionText: {
+  marginTop: "8px",
+  color: "#9b6b70",
+  fontSize: "clamp(12px, 3.1vw, 15px)",
+  fontWeight: 600,
+  letterSpacing: "0.03em",
+  lineHeight: 1.5,
+  textDecoration: "underline",
+  textUnderlineOffset: "3px",
+  fontFamily:
+    '"Hiragino Mincho ProN", "Yu Mincho", "MS PMincho", serif',
+},
+  
   emptyText: {
     color: "#84675d",
     fontSize: "clamp(13px, 3.2vw, 15px)",
