@@ -257,7 +257,7 @@ export default function ReserveCheckPage() {
     {reservation.reserveTime || ""}
   </div>
   <div style={styles.rowActionText}>
-    〔 この予約を確認・変更する 〕
+    ▷ この予約を確認・変更する
   </div>
 </button>
               ))
