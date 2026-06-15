@@ -269,6 +269,7 @@ export default function ReserveCheckPage() {
           </div>
 
           <div style={styles.message}>
+             <div>テスト：この画面は最新版です</div>
             <div>ご来店を心よりお待ちしております🌸</div>
             <div>ご不明な点がありましたらお気軽にLINEからお問合せください</div>
           </div>
