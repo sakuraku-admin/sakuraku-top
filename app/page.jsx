@@ -205,31 +205,35 @@ export default function Home() {
             予約する
           </button>
 
-          <a
-            href="/reserve/check"
-            style={{
-              ...subButtonStyle,
-              position: "absolute",
-              left: "30%",
-              top: "49.5%",
-              transform: "translateX(-50%)",
-            }}
-          >
-            予約確認
-          </a>
+<a
+  href="/reserve/check"
+  style={{
+    ...subButtonStyle,
+    position: "absolute",
+    left: "50%",
+    top: "49.5%",
+    transform: "translateX(-50%)",
+  }}
+>
+  <span>
+    予約確認
+    <br />
+    変更・キャンセル
+  </span>
+</a>
 
-          <a
-            href="/info"
-            style={{
-              ...subButtonStyle,
-              position: "absolute",
-              left: "70%",
-              top: "49.5%",
-              transform: "translateX(-50%)",
-            }}
-          >
-            店舗情報
-          </a>
+<a
+  href="/info"
+  style={{
+    ...subButtonStyle,
+    position: "absolute",
+    left: "50%",
+    top: "61.5%",
+    transform: "translateX(-50%)",
+  }}
+>
+  店舗情報
+</a>
         </div>
       </div>
     </main>
