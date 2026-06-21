@@ -10,6 +10,7 @@ function OptionMenuContent() {
   const searchParams = useSearchParams();
 
   const [selectedMag, setSelectedMag] = useState(false);
+  const [selectedToksen, setSelectedToksen] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
 
@@ -36,11 +37,12 @@ function OptionMenuContent() {
   const totalPrice = useMemo(() => {
     return (
       (selectedMag ? 1000 : 0) +
-      (selectedShape === "shape-30" ? 3500 : 0) +
+      (selectedToksen ? 0 : 0) +
+      (selectedShape === "shape-30" ? 4000 : 0) +
       (selectedShape === "shape-60" ? 6500 : 0) +
       (selectedHead ? 3000 : 0)
     );
-  }, [selectedMag, selectedShape, selectedHead]);
+  }, [selectedMag, selectedToksen, selectedShape, selectedHead]);
 
   const totalMinutes = useMemo(() => {
     return (
@@ -58,6 +60,10 @@ function OptionMenuContent() {
     setSelectedMag((prev) => !prev);
   };
 
+  const handleToksenSelect = () => {
+  setSelectedToksen((prev) => !prev);
+};
+  
   const handleShapeSelect = (id) => {
     setSelectedShape((prev) => (prev === id ? null : id));
   };
@@ -75,6 +81,7 @@ function OptionMenuContent() {
 
     const selectedOptions = [];
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
+    if (selectedToksen) selectedOptions.push("【トークセン】無料体験");
     if (selectedShape === "shape-30") {
       selectedOptions.push("マグバーム＆ホットストーン（30分）");
     }
@@ -173,6 +180,26 @@ function OptionMenuContent() {
             </button>
           </section>
 
+            <section style={styles.block}>
+            <h2 style={styles.sectionTitle}>【 トークセン 】無料体験</h2>
+            <div style={styles.priceLine}>通常 1000円⇒期間限定 0円</div>
+            <p style={styles.description}>
+              慢性的なお身体のコリやハリ、緊張型のお身体に◎
+              <br />
+              瞬間的な木槌の振動が深部に素早く届き、フワッとほぐれる不思議体験
+              <br />
+              (痛みの少ない安全な施術方法ですが、お身体の状態を事前に確認しながら行います)
+            </p>
+
+            <button
+              type="button"
+              onClick={handleToksenSelect}
+              style={optionButtonStyle(selectedToksen)}
+            >
+              {selectedToksen ? "選択中" : "選択する"}
+            </button>
+          </section>
+
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・マグバーム＆ホットストーン</h2>
             <p style={styles.description}>
@@ -181,7 +208,7 @@ function OptionMenuContent() {
 
             <div style={styles.choiceCard}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>30分　3500円</div>
+                <div style={styles.choiceName}>30分　4000円</div>
               </div>
               <p style={styles.choiceDescription}>
                 気になる部位を集中的に
@@ -236,9 +263,10 @@ function OptionMenuContent() {
             <h3 style={styles.summaryTitle}>選択中のオプション</h3>
 
             <div style={styles.summaryList}>
-              {selectedMag || selectedShape || selectedHead ? (
+              {selectedMag || selectedToksen || selectedShape || selectedHead ? (
                 <>
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
+                  {selectedToksen && <div>【 トークセン 】無料体験 </div>}
                   {selectedShape === "shape-30" && (
                     <div>・マグバーム＆ホットストーン（30分）</div>
                   )}
