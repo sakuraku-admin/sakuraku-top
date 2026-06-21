@@ -36,8 +36,8 @@ function OptionMenuContent() {
   const totalPrice = useMemo(() => {
     return (
       (selectedMag ? 1000 : 0) +
-      (selectedShape === "shape-30" ? 3000 : 0) +
-      (selectedShape === "shape-60" ? 5000 : 0) +
+      (selectedShape === "shape-30" ? 3500 : 0) +
+      (selectedShape === "shape-60" ? 6500 : 0) +
       (selectedHead ? 3000 : 0)
     );
   }, [selectedMag, selectedShape, selectedHead]);
@@ -181,7 +181,7 @@ function OptionMenuContent() {
 
             <div style={styles.choiceCard}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>30分　4000円</div>
+                <div style={styles.choiceName}>30分　3500円</div>
               </div>
               <p style={styles.choiceDescription}>
                 気になる部位を集中的に
@@ -197,7 +197,7 @@ function OptionMenuContent() {
 
             <div style={styles.choiceCardLast}>
               <div style={styles.choiceTopRow}>
-                <div style={styles.choiceName}>60分　7000円</div>
+                <div style={styles.choiceName}>60分　6500円</div>
               </div>
               <p style={styles.choiceDescription}>
                 ☆ 色んな部位をしっかり流したい方におすすめ◎
