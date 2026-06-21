@@ -81,7 +81,7 @@ function OptionMenuContent() {
 
     const selectedOptions = [];
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
-    if (selectedToksen) selectedOptions.push("【トークセン】無料体験");
+    if (selectedToksen) selectedOptions.push("トークセン無料体験");
     if (selectedShape === "shape-30") {
       selectedOptions.push("マグバーム＆ホットストーン（30分）");
     }
@@ -181,7 +181,7 @@ function OptionMenuContent() {
           </section>
 
             <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>【 トークセン 】無料体験</h2>
+            <h2 style={styles.sectionTitle}>・トークセン無料体験</h2>
             <div style={styles.priceLine}>通常 1000円⇒期間限定 0円</div>
             <p style={styles.description}>
               慢性的なお身体のコリやハリ、緊張型のお身体に◎
@@ -266,7 +266,7 @@ function OptionMenuContent() {
               {selectedMag || selectedToksen || selectedShape || selectedHead ? (
                 <>
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
-                  {selectedToksen && <div>【 トークセン 】無料体験 </div>}
+                  {selectedToksen && <div>・トークセン無料体験 </div>}
                   {selectedShape === "shape-30" && (
                     <div>・マグバーム＆ホットストーン（30分）</div>
                   )}
