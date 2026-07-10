@@ -96,7 +96,7 @@ const menuItems = [
     categoryLabel: "深整コース［解放］",
     name: "解放",
     duration: "180分",
-    price: "19800円",
+    price: "18500円",
     shortDescription: "全身しっかり整えたい方へ",
     customAdjustLines: [
       "頭から足先まで、気になる箇所を全身リセット！",
