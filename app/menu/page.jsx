@@ -241,7 +241,7 @@ export default function MenuPage() {
               <div style={styles.sectionGap} />
 
               <img
-                src="/images/banner-shinsei.png"
+                src="/images/banner-premiamshinsei.png"
                 alt="深整コース"
                 style={styles.sectionBanner}
               />
