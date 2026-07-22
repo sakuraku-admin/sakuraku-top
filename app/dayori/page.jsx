@@ -23,7 +23,7 @@ export default function DayoriPage() {
 
           <div style={styles.titleDivider}>
             <span style={styles.line} />
-            <span style={styles.leaf}>𖥧</span>
+            <span style={styles.leaf}>🍃</span>
             <span style={styles.line} />
           </div>
 
@@ -37,7 +37,7 @@ export default function DayoriPage() {
         {DAYORI_IMAGES.map((image, index) => (
           <div key={image}>
             <img
-              src={`/dayori/${image}`}
+              src={`/images/${image}`}
               alt={`さく楽からのお知らせ ${index + 1}`}
               style={styles.image}
             />
@@ -45,7 +45,7 @@ export default function DayoriPage() {
             {index < DAYORI_IMAGES.length - 1 && (
               <div style={styles.divider}>
                 <span style={styles.line} />
-                <span style={styles.leaf}>𖥧</span>
+                <span style={styles.leaf}>🍃</span>
                 <span style={styles.line} />
               </div>
             )}
