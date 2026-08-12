@@ -172,7 +172,9 @@ function OptionMenuContent() {
           </section>
 
           <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・マグクリーム（塗布）</h2>
+            <h2 style={styles.sectionTitle}>・マグクリーム
+              <span style={styles.subTitle}>（塗布）</span>
+            </h2>
             <div style={styles.priceLine}>1部位　1000円</div>
             <p style={styles.description}>
               お辛い箇所の筋肉をゆるめ、コリの緩和と疲労回復に◎
@@ -188,7 +190,9 @@ function OptionMenuContent() {
           </section>
 
             <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・トークセン(気になる箇所に施術)</h2>
+            <h2 style={styles.sectionTitle}>・トークセン
+               <span style={styles.subTitle}> (整体施術に追加)</span>
+               </h2>
             <div style={styles.priceLine}>1000円</div>
             <p style={styles.description}>
               慢性的なお身体のコリ、緊張型のお身体に◎
@@ -264,9 +268,11 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・肩甲骨はがし</h2>
             <div style={styles.priceLine}>30分　3000円</div>
             <p style={styles.description}>
-              横向き施術で胸筋～肩甲骨周囲をしっかり緩めて姿勢を整えます。
+              横向き施術で胸筋～肩甲骨周囲をしっかり緩めて
               <br />
-              慢性的な巻き肩、四十肩などに◎
+              上半身の姿勢・バランスを整えます。
+              <br />
+              慢性的な巻き肩、四十肩、反り腰などに◎
             </p>
 
             <button
@@ -453,7 +459,13 @@ scrollArea: {
     margin: "0 0 8px 0",
     lineHeight: 1.5,
   },
-
+  
+subTitle: {
+  fontSize: "0.8em",
+  fontWeight: 400,
+  color: "#8b7b73",
+},
+  
   priceLine: {
     fontSize: "15px",
     fontWeight: 700,
