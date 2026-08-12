@@ -190,7 +190,7 @@ function OptionMenuContent() {
               </span>
               
             </h2>
-            <div style={styles.priceLine}>　　500円</div>
+            <div style={styles.priceLine}>　500円</div>
             <p style={styles.description}>
               パチパチの炭酸泡で夏の暑さを撃退！
               <br />
@@ -228,7 +228,7 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・トークセン
                <span style={styles.subTitle}> (整体施術に追加)</span>
                </h2>
-            <div style={styles.priceLine}>　　1000円</div>
+            <div style={styles.priceLine}>　1000円</div>
             <p style={styles.description}>
               慢性的なお身体のコリ、緊張型のお身体に◎
             </p>
