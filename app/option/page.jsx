@@ -97,7 +97,6 @@ function OptionMenuContent() {
       selectedOptions.push("マグバーム＆ホットストーン（60分）");
     }
     if (selectedHead) selectedOptions.push("頭部解放");
-    }
     if (selectedkenkou) selectedOptions.push("肩甲骨はがし");
 
     const params = new URLSearchParams({
