@@ -37,7 +37,7 @@ function OptionMenuContent() {
   const totalPrice = useMemo(() => {
     return (
       (selectedMag ? 1000 : 0) +
-      (selectedToksen ? 0 : 0) +
+      (selectedToksen ? 1000 : 0) +
       (selectedShape === "shape-30" ? 4000 : 0) +
       (selectedShape === "shape-60" ? 6500 : 0) +
       (selectedHead ? 3000 : 0)
@@ -81,7 +81,7 @@ function OptionMenuContent() {
 
     const selectedOptions = [];
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
-    if (selectedToksen) selectedOptions.push("トークセン無料体験");
+    if (selectedToksen) selectedOptions.push("トークセン");
     if (selectedShape === "shape-30") {
       selectedOptions.push("マグバーム＆ホットストーン（30分）");
     }
@@ -167,8 +167,6 @@ function OptionMenuContent() {
             <div style={styles.priceLine}>1部位　1000円</div>
             <p style={styles.description}>
               お辛い箇所の筋肉をゆるめ、コリの緩和と疲労回復に◎
-              <br />
-              (拭き取らずそのままお帰りいただけます)
             </p>
 
             <button
@@ -181,12 +179,10 @@ function OptionMenuContent() {
           </section>
 
             <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・トークセン無料体験</h2>
-            <div style={styles.priceLine}>通常 1000円⇒期間限定 0円</div>
+            <h2 style={styles.sectionTitle}>・トークセン</h2>
+            <div style={styles.priceLine}>1000円</div>
             <p style={styles.description}>
-              慢性的なお身体のコリやハリ、緊張型のお身体に◎
-              <br />
-              (痛みの少ない安全な施術方法ですが、お身体の状態を事前に確認しながら行います)
+              慢性的なお身体のコリ、緊張型のお身体に◎
             </p>
 
             <button
@@ -244,8 +240,6 @@ function OptionMenuContent() {
               噛みしめ、眼精疲労、頭痛、お顔周りのコリやむくみ、フェイスラインが気になる方に。
               <br />
               お顔と頭蓋を筋膜リリース＆骨格調整して整えます。
-              <br />
-              ※深整コースにはこちらの施術内容も含まれております。
             </p>
 
             <button
@@ -264,7 +258,7 @@ function OptionMenuContent() {
               {selectedMag || selectedToksen || selectedShape || selectedHead ? (
                 <>
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
-                  {selectedToksen && <div>・トークセン無料体験 </div>}
+                  {selectedToksen && <div>・トークセン </div>}
                   {selectedShape === "shape-30" && (
                     <div>・マグバーム＆ホットストーン（30分）</div>
                   )}
