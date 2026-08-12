@@ -188,7 +188,7 @@ function OptionMenuContent() {
           </section>
 
             <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・トークセン</h2>
+            <h2 style={styles.sectionTitle}>・トークセン(気になる箇所に施術)</h2>
             <div style={styles.priceLine}>1000円</div>
             <p style={styles.description}>
               慢性的なお身体のコリ、緊張型のお身体に◎
@@ -264,9 +264,9 @@ function OptionMenuContent() {
             <h2 style={styles.sectionTitle}>・肩甲骨はがし</h2>
             <div style={styles.priceLine}>30分　3000円</div>
             <p style={styles.description}>
-              横向き施術で胸筋～肩甲骨周囲をしっかり緩め、気になる巻き肩や姿勢を整えます。
+              横向き施術で胸筋～肩甲骨周囲をしっかり緩めて姿勢を整えます。
               <br />
-              慢性的な巻き肩、四十肩、ストレートネックが気になる方に◎
+              慢性的な巻き肩、四十肩などに◎
             </p>
 
             <button
