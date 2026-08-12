@@ -194,7 +194,7 @@ function OptionMenuContent() {
             <p style={styles.description}>
               パチパチの炭酸泡で夏の暑さを撃退！
               <br />
-              頭痛や首コリの解消にも◎
+              ヘアカラーやブリーチ後の髪・頭皮ケアにも◎
             </p>
 
             <button
