@@ -9,6 +9,7 @@ function OptionMenuContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [selectedSpa, setSelectedSpa] = useState(false);
   const [selectedMag, setSelectedMag] = useState(false);
   const [selectedToksen, setSelectedToksen] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
@@ -36,7 +37,8 @@ function OptionMenuContent() {
   }, [router]);
 
   const totalPrice = useMemo(() => {
-    return (
+    return (        
+      (selectedSpa ? 500 : 0) +
       (selectedMag ? 1000 : 0) +
       (selectedToksen ? 1000 : 0) +
       (selectedShape === "shape-30" ? 4000 : 0) +
@@ -44,7 +46,7 @@ function OptionMenuContent() {
       (selectedHead ? 3000 : 0) +
       (selectedkenkou ? 3000 : 0)
     );
-  }, [selectedMag, selectedToksen, selectedShape, selectedHead, selectedkenkou]);
+  }, [selectedSpa, selectedMag, selectedToksen, selectedShape, selectedHead, selectedkenkou]);
 
   const totalMinutes = useMemo(() => {
     return (
@@ -57,6 +59,10 @@ function OptionMenuContent() {
 
   const handleBack = () => {
     router.back();
+  };
+
+    const handleSpaSelect = () => {
+    setSelectedSpa((prev) => !prev);
   };
 
   const handleMagSelect = () => {
@@ -88,6 +94,7 @@ function OptionMenuContent() {
     const type = searchParams.get("type") || "seitai";
 
     const selectedOptions = [];
+    if (selectedSpa) selectedOptions.push("炭酸ヘッドスパ");   
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
     if (selectedToksen) selectedOptions.push("トークセン");
     if (selectedShape === "shape-30") {
@@ -168,6 +175,26 @@ function OptionMenuContent() {
               style={styles.skipButton}
             >
               このまま次へ進む
+            </button>
+          </section>
+
+         <section style={styles.block}>
+            <h2 style={styles.sectionTitle}>・炭酸ヘッドスパ
+              <span style={styles.subTitle}>（＼期間限定／）</span>
+            </h2>
+            <div style={styles.priceLine}>500円</div>
+            <p style={styles.description}>
+              パチパチの炭酸泡で夏の暑さを撃退！
+              <br />
+              頭痛や首コリの解消にも◎
+            </p>
+
+            <button
+              type="button"
+              onClick={handleSpaSelect}
+              style={optionButtonStyle(selectedSpa)}
+            >
+              {selectedSpa ? "選択中" : "選択する"}
             </button>
           </section>
 
@@ -264,7 +291,7 @@ function OptionMenuContent() {
             </button>
           </section>
 
-                    <section style={styles.block}>
+           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・肩甲骨はがし</h2>
             <div style={styles.priceLine}>30分　3000円</div>
             <p style={styles.description}>
@@ -288,8 +315,9 @@ function OptionMenuContent() {
             <h3 style={styles.summaryTitle}>選択中のオプション</h3>
 
             <div style={styles.summaryList}>
-              {selectedMag || selectedToksen || selectedShape || selectedHead || selectedkenkou ? (
+              {selectedSpa || selectedMag || selectedToksen || selectedShape || selectedHead || selectedkenkou ? (
                 <>
+                  {selectedSpa && <div>・炭酸ヘッドスパ（＼期間限定／）</div>}
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
                   {selectedToksen && <div>・トークセン </div>}
                   {selectedShape === "shape-30" && (
