@@ -13,6 +13,7 @@ function OptionMenuContent() {
   const [selectedToksen, setSelectedToksen] = useState(false);
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
+  const [selectedkenkou, setSelectedkenkou] = useState(false);
 
   useEffect(() => {
     try {
@@ -40,17 +41,19 @@ function OptionMenuContent() {
       (selectedToksen ? 1000 : 0) +
       (selectedShape === "shape-30" ? 4000 : 0) +
       (selectedShape === "shape-60" ? 6500 : 0) +
-      (selectedHead ? 3000 : 0)
+      (selectedHead ? 3000 : 0) +
+      (selectedkenkou ? 3000 : 0)
     );
-  }, [selectedMag, selectedToksen, selectedShape, selectedHead]);
+  }, [selectedMag, selectedToksen, selectedShape, selectedHead, selectedkenkou]);
 
   const totalMinutes = useMemo(() => {
     return (
       (selectedShape === "shape-30" ? 30 : 0) +
       (selectedShape === "shape-60" ? 60 : 0) +
-      (selectedHead ? 30 : 0)
+      (selectedHead ? 30 : 0) +
+      (selectedkenkou ? 30 : 0)
     );
-  }, [selectedShape, selectedHead]);
+  }, [selectedShape, selectedHead, selectedkenkou]);
 
   const handleBack = () => {
     router.back();
@@ -71,6 +74,11 @@ function OptionMenuContent() {
   const handleHeadSelect = () => {
     setSelectedHead((prev) => !prev);
   };
+  
+  const handlekenkouSelect = () => {
+    setSelectedkenkou((prev) => !prev);
+  };
+
 
   const handleNext = () => {
     const courseId = searchParams.get("courseId") || "";
@@ -89,6 +97,8 @@ function OptionMenuContent() {
       selectedOptions.push("マグバーム＆ホットストーン（60分）");
     }
     if (selectedHead) selectedOptions.push("頭部解放");
+    }
+    if (selectedkenkou) selectedOptions.push("肩甲骨はがし");
 
     const params = new URLSearchParams({
       courseId,
@@ -251,11 +261,29 @@ function OptionMenuContent() {
             </button>
           </section>
 
+                    <section style={styles.block}>
+            <h2 style={styles.sectionTitle}>・肩甲骨はがし</h2>
+            <div style={styles.priceLine}>30分　3000円</div>
+            <p style={styles.description}>
+              横向き施術で胸筋～肩甲骨周囲をしっかり緩め、気になる巻き肩や姿勢を整えます。
+              <br />
+              慢性的な巻き肩、四十肩、ストレートネックが気になる方に◎
+            </p>
+
+            <button
+              type="button"
+              onClick={handlekenkouSelect}
+              style={optionButtonStyle(selectedkenkou)}
+            >
+              {selectedkenkou ? "選択中" : "選択する"}
+            </button>
+          </section>
+          
           <section style={styles.summaryBox}>
             <h3 style={styles.summaryTitle}>選択中のオプション</h3>
 
             <div style={styles.summaryList}>
-              {selectedMag || selectedToksen || selectedShape || selectedHead ? (
+              {selectedMag || selectedToksen || selectedShape || selectedHead || selectedkenkou ? (
                 <>
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
                   {selectedToksen && <div>・トークセン </div>}
@@ -267,6 +295,9 @@ function OptionMenuContent() {
                   )}
                   {selectedHead && (
                     <div>・頭部解放</div>
+                  )}
+                  {selectedkenkou && (
+                    <div>・肩甲骨はがし</div>
                   )}
                 </>
               ) : (
