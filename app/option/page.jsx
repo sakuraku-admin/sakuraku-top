@@ -186,7 +186,7 @@ function OptionMenuContent() {
               color: "#e68a7a",
                 }}
                 >
-                ＼期間限定／
+                　＼期間限定／
               </span>
               
             </h2>
