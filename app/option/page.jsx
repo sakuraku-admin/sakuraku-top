@@ -180,7 +180,7 @@ function OptionMenuContent() {
 
          <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・炭酸ヘッドスパ
-              <span style={styles.subTitle}>（＼期間限定／）</span>
+              <span style={styles.subTitle, color: "#e68a7a",}>（＼期間限定／）</span>
             </h2>
             <div style={styles.priceLine}>500円</div>
             <p style={styles.description}>
