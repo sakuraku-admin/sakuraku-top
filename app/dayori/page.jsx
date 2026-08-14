@@ -10,6 +10,7 @@ export const metadata = {
   1枚だけなら、1つだけ書けばOKです。
 */
 const DAYORI_IMAGES = [
+  "dayori-0801.png",
   "dayori-0702.png",
   "dayori-0701.png",
 ];
