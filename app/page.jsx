@@ -148,7 +148,7 @@ export default function Home() {
         </button>
 
         <img
-          src="/images/top1-summer.png"
+          src="/images/top1-aki.png"
           alt="さく楽 トップカード"
           style={{
             position: "absolute",
