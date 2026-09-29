@@ -235,6 +235,8 @@ export default function InfoPage() {
               marginBottom: "18px",
             }}
           >
+            当サロンは女性専用となります。
+            <br />
             ご不明な点がありましたらお気軽にLINEからお問い合わせください。
           </div>
 
