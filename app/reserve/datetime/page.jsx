@@ -724,7 +724,7 @@ overflowWrap: "break-word",
   timeCell: {
     width: "54px",
     minWidth: "54px",
-    height: "54px",
+    height: "44px",
     background: "#faf5f0",
     color: "#5a3a2c",
     fontWeight: 700,
@@ -751,7 +751,7 @@ overflowWrap: "break-word",
   },
 
   slotCell: {
-    height: "54px",
+    height: "44px",
     borderBottom: "1px solid #eee2d9",
     borderLeft: "1px solid #f2e8e1",
     textAlign: "center",
