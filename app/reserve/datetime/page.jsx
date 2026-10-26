@@ -339,16 +339,6 @@ function ReserveDateTimeContent() {
         </section>
 
         <section style={styles.calendarInfoCard}>
-          <div style={styles.weekButtonRow}>
-            <button onClick={handlePrevWeek} style={styles.weekButton}>
-              ← 前の週
-            </button>
-
-            <button onClick={handleNextWeek} style={styles.weekButton}>
-              次の週 →
-            </button>
-          </div>
-
           <div style={styles.topNextButtonWrap}>
             <button
               onClick={handleGoConfirm}
@@ -365,9 +355,24 @@ function ReserveDateTimeContent() {
 
         <section style={styles.calendarCard}>
           
+<div style={{
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: "6px",
+  padding: "8px 4px",
+}}>
+  <button
+    type="button"
+    onClick={handlePrevWeek}
+    aria-label="前の週"
+    style={styles.weekArrowButton}
+  >
+    ←
+  </button>
+
   <div style={{
     textAlign: "center",
-    padding: "8px",
     color: "#5a3a2c",
     fontWeight: 700,
     fontSize: "14px",
@@ -377,6 +382,16 @@ function ReserveDateTimeContent() {
       ? `${weekDates[0].getMonth() + 1}月`
       : `${weekDates[0].getMonth() + 1}月〜${weekDates[6].getMonth() + 1}月`}
   </div>
+
+  <button
+    type="button"
+    onClick={handleNextWeek}
+    aria-label="次の週"
+    style={styles.weekArrowButton}
+  >
+    →
+  </button>
+</div>
 
           <div style={styles.calendarScroll}>
             <table style={styles.calendarTable}>
@@ -626,19 +641,23 @@ overflowWrap: "break-word",
     gap: "10px",
   },
 
-  weekButton: {
-    border: "none",
-    borderRadius: "999px",
-    padding: "10px 8px",
-    background:
-      "linear-gradient(180deg, rgba(190, 141, 121, 0.96) 0%, rgba(163, 116, 97, 0.96) 100%)",
-    color: "#fffaf7",
-    fontWeight: 700,
-    cursor: "pointer",
-    fontSize: "0.84rem",
-    whiteSpace: "nowrap",
-    boxShadow: "0 8px 18px rgba(140, 106, 83, 0.18)",
-  },
+ weekArrowButton: {
+  width: "40px",
+  height: "40px",
+  minWidth: "40px",
+  border: "none",
+  borderRadius: "50%",
+  background: "#d98b9a",
+  color: "#fffdfb",
+  fontSize: "20px",
+  fontWeight: 700,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 0,
+  flexShrink: 0,
+},
 
   topNextButtonWrap: {
     marginTop: "12px",
