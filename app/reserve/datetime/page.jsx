@@ -655,7 +655,7 @@ overflowWrap: "break-word",
 },
 
   topNextButtonWrap: {
-    marginTop: "12px",
+    marginTop: "0px",
     display: "flex",
     justifyContent: "center",
   },
