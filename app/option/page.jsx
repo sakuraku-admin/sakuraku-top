@@ -376,7 +376,7 @@ function OptionMenuContent() {
   {[
     {
       title: "✿ 季節・期間限定",
-      items: ["炭酸ヘッドスパ"],
+      items: ["チェリーストーンピロー🍒"],
     },
     {
       title: "✿ お悩み・部位別ケア",
