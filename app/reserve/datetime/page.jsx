@@ -708,7 +708,7 @@ overflowWrap: "break-word",
   },
 
   dateTop: {
-    fontSize: "11px",
+    fontSize: "13px",
     fontWeight: 700,
     lineHeight: 1.2,
     whiteSpace: "nowrap",
