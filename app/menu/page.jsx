@@ -144,7 +144,7 @@ export default function MenuPage() {
   );
 
   const shinseiMenus = useMemo(
-    () => menuItems.filter((item) => item.type === "shinsei"),
+    () => menuItems.filter((item) => item.type === "shinsei"&& false),
     []
   );
 
