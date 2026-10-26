@@ -694,9 +694,10 @@ overflowWrap: "break-word",
   },
 
   dateTop: {
-    fontSize: "0.82rem",
+    fontSize: "11px",
     fontWeight: 700,
     lineHeight: 1.2,
+    whiteSpace: "nowrap",
   },
 
   dateBottom: {
