@@ -757,6 +757,8 @@ overflowWrap: "break-word",
     textAlign: "center",
     padding: 0,
     boxSizing: "border-box",
+    verticalAlign: "middle",
+  　lineHeight: 0,
   },
 
   slotCellAvailable: {
