@@ -240,11 +240,13 @@ export default function MenuPage() {
 
               <div style={styles.sectionGap} />
 
+              {/*
               <img
                 src="/images/banner-premiamshinsei.png"
                 alt="深整コース"
                 style={styles.sectionBanner}
               />
+              */}
 
               <div style={styles.buttonGroup}>
                 {shinseiMenus.map((item) => (
