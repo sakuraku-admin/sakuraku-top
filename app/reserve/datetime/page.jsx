@@ -770,8 +770,8 @@ overflowWrap: "break-word",
   },
 
   slotButton: {
-    width: "42px",
-    height: "42px",
+    width: "100%",
+    height: "40px",
     borderRadius: "999px",
     fontSize: "1.38rem",
     fontWeight: 700,
