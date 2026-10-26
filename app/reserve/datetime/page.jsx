@@ -364,6 +364,20 @@ function ReserveDateTimeContent() {
         </section>
 
         <section style={styles.calendarCard}>
+          
+  <div style={{
+    textAlign: "center",
+    padding: "8px",
+    color: "#5a3a2c",
+    fontWeight: 700,
+    fontSize: "14px",
+  }}>
+    {weekDates[0].getFullYear()}年
+    {weekDates[0].getMonth() === weekDates[6].getMonth()
+      ? `${weekDates[0].getMonth() + 1}月`
+      : `${weekDates[0].getMonth() + 1}月〜${weekDates[6].getMonth() + 1}月`}
+  </div>
+
           <div style={styles.calendarScroll}>
             <table style={styles.calendarTable}>
               <thead>
@@ -386,7 +400,7 @@ function ReserveDateTimeContent() {
                               : "#5a3a2c",
                           }}
                         >
-                          {jp.month}/{jp.day}
+                          {jp.day}
                         </div>
                         <div
                           style={{
