@@ -157,10 +157,8 @@ function OptionMenuContent() {
             <p style={styles.headerSub}>OPTION MENU</p>
             <h1 style={styles.headerTitle}>オプション選択</h1>
             <p style={styles.headerText}>
-              気になる箇所やお悩みに合わせて、
-              <br />
-              ご希望のオプションをお選びいただけます。
-            </p>
+ 　　　　　 気になるメニューをタップして詳細を見る
+　　　　　　</p>
           </div>
 
           <section style={styles.block}>
@@ -368,6 +366,66 @@ function OptionMenuContent() {
               この内容で次へ
             </button>
           </section>
+          
+{/* 新オプションメニュー・仮設表示 */}
+<section style={{ marginTop: "24px", padding: "16px", background: "#fbe9e2", borderRadius: "20px" }}>
+  <h2 style={{ color: "#5a3a2c", fontSize: "20px", marginBottom: "16px" }}>
+    新オプションメニュー（仮）
+  </h2>
+
+  {[
+    {
+      title: "✿ 季節・期間限定",
+      items: ["炭酸ヘッドスパ"],
+    },
+    {
+      title: "✿ お悩み・部位別ケア",
+      items: [
+        "首肩集中",
+        "頭部解放 🍀",
+        "肩甲骨はがし",
+        "腰痛撃退 ⚡",
+        "お腹ケア",
+        "足裏ふわり 🌸",
+      ],
+    },
+    {
+      title: "✿ 特別ケア・施術技法",
+      items: [
+        "トークセン",
+        "マグバーム＆ホットストーン",
+      ],
+    },
+  ].map((group) => (
+    <div key={group.title} style={{ marginBottom: "20px" }}>
+      <h3 style={{ color: "#b16f79", fontSize: "15px", marginBottom: "10px" }}>
+        {group.title}
+      </h3>
+
+      {group.items.map((item) => (
+        <div
+          key={item}
+          style={{
+            background: "#fffaf7",
+            borderRadius: "12px",
+            padding: "14px 16px",
+            marginBottom: "8px",
+            color: "#5a3a2c",
+            fontSize: "15px",
+            fontWeight: 600,
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <span>{item}</span>
+          <span style={{ color: "#b08372" }}>›</span>
+        </div>
+      ))}
+    </div>
+  ))}
+</section>
+
           </div>
         </div>
       </div>
