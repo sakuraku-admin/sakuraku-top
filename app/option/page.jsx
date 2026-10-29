@@ -94,7 +94,7 @@ function OptionMenuContent() {
     const type = searchParams.get("type") || "seitai";
 
     const selectedOptions = [];
-    if (selectedSpa) selectedOptions.push("炭酸ヘッドスパ");   
+    if (selectedSpa) selectedOptions.push("よもぎ蒸しパッド＆チェリーストーンピロー");   
     if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
     if (selectedToksen) selectedOptions.push("トークセン");
     if (selectedShape === "shape-30") {
@@ -177,7 +177,7 @@ function OptionMenuContent() {
           </section>
 
          <section style={styles.block}>
-            <h2 style={styles.sectionTitle}>・炭酸ヘッドスパ
+            <h2 style={styles.sectionTitle}>・よもぎ蒸しパッド＆チェリーストーンピロー
               <span 
                 style={{
                   ...styles.subTitle,
@@ -190,9 +190,11 @@ function OptionMenuContent() {
             </h2>
             <div style={styles.priceLine}>　500円</div>
             <p style={styles.description}>
-              パチパチの炭酸泡で夏の暑さを撃退！
+              よもぎ蒸し温座パッドでお腹を、
               <br />
-              ヘアカラーやブリーチ後の髪・頭皮ケアにも◎
+              チェリーストーンピローで気になる箇所を、
+              <br />
+              じんわりダブルで温めながら施術を受けられます。
             </p>
 
             <button
@@ -323,7 +325,7 @@ function OptionMenuContent() {
             <div style={styles.summaryList}>
               {selectedSpa || selectedMag || selectedToksen || selectedShape || selectedHead || selectedkenkou ? (
                 <>
-                  {selectedSpa && <div>・炭酸ヘッドスパ（＼期間限定／）</div>}
+                  {selectedSpa && <div>・よもぎ蒸しパッド＆チェリーストーンピロー（＼期間限定／）</div>}
                   {selectedMag && <div>・マグクリーム（塗布）</div>}
                   {selectedToksen && <div>・トークセン </div>}
                   {selectedShape === "shape-30" && (
