@@ -72,7 +72,7 @@ function DeepOptionContent() {
 };
   const handleNext = () => {
     const courseId = searchParams.get("courseId") || "";
-    const courseName = searchParams.get("courseName") || "深整コース";
+    const courseName = searchParams.get("courseName") || "オイル＆整体コース";
     const duration = searchParams.get("duration") || "";
     const price = searchParams.get("price") || "";
     const type = searchParams.get("type") || "deep";
@@ -127,12 +127,14 @@ function DeepOptionContent() {
         <div style={styles.phone}>
           <div style={styles.scrollArea}>
             <div style={styles.headerArea}>
-              <p style={styles.headerSub}>DEEP CUSTOMIZE</p>
-              <h1 style={styles.headerTitle}>深整オプション</h1>
+              <p style={styles.headerSub}>OIL & BODY CUSTOMIZE</p>
+              <h1 style={styles.headerTitle}>オイル＆整体オプション</h1>
               <p style={styles.headerText}>
-                ご希望のオプションを自由にお選び下さい。(複数選択可◎)
+                ご希望の施術や気になる部位をお選び下さい。(複数選択可◎)
                 <br />
-                深整コースでは追加料金なしでお選びいただけます。
+  　　　　　　　　コース時間内で、お身体の状態に合わせて組み合わせます。
+  　　　　　　　<br />
+  　　　　　　　追加料金はかかりません。
               </p>
             </div>
 
