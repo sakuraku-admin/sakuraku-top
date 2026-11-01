@@ -48,9 +48,23 @@ const OPTION_DETAILS = {
     description:
       "噛みしめ、めまい、耳鳴り、頭痛、お顔の歪みなどが気になる方に。お顔から頭部にかけて、筋膜リリースと調整を行い、こわばりをやさしくゆるめます。",
     choices: [
-      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
-      { id: "extra", label: "30分延長して追加", price: 3000, minutes: 30 },
-    ],
+  {
+    id: "within",
+    label: "整体の時間内で組み合わせる",
+    price: 1000,
+    minutes: 0,
+    description:
+      "整体の施術時間のうち30分を頭部解放に充てます。\n例：整体60分の場合 → 身体30分＋頭部30分",
+  },
+  {
+    id: "extra",
+    label: "整体も頭部解放もしっかり受ける",
+    price: 3000,
+    minutes: 30,
+    description:
+      "整体コースに頭部解放(30分）を追加します。\n例：整体60分の場合 → 身体60分＋頭部30分（合計90分）",
+  },
+],
   },
   shoulder: {
     description:
