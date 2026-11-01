@@ -34,12 +34,12 @@ const OPTION_DETAILS = {
     description:
       "よもぎ蒸し温座パッドでお腹まわりを、チェリーストーンピローで気になる箇所をじんわり温めます。2つの温もりに包まれながら、ゆったり整体をお楽しみください。",
     choices: [
-      { id: "within", label: "施術時間内で追加", price: 500, minutes: 0 },
+      { id: "within", label: "施術中に使用", price: 500, minutes: 0 },
     ],
   },
   neck: {
     description:
-      "首から肩にかけて、マグバームを使用してじっくり筋肉をゆるめて流します。首肩の慢性的なこりや張り、痛みや疲れが気になる方に。",
+      "マグバームを使用して首～肩の筋肉をしっかりゆるめて流します。首肩の慢性的なコリやハリ、痛みや疲れが気になる方に。",
     choices: [
       { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
     ],
@@ -50,7 +50,7 @@ const OPTION_DETAILS = {
     choices: [
   {
     id: "within",
-    label: "整体の時間内で組み合わせたい方",
+    label: "頭部解放をメインに受けたい方向け",
     price: 1000,
     minutes: 0,
     description:
@@ -70,8 +70,8 @@ const OPTION_DETAILS = {
     description:
       "横向きの姿勢で肩甲骨まわりや胸まわりの筋肉をしっかり弛め、巻き肩や姿勢の改善へと導きます。",
     choices: [
-      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
-      { id: "extra", label: "30分延長して追加", price: 3000, minutes: 30 },
+      { id: "within", label: "コース時間内で30分施術", price: 1000, minutes: 0 },
+      { id: "extra", label: "コース時間+30分", price: 3000, minutes: 30 },
     ],
   },
     lowerback: {
@@ -79,7 +79,7 @@ const OPTION_DETAILS = {
       "腰のつらさに関わる筋肉の緊張やバランスを確認し、腰まわりの負担軽減を目指してしっかり重点ケア！\n\n※骨格調整・ストレッチ・筋膜リリース等を、お身体の状態に合わせて組み合わせます。",
     choices: [
       { id: "within", label: "コース時間内で30分施術", price: 1000, minutes: 0 },
-      { id: "extra", label: "30分追加", price: 3000, minutes: 30 },
+      { id: "extra", label: "コース時間+30分", price: 3000, minutes: 30 },
     ],
   },
     belly: {
@@ -88,7 +88,7 @@ const OPTION_DETAILS = {
     choices: [
       {
         id: "stone",
-        label: "温石＆マグケア（30分追加）",
+        label: "温石＆マグケア（コース時間+30分）",
         price: 4000,
         minutes: 30,
         description:
@@ -96,7 +96,7 @@ const OPTION_DETAILS = {
       },
       {
         id: "bowel",
-        label: "腸もみ（30分追加）",
+        label: "腸もみ（コース時間+30分）",
         price: 3000,
         minutes: 30,
         description:
@@ -110,19 +110,19 @@ const OPTION_DETAILS = {
     choices: [
       {
         id: "within",
-        label: "施術時間内で追加",
+        label: "コース時間内で30分施術",
         price: 1000,
         minutes: 0,
         description:
-          "トークセンや叩打法を用いて、足首から足裏にかけて丁寧にゆるめ、バランスを整えます。",
+          "トークセンや叩打法を用いて、足裏～足首をゆるめて歩き方やバランスを整えます。",
       },
       {
         id: "extra",
-        label: "30分延長して追加",
+        label: "コース時間+30分",
         price: 3500,
         minutes: 30,
         description:
-          "トークセン・叩打法・骨格調整・筋膜リリースに加え、マグバームで足裏の腱膜や筋肉をじっくりゆるめます。ふんわり軽やかな足取りを目指すスペシャルケアです。",
+          "トークセン・叩打法、骨格調整・筋膜リリースに加え、マグバームで足裏の腱膜や筋肉をじっくりゆるめます。ふんわり軽やかな足取りを目指すスペシャルケアです。",
       },
     ],
   },
@@ -140,7 +140,7 @@ const OPTION_DETAILS = {
       },
       {
         id: "wide",
-        label: "広範囲トークセン（複数部位〜全身）",
+        label: "広範囲トークセン（複数部位）",
         price: 1000,
         minutes: 0,
         description:
