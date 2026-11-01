@@ -331,11 +331,19 @@ const [draftChoice, setDraftChoice] = useState(null);
           <button
   type="button"
   onClick={handleNext}
-  style={{
-    ...styles.nextButton,
-    marginTop: "20px",
-    marginBottom: "20px",
-  }}
+ style={{
+  ...styles.nextButton,
+  width: "100%",
+  padding: "10px 12px",
+  fontSize: "13px",
+  fontWeight: 600,
+  background: "rgba(255, 255, 255, 0.7)",
+  color: "#a66e70",
+  border: "1px solid #e6c7c3",
+  boxShadow: "none",
+  marginTop: "12px",
+  marginBottom: "12px",
+}}
 >
   オプションを選択せず次へ
 </button>
