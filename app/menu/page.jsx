@@ -252,11 +252,11 @@ export default function MenuPage() {
       name: "120分",
       duration: "120分",
       price: "10000円",
-      shortDescription: "お身体に合わせた特別なお任せコース",
+      shortDescription: "当日お任せカスタムコース",
       descriptionLines: [
         "どんなオプションを選べば良いか分からない、",
         "当日の身体の状態に合った施術をして欲しい、",
-        "そんな方にオススメのオーダーメイドコース☆",
+        "そんな方にオススメの定額お任せコース☆",
       ],
       teaText: "ウェルカム／アフターティー付き",
     })}
