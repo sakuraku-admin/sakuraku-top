@@ -321,10 +321,25 @@ function ReserveDateTimeContent() {
     router.push(`/reserve/confirm?${params.toString()}`);
   };
 
-  return (
-    <main style={styles.page}>
-      <div style={styles.container}>
-        <h1 style={styles.title}>ご希望の日時をお選びください</h1>
+ return (
+  <main style={styles.page}>
+    <div style={styles.container}>
+      <button
+        type="button"
+        onClick={() => router.back()}
+        style={{
+          border: "none",
+          background: "transparent",
+          color: "#5a3a2c",
+          fontSize: "14px",
+          cursor: "pointer",
+          padding: "0 0 12px 0",
+        }}
+      >
+        ←戻る
+      </button>
+
+      <h1 style={styles.title}>ご希望の日時をお選びください</h1>
 
         <section style={styles.infoCard}>
           <div style={styles.infoMiniBox}>
