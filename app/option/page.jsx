@@ -197,26 +197,25 @@ const [draftChoice, setDraftChoice] = useState(null);
     }
   }, [router]);
 
-  const totalPrice = useMemo(() => {
-    return (        
-      (selectedSpa ? 500 : 0) +
-      (selectedMag ? 1000 : 0) +
-      (selectedToksen ? 1000 : 0) +
-      (selectedShape === "shape-30" ? 4000 : 0) +
-      (selectedShape === "shape-60" ? 6500 : 0) +
-      (selectedHead ? 3000 : 0) +
-      (selectedkenkou ? 3000 : 0)
-    );
-  }, [selectedSpa, selectedMag, selectedToksen, selectedShape, selectedHead, selectedkenkou]);
+  const newOptionTotals = useMemo(() => {
+  return Object.entries(selectedOptions).reduce(
+    (totals, [optionId, choiceId]) => {
+      const choice = OPTION_DETAILS[optionId]?.choices.find(
+        (item) => item.id === choiceId
+      );
 
-  const totalMinutes = useMemo(() => {
-    return (
-      (selectedShape === "shape-30" ? 30 : 0) +
-      (selectedShape === "shape-60" ? 60 : 0) +
-      (selectedHead ? 30 : 0) +
-      (selectedkenkou ? 30 : 0)
-    );
-  }, [selectedShape, selectedHead, selectedkenkou]);
+      if (choice) {
+        totals.price += choice.price;
+        totals.minutes += choice.minutes;
+      }
+
+      return totals;
+    },
+    { price: 0, minutes: 0 }
+  );
+}, [selectedOptions]);
+ const totalPrice = newOptionTotals.price;
+  const totalMinutes = newOptionTotals.minutes;
 
   const handleBack = () => {
     router.back();
