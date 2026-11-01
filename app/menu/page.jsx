@@ -242,7 +242,7 @@ export default function MenuPage() {
 
               {/*
               <img
-                src="/images/bunner-oil.png"
+                src="/images/banner-oil.png"
                 alt="深整コース"
                 style={styles.sectionBanner}
               />
