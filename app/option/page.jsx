@@ -41,7 +41,7 @@ const OPTION_DETAILS = {
     description:
       "マグバームを使用して首～肩の筋肉をしっかりゆるめて流します。首肩の慢性的なコリやハリ、痛みや疲れが気になる方に。",
     choices: [
-      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
+      { id: "within", label: "コース時間内に使用", price: 1000, minutes: 0 },
     ],
   },
    head: {
@@ -50,7 +50,7 @@ const OPTION_DETAILS = {
     choices: [
   {
     id: "within",
-    label: "頭部解放をメインに受けたい方向け",
+    label: "コース時間内で施術(30分)",
     price: 1000,
     minutes: 0,
     description:
@@ -58,7 +58,7 @@ const OPTION_DETAILS = {
   },
   {
     id: "extra",
-    label: "整体も頭部解放もしっかり受けたい方",
+    label: "コース時間にプラス",
     price: 3000,
     minutes: 30,
     description:
@@ -70,15 +70,15 @@ const OPTION_DETAILS = {
     description:
       "横向きの姿勢で肩甲骨まわりや胸まわりの筋肉をしっかり弛め、巻き肩や姿勢の改善へと導きます。",
     choices: [
-      { id: "within", label: "コース時間内で30分施術", price: 1000, minutes: 0 },
-      { id: "extra", label: "コース時間+30分", price: 3000, minutes: 30 },
+      { id: "within", label: "コース時間内で施術(30分)", price: 1000, minutes: 0 },
+      { id: "extra", label: "コース時間にプラス", price: 3000, minutes: 30 },
     ],
   },
     lowerback: {
     description:
       "腰のつらさに関わる筋肉の緊張やバランスを確認し、腰まわりの負担軽減を目指してしっかり重点ケア！\n\n※骨格調整・ストレッチ・筋膜リリース等を、お身体の状態に合わせて組み合わせます。",
     choices: [
-      { id: "within", label: "コース時間内で30分施術", price: 1000, minutes: 0 },
+      { id: "within", label: "コース時間内で施術(30分)", price: 1000, minutes: 0 },
       { id: "extra", label: "コース時間+30分", price: 3000, minutes: 30 },
     ],
   },
@@ -110,7 +110,7 @@ const OPTION_DETAILS = {
     choices: [
       {
         id: "within",
-        label: "コース時間内で30分施術",
+        label: "コース時間内で施術(30分)",
         price: 1000,
         minutes: 0,
         description:
