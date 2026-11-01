@@ -60,7 +60,7 @@ function cleanCourseName(name) {
 }
 
 function isDeepCourseName(name) {
-  return String(name || "").includes("深整");
+  return String(name || "").includes("オイル＆整体");
 }
 
 function priceTextFromParam(value) {
