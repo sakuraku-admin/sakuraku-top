@@ -237,6 +237,11 @@ export default function MenuPage() {
 
               <div style={styles.sectionGap} />
 
+              <img
+  src="/images/banner-order.png"
+  alt="オーダーメイド整体"
+  style={styles.sectionBanner}
+/>
              <img
  　　　　　　 src="/images/banner-oil.png"
 　　　　　　  alt="オイル＆整体コース"
