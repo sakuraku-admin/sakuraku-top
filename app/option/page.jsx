@@ -626,6 +626,7 @@ const [draftChoice, setDraftChoice] = useState(null);
 </section> 
           {openOption && (
   <div
+    onClick={() => setOpenOption(null)}
     style={{
       position: "fixed",
       inset: 0,
@@ -638,6 +639,7 @@ const [draftChoice, setDraftChoice] = useState(null);
     }}
   >
     <div
+      onClick={(e) => e.stopPropagation()}
       style={{
         background: "#fffdf8",
         borderRadius: "20px",
