@@ -132,9 +132,9 @@ function DeepOptionContent() {
               <p style={styles.headerText}>
                 ご希望の施術や気になる部位をお選び下さい。(複数選択可◎)
                 <br />
-  　　　　　　　　コース時間内で、お身体の状態に合わせて組み合わせます。
+                コース時間内で、お身体の状態に合わせて組み合わせます。
   　　　　　　　<br />
-  　　　　　　　追加料金はかかりません。
+                追加料金はかかりません。
               </p>
             </div>
 
@@ -306,6 +306,7 @@ const styles = {
   headerText: {
     fontSize: "13px",
     lineHeight: 1.8,
+    textAlign: "center",
     color: "rgba(90, 58, 44, 0.84)",
     margin: 0,
   },
