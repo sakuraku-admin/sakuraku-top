@@ -4,6 +4,149 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const USER_STORAGE_KEY = "sakurakuUser";
+const OPTION_GROUPS = [
+  {
+    title: "✿ 季節・期間限定",
+    items: [
+      { id: "warm", name: "🍒 よもぎ温活＆チェリーストーン" },
+    ],
+  },
+  {
+    title: "✿ お悩み・集中ケア",
+    items: [
+      { id: "neck", name: "首肩集中" },
+      { id: "head", name: "頭部解放 🍀" },
+      { id: "shoulder", name: "肩甲骨はがし" },
+      { id: "lowerback", name: "腰痛撃退 ⚡" },
+      { id: "belly", name: "お腹ケア" },
+      { id: "feet", name: "足裏ふわり 🌸" },
+    ],
+  },
+  {
+    title: "✿ 特別ケア・施術技法",
+    items: [
+      { id: "toksen", name: "トークセン" },
+    ],
+  },
+];
+const OPTION_DETAILS = {
+  warm: {
+    description:
+      "よもぎ蒸し温座パッドでお腹まわりを、チェリーストーンピローで気になる箇所をじんわり温めます。2つの温もりに包まれながら、ゆったり整体をお楽しみください。",
+    choices: [
+      { id: "within", label: "施術時間内で追加", price: 500, minutes: 0 },
+    ],
+  },
+  neck: {
+    description:
+      "首から肩にかけて、マグクリームを使用したオイルトリートメントでじっくり筋肉をゆるめます。首肩のこりや張り、疲れが気になる方におすすめです。",
+    choices: [
+      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
+    ],
+  },
+   head: {
+    description:
+      "噛みしめ、めまい、耳鳴り、頭痛、お顔の歪みなどが気になる方に。お顔から頭部にかけて、筋膜リリースと調整を行い、こわばりをやさしくゆるめます。",
+    choices: [
+      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
+      { id: "extra", label: "30分延長して追加", price: 3000, minutes: 30 },
+    ],
+  },
+  shoulder: {
+    description:
+      "横向きの姿勢で肩甲骨まわりや胸まわりの筋肉をじっくりゆるめ、巻き肩や姿勢の改善へと導きます。",
+    choices: [
+      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
+      { id: "extra", label: "30分延長して追加", price: 3000, minutes: 30 },
+    ],
+  },
+    lowerback: {
+    description:
+      "腰のつらさに関わる筋肉の緊張やバランスを確認し、腰まわりの負担軽減を目指してしっかり重点ケア！\n\n※骨格調整・ストレッチ・筋膜リリース等を、お身体の状態に合わせて組み合わせます。",
+    choices: [
+      { id: "within", label: "施術時間内で追加", price: 1000, minutes: 0 },
+      { id: "extra", label: "30分延長して追加", price: 3000, minutes: 30 },
+    ],
+  },
+    belly: {
+    description:
+      "お腹の冷えや張り、胃腸まわりの不調が気になる方に。お悩みに合わせて、2種類のケアからお選びいただけます。",
+    choices: [
+      {
+        id: "stone",
+        label: "温石＆マグケア（30分延長）",
+        price: 4000,
+        minutes: 30,
+        description:
+          "お腹の冷えや緊張による張り、腹部・腰まわりのボディラインが気になる方に。温石でじんわり温めながら、マグバームを使用したオイルケアで丁寧にゆるめます。",
+      },
+      {
+        id: "bowel",
+        label: "腸もみ（30分延長）",
+        price: 3000,
+        minutes: 30,
+        description:
+          "便秘・下痢、食欲不振、膨満感などが気になる方に。整体の手技を用いて、お腹まわりの硬さや緊張を丁寧にゆるめます。",
+      },
+    ],
+  },
+    feet: {
+    description:
+      "足裏の疲れや硬さ、足首まわりのこわばりが気になる方に。ご希望に合わせて2種類のケアからお選びいただけます。",
+    choices: [
+      {
+        id: "within",
+        label: "施術時間内で追加",
+        price: 1000,
+        minutes: 0,
+        description:
+          "トークセンや叩打法を用いて、足首から足裏にかけて丁寧にゆるめ、バランスを整えます。",
+      },
+      {
+        id: "extra",
+        label: "30分延長して追加",
+        price: 3500,
+        minutes: 30,
+        description:
+          "トークセン・叩打法・骨格調整・筋膜リリースに加え、マグバームで足裏の腱膜や筋肉をじっくりゆるめます。ふんわり軽やかな足取りを目指すスペシャルケアです。",
+      },
+    ],
+  },
+    toksen: {
+    description:
+      "木槌の心地よい振動を利用して、慢性的なコリや筋肉のこわばりを丁寧にゆるめます。ご希望の施術範囲に合わせてお選びください。",
+    choices: [
+      {
+        id: "point",
+        label: "ちょい足しトークセン（1部位）",
+        price: 500,
+        minutes: 0,
+        description:
+          "気になる部位をピンポイントで集中ケア！木槌の心地よい振動を利用して、慢性的なコリや筋肉のこわばりを丁寧にゆるめます。",
+      },
+      {
+        id: "wide",
+        label: "広範囲トークセン（複数部位〜全身）",
+        price: 1000,
+        minutes: 0,
+        description:
+          "お身体の状態を確認しながら、気になる複数の部位をトークセンでじっくりケア。広範囲の筋肉のこわばりや慢性的なコリにアプローチします。",
+      },
+    ],
+  },
+    longOil: {
+    description:
+      "整体120分に、オイルトリートメント60分を追加するロングコース限定オプションです。整体とオイルケアをたっぷりお楽しみいただけます。",
+    choices: [
+      {
+        id: "extra",
+        label: "オイルトリートメント60分追加",
+        price: 6500,
+        minutes: 60,
+      },
+    ],
+  },
+};
 
 function OptionMenuContent() {
   const router = useRouter();
@@ -15,6 +158,9 @@ function OptionMenuContent() {
   const [selectedShape, setSelectedShape] = useState(null);
   const [selectedHead, setSelectedHead] = useState(false);
   const [selectedkenkou, setSelectedkenkou] = useState(false);
+  const [openOption, setOpenOption] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState({});
+const [draftChoice, setDraftChoice] = useState(null);
 
   useEffect(() => {
     try {
