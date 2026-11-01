@@ -692,7 +692,7 @@ const [draftChoice, setDraftChoice] = useState(null);
       />
       <strong>{choice.label}</strong>
 <div style={{ marginTop: "6px", color: "#8b6372" }}>
-  追加料金：{choice.price.toLocaleString()}円
+  {choice.price.toLocaleString()}円
 </div>
       {choice.description && (
         <p style={{ fontSize: "13px", lineHeight: 1.7, marginTop: "8px" }}>
