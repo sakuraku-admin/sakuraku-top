@@ -600,6 +600,17 @@ const [draftChoice, setDraftChoice] = useState(null);
           (item) => item.id === openOption
         )?.name}
       </h3>
+      <p
+  style={{
+    color: "#6b5548",
+    fontSize: "14px",
+    lineHeight: 1.8,
+    whiteSpace: "pre-line",
+    marginBottom: "20px",
+  }}
+>
+  {OPTION_DETAILS[openOption]?.description}
+</p>
     </div>
   </div>
 )}
