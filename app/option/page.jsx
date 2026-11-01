@@ -651,20 +651,7 @@ const [draftChoice, setDraftChoice] = useState(null);
         boxShadow: "0 8px 30px rgba(0,0,0,0.18)",
       }}
     >
-      <button
-        type="button"
-        onClick={() => setOpenOption(null)}
-        style={{
-          display: "block",
-          marginLeft: "auto",
-          border: "none",
-          background: "transparent",
-          fontSize: "24px",
-          cursor: "pointer",
-        }}
-      >
-        ×
-      </button>
+
       <h3 style={{ color: "#5a3a2c", marginBottom: "12px" }}>
         {OPTION_GROUPS.flatMap((group) => group.items).find(
           (item) => item.id === openOption
