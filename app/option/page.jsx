@@ -538,9 +538,6 @@ const [draftChoice, setDraftChoice] = useState(null);
           </>)}
 {/* 新オプションメニュー・仮設表示 */}
 <section style={{ marginTop: "24px", padding: "16px", background: "#fbe9e2", borderRadius: "20px" }}>
-  <h2 style={{ color: "#5a3a2c", fontSize: "20px", marginBottom: "16px" }}>
-    新オプションメニュー（仮）
-  </h2>
 
 {OPTION_GROUPS.map((group) => (
     <div key={group.title} style={{ marginBottom: "20px" }}>
