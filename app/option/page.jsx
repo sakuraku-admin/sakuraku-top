@@ -550,7 +550,15 @@ const [draftChoice, setDraftChoice] = useState(null);
           }}
         >
           <span>{item.name}</span>
-          <span style={{ color: "#b08372" }}>›</span>
+          <span style={{ color: "#b08372" }}>
+  {selectedOptions[item.id]
+    ? `${
+        OPTION_DETAILS[item.id]?.choices.find(
+          (choice) => choice.id === selectedOptions[item.id]
+        )?.label
+      } ✓`
+    : "未選択 ›"}
+</span>
         </div>
       ))}
     </div>
