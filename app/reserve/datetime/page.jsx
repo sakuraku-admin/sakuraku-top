@@ -232,7 +232,7 @@ function ReserveDateTimeContent() {
   const treatmentMinutes = baseTreatmentMinutes + optionMinutes;
 
  const displayMenuName =
-  typeParam === "shinsei" && selectedOptionsParam
+  typeParam === "oil" && selectedOptionsParam
     ? `${courseName}\n（カスタマイズ選択済）`
     : selectedOptionsParam
     ? `${courseName}＋${selectedOptionsParam}`
