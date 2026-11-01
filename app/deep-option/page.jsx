@@ -75,7 +75,7 @@ function DeepOptionContent() {
     const courseName = searchParams.get("courseName") || "オイル＆整体コース";
     const duration = searchParams.get("duration") || "";
     const price = searchParams.get("price") || "";
-    const type = searchParams.get("type") || "deep";
+    const type = searchParams.get("type") || "oil";
 
     const params = new URLSearchParams({
       courseId,
