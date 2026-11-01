@@ -336,7 +336,7 @@ function ReserveDateTimeContent() {
           padding: "0 0 12px 0",
         }}
       >
-        ←戻る
+        ⇦戻る
       </button>
 
       <h1 style={styles.title}>ご希望の日時をお選びください</h1>
