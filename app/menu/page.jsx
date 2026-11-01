@@ -238,7 +238,7 @@ export default function MenuPage() {
               <div style={styles.sectionGap} />
 
              <img
- 　　　　　　 src="/images/bunner-oil.png"
+ 　　　　　　 src="/images/banner-oil.png"
 　　　　　　  alt="オイル＆整体コース"
 　　　　　　  style={styles.sectionBanner}
 　　　　　　　/>
