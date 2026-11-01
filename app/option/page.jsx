@@ -28,6 +28,12 @@ const OPTION_GROUPS = [
       { id: "toksen", name: "トークセン" },
     ],
   },
+  {
+  title: "✿ ロングコース限定",
+  items: [
+    { id: "longOil", name: "オイルトリートメント60分追加 🌿" },
+  ],
+},
 ];
 const OPTION_DETAILS = {
   warm: {
@@ -165,7 +171,7 @@ const OPTION_DETAILS = {
 function OptionMenuContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isLongCourse = Number(searchParams.get("duration")) === 120;
+  const isLongCourse = parseInt(searchParams.get("duration") || "0", 10) === 120;
 
   const [selectedSpa, setSelectedSpa] = useState(false);
   const [selectedMag, setSelectedMag] = useState(false);
@@ -557,7 +563,7 @@ const [draftChoice, setDraftChoice] = useState(null);
 {/* 新オプションメニュー・仮設表示 */}
 <section style={{ marginTop: "0px", padding: "16px", background: "#fbe9e2", borderRadius: "20px" }}>
 
-{OPTION_GROUPS.map((group) => (
+  {OPTION_GROUPS.filter((group) => isLongCourse || group.title !== "✿ ロングコース限定").map((group) => (
     <div key={group.title} style={{ marginBottom: "20px" }}>
       <h3 style={{ color: "#b16f79", fontSize: "15px", marginBottom: "10px" }}>
         {group.title}
