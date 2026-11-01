@@ -168,7 +168,7 @@ export default function MenuPage() {
       router.push(`/option?${params.toString()}`);
       return;
     }
-    if (selectedMenu.type === "shinsei") {
+    if (selectedMenu.type === "oil") {
   router.push(`/deep-option?${params.toString()}`);
   return;
 }
