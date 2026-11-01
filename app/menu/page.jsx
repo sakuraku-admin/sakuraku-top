@@ -242,6 +242,29 @@ export default function MenuPage() {
   alt="オーダーメイド整体"
   style={styles.sectionBanner}
 />
+              <div style={styles.buttonGroup}>
+  <button
+    type="button"
+    onClick={() => setSelectedMenu({
+      id: "order-120",
+      type: "order",
+      categoryLabel: "オーダーメイド整体",
+      name: "120分",
+      duration: "120分",
+      price: "10000円",
+      shortDescription: "お身体に合わせた特別なお任せコース",
+      descriptionLines: [
+        "当日のお身体の状態やお悩みに合わせて",
+        "各種集中ケアを組み合わせて施術いたします",
+        "対象の集中ケア込み・追加料金なし",
+      ],
+      teaText: "ウェルカム／アフターティー付き",
+    })}
+    style={styles.menuButton}
+  >
+    <span style={styles.menuButtonText}>120分</span>
+  </button>
+</div>
              <img
  　　　　　　 src="/images/banner-oil.png"
 　　　　　　  alt="オイル＆整体コース"
