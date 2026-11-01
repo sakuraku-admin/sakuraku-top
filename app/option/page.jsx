@@ -600,6 +600,25 @@ const [draftChoice, setDraftChoice] = useState(null);
   ))}
 </section>
          <section style={styles.summaryBox}>
+           <h3 style={styles.summaryTitle}>選択中のオプション</h3>
+
+<div style={styles.summaryList}>
+  {Object.entries(selectedOptions).map(([optionId, choiceId]) => {
+    const option = OPTION_GROUPS
+      .flatMap((group) => group.items)
+      .find((item) => item.id === optionId);
+
+    const choice = OPTION_DETAILS[optionId]?.choices.find(
+      (item) => item.id === choiceId
+    );
+
+    return (
+      <div key={optionId}>
+        ・{option?.name}（{choice?.label}）
+      </div>
+    );
+  })}
+</div>
   <div style={styles.summaryBottom}>
     <div>
       <div style={styles.summaryLabel}>追加料金</div>
