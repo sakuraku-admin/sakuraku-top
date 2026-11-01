@@ -265,6 +265,8 @@ export default function MenuPage() {
     <span style={styles.menuButtonText}>120分</span>
   </button>
 </div>
+              <div style={styles.sectionGap} />
+              
              <img
  　　　　　　 src="/images/banner-oil.png"
 　　　　　　  alt="オイル＆整体コース"
