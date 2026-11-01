@@ -327,6 +327,19 @@ const [draftChoice, setDraftChoice] = useState(null);
  　　　　　 気になるメニューをタップして詳細を見る
 　　　　　　</p>
           </div>
+          {Object.keys(selectedOptions).length === 0 && (
+          <button
+  type="button"
+  onClick={handleNext}
+  style={{
+    ...styles.nextButton,
+    marginTop: "20px",
+    marginBottom: "20px",
+  }}
+>
+  オプションを選択せず次へ
+</button>
+      )}
 {false && (<>
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・オプションなし</h2>
