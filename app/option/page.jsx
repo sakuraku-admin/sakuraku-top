@@ -151,6 +151,7 @@ const OPTION_DETAILS = {
 function OptionMenuContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isLongCourse = Number(searchParams.get("duration")) === 120;
 
   const [selectedSpa, setSelectedSpa] = useState(false);
   const [selectedMag, setSelectedMag] = useState(false);
@@ -521,39 +522,21 @@ const [draftChoice, setDraftChoice] = useState(null);
     新オプションメニュー（仮）
   </h2>
 
-  {[
-    {
-      title: "✿ 季節・期間限定",
-      items: ["チェリーストーンピロー🍒"],
-    },
-    {
-      title: "✿ お悩み・部位別ケア",
-      items: [
-        "首肩集中",
-        "頭部解放 🍀",
-        "肩甲骨はがし",
-        "腰痛撃退 ⚡",
-        "お腹ケア",
-        "足裏ふわり 🌸",
-      ],
-    },
-    {
-      title: "✿ 特別ケア・施術技法",
-      items: [
-        "トークセン",
-        "マグバーム＆ホットストーン",
-      ],
-    },
-  ].map((group) => (
+{OPTION_GROUPS.map((group) => (
     <div key={group.title} style={{ marginBottom: "20px" }}>
       <h3 style={{ color: "#b16f79", fontSize: "15px", marginBottom: "10px" }}>
         {group.title}
       </h3>
 
       {group.items.map((item) => (
-        <div
-          key={item}
-          style={{
+  <div
+  key={item.id}
+  onClick={() => {
+    setOpenOption(item.id);
+    setDraftChoice(selectedOptions[item.id] || null);
+  }}
+  style={{
+    cursor: "pointer",
             background: "#fffaf7",
             borderRadius: "12px",
             padding: "14px 16px",
@@ -566,13 +549,60 @@ const [draftChoice, setDraftChoice] = useState(null);
             alignItems: "center",
           }}
         >
-          <span>{item}</span>
+          <span>{item.name}</span>
           <span style={{ color: "#b08372" }}>›</span>
         </div>
       ))}
     </div>
   ))}
 </section>
+          {openOption && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0, 0, 0, 0.45)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 1000,
+      padding: "20px",
+    }}
+  >
+    <div
+      style={{
+        background: "#fffdf8",
+        borderRadius: "20px",
+        padding: "24px",
+        width: "100%",
+        maxWidth: "440px",
+        maxHeight: "85vh",
+        overflowY: "auto",
+        boxShadow: "0 8px 30px rgba(0,0,0,0.18)",
+      }}
+    >
+      <button
+        type="button"
+        onClick={() => setOpenOption(null)}
+        style={{
+          display: "block",
+          marginLeft: "auto",
+          border: "none",
+          background: "transparent",
+          fontSize: "24px",
+          cursor: "pointer",
+        }}
+      >
+        ×
+      </button>
+      <h3 style={{ color: "#5a3a2c", marginBottom: "12px" }}>
+        {OPTION_GROUPS.flatMap((group) => group.items).find(
+          (item) => item.id === openOption
+        )?.name}
+      </h3>
+    </div>
+  </div>
+)}
 
           </div>
         </div>
