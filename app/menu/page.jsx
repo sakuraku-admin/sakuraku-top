@@ -275,7 +275,7 @@ export default function MenuPage() {
             </button>
 
             <div style={styles.popupHeader}>
-              <div style={{ ...styles.popupHeaderLabel, background: selectedMenu?.type === "shinsei" ? "rgba(255, 200, 190, 0.7)" : "rgba(200, 230, 210, 0.7)" }}>
+              <div style={{ ...styles.popupHeaderLabel, background: selectedMenu?.type === "oil" ? "rgba(255, 200, 190, 0.7)" : "rgba(200, 230, 210, 0.7)" }}>
                 {selectedMenu.categoryLabel}
               </div>
             </div>
