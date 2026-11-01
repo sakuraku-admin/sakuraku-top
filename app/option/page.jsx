@@ -611,6 +611,93 @@ const [draftChoice, setDraftChoice] = useState(null);
 >
   {OPTION_DETAILS[openOption]?.description}
 </p>
+     <div style={{ display: "grid", gap: "10px", marginBottom: "20px" }}>
+  {OPTION_DETAILS[openOption]?.choices.map((choice) => (
+    <label
+      key={choice.id}
+      style={{
+        display: "block",
+        padding: "14px",
+        border: draftChoice === choice.id
+          ? "2px solid #b16f79"
+          : "1px solid #e5d6cf",
+        borderRadius: "12px",
+        background: draftChoice === choice.id ? "#fff0f2" : "#ffffff",
+        cursor: "pointer",
+      }}
+    >
+      <input
+        type="radio"
+        name="optionChoice"
+        checked={draftChoice === choice.id}
+        onChange={() => setDraftChoice(choice.id)}
+        style={{ marginRight: "8px" }}
+      />
+      <strong>{choice.label}</strong>
+      <div style={{ marginTop: "6px", color: "#8b6372" }}>
+        ＋{choice.price.toLocaleString()}円
+        {choice.minutes > 0 && ` ／ ＋${choice.minutes}分`}
+      </div>
+      {choice.description && (
+        <p style={{ fontSize: "13px", lineHeight: 1.7, marginTop: "8px" }}>
+          {choice.description}
+        </p>
+      )}
+    </label>
+  ))}
+</div>
+      <button
+  type="button"
+  disabled={!draftChoice}
+  onClick={() => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [openOption]: draftChoice,
+    }));
+    setOpenOption(null);
+  }}
+  style={{
+    width: "100%",
+    padding: "14px",
+    border: "none",
+    borderRadius: "12px",
+    background: draftChoice ? "#b16f79" : "#d8ccc8",
+    color: "#ffffff",
+    fontSize: "16px",
+    fontWeight: 700,
+    cursor: draftChoice ? "pointer" : "not-allowed",
+  }}
+>
+  この内容で決定
+</button>
+      {selectedOptions[openOption] && (
+  <button
+    type="button"
+    onClick={() => {
+      setSelectedOptions((prev) => {
+        const updated = { ...prev };
+        delete updated[openOption];
+        return updated;
+      });
+      setDraftChoice(null);
+      setOpenOption(null);
+    }}
+    style={{
+      display: "block",
+      width: "100%",
+      marginTop: "12px",
+      padding: "10px",
+      border: "none",
+      background: "transparent",
+      color: "#8b6372",
+      fontSize: "14px",
+      textDecoration: "underline",
+      cursor: "pointer",
+    }}
+  >
+    このオプションを取り消す
+  </button>
+)}
     </div>
   </div>
 )}
