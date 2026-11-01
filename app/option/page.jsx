@@ -253,18 +253,25 @@ const [draftChoice, setDraftChoice] = useState(null);
     const price = searchParams.get("price") || "";
     const type = searchParams.get("type") || "seitai";
 
-    const selectedOptions = [];
-    if (selectedSpa) selectedOptions.push("よもぎ蒸しパッド＆チェリーストーンピロー");   
-    if (selectedMag) selectedOptions.push("マグクリーム（塗布）");
-    if (selectedToksen) selectedOptions.push("トークセン");
-    if (selectedShape === "shape-30") {
-      selectedOptions.push("マグバーム＆ホットストーン（30分）");
-    }
-    if (selectedShape === "shape-60") {
-      selectedOptions.push("マグバーム＆ホットストーン（60分）");
-    }
-    if (selectedHead) selectedOptions.push("頭部解放");
-    if (selectedkenkou) selectedOptions.push("肩甲骨はがし");
+    const selectedOptionLabels = Object.entries(selectedOptions)
+  .map(([optionId, choiceId]) => {
+    const option = OPTION_GROUPS
+      .flatMap((group) => group.items)
+      .find((item) => item.id === optionId);
+
+    const choice = OPTION_DETAILS[optionId]?.choices.find(
+      (item) => item.id === choiceId
+    );
+
+    const optionName =
+      option?.name ||
+      (optionId === "longOil" ? "オイルトリートメント60分追加" : "");
+
+    if (!optionName || !choice) return null;
+
+    return `${optionName}（${choice.label}）`;
+  })
+  .filter(Boolean);
 
     const params = new URLSearchParams({
       courseId,
@@ -274,7 +281,7 @@ const [draftChoice, setDraftChoice] = useState(null);
       type,
       optionMinutes: String(totalMinutes),
       optionPrice: String(totalPrice),
-      selectedOptions: selectedOptions.join("、"),
+      selectedOptions: selectedOptionLabels.join("、"),
     });
 
     router.push(`/reserve/datetime?${params.toString()}`);
