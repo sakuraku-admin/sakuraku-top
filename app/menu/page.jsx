@@ -55,18 +55,17 @@ const menuItems = [
     name: "90分",
     duration: "90分",
     price: "9500円",
-    shortDescription: "お辛い部位の集中ケアに",
-    customAdjustLines: [
-      "慢性的な痛みや気になる症状のある方、",
-      "お久しぶりの方にも◎",
-    ],
-    descriptionLines: [
-      "よもぎ蒸しパッド",
-      "トークセン(深部のコリ、ハリに)",
-      "整体・オイル・マグバーム・ホットストーン",
-      "お身体の状態に合わせて最適な組み合わせで施術を行います",
-    ],
-    teaText: "ウェルカム／アフターティー付き",
+    shortDescription: "オイルを中心に全身を整える",
+　　customAdjustLines: [
+  "オイルトリートメントを中心に、",
+  "お身体に合わせて整体も組み合わせます",
+　],
+　descriptionLines: [
+  "よもぎ蒸しパッド",
+  "トークセン・整体・マグバーム・ホットストーン",
+  "お身体の状態に合わせて最適な組み合わせで施術を行います",
+],
+teaText: "ウェルカム／アフターティー付き",
   },
   {
     id: "oil-120",
@@ -75,20 +74,18 @@ const menuItems = [
     name: "120分",
     duration: "120分",
     price: "12000円",
-    shortDescription: "深部からほぐし整える",
-    customAdjustLines: [
-      "慢性的な不調の深部にアプローチし",
-      "温め、巡らせ、丁寧に整えます",
-      "深整コースをよりしっかり味わいたい方に◎",
-    ],
-    descriptionLines: [
-      "よもぎ蒸しパッド",
-      "トークセン(深部のコリ、ハリに)",
-      "整体・オイル・マグバーム・ホットストーン",
-      "お身体の状態に合わせて最適な組み合わせで施術を行います",
-    ],
-    teaText: "ウェルカム／アフターティー付き",
-    recommend: true,
+    shortDescription: "オイルで全身をじっくりケア",
+　　customAdjustLines: [
+  "オイルトリートメントを中心に、",
+  "お身体に合わせて整体も組み合わせます",
+　　],
+　　descriptionLines: [
+  "よもぎ蒸しパッド",
+  "トークセン・整体・マグバーム・ホットストーン",
+  "お身体の状態に合わせて最適な組み合わせで施術を行います",
+　　],
+　　teaText: "ウェルカム／アフターティー付き",
+　　recommend: true,
   },
   {
     id: "shinsei-kaihou",
@@ -240,13 +237,11 @@ export default function MenuPage() {
 
               <div style={styles.sectionGap} />
 
-              {/*
-              <img
-                src="/images/banner-oil.png"
-                alt="深整コース"
-                style={styles.sectionBanner}
-              />
-              */}
+             <img
+ 　　　　　　 src="/images/bunner-oil.png"
+　　　　　　  alt="オイル＆整体コース"
+　　　　　　  style={styles.sectionBanner}
+　　　　　　　/>
 
               <div style={styles.buttonGroup}>
                 {shinseiMenus.map((item) => (
