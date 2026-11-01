@@ -387,7 +387,7 @@ function ReserveConfirmContent() {
             )}
           </div>
 
-          {!isDeepCourse && (
+          {(!isDeepCourse || hasOptions) && (
             <>
               <div style={styles.divider} />
 
