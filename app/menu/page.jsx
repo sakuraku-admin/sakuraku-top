@@ -242,7 +242,7 @@ export default function MenuPage() {
 
               {/*
               <img
-                src="/images/banner-premiamshinsei.png"
+                src="/images/bunner-oil.png"
                 alt="深整コース"
                 style={styles.sectionBanner}
               />
