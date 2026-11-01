@@ -323,9 +323,6 @@ const [draftChoice, setDraftChoice] = useState(null);
           <div style={styles.headerArea}>
             <p style={styles.headerSub}>OPTION MENU</p>
             <h1 style={styles.headerTitle}>オプション選択</h1>
-            <p style={styles.headerText}>
- 　　　　　 気になるメニューをタップして詳細を見る
-　　　　　　</p>
           </div>
           {Object.keys(selectedOptions).length === 0 && (
           <button
