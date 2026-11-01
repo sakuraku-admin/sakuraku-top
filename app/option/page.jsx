@@ -327,7 +327,7 @@ const [draftChoice, setDraftChoice] = useState(null);
  　　　　　 気になるメニューをタップして詳細を見る
 　　　　　　</p>
           </div>
-
+{false && (
           <section style={styles.block}>
             <h2 style={styles.sectionTitle}>・オプションなし</h2>
             <p style={styles.description}>
@@ -535,7 +535,7 @@ const [draftChoice, setDraftChoice] = useState(null);
               この内容で次へ
             </button>
           </section>
-          
+           )}
 {/* 新オプションメニュー・仮設表示 */}
 <section style={{ marginTop: "24px", padding: "16px", background: "#fbe9e2", borderRadius: "20px" }}>
   <h2 style={{ color: "#5a3a2c", fontSize: "20px", marginBottom: "16px" }}>
@@ -584,6 +584,31 @@ const [draftChoice, setDraftChoice] = useState(null);
     </div>
   ))}
 </section>
+         <section style={styles.summaryBox}>
+  <div style={styles.summaryBottom}>
+    <div>
+      <div style={styles.summaryLabel}>追加料金</div>
+      <div style={styles.summaryPrice}>
+        {totalPrice.toLocaleString()}円
+      </div>
+    </div>
+
+    <div style={styles.summaryRight}>
+      <div style={styles.summaryLabel}>追加時間</div>
+      <div style={styles.summaryMinutes}>
+        ＋{totalMinutes}分
+      </div>
+    </div>
+  </div>
+
+  <button
+    type="button"
+    onClick={handleNext}
+    style={styles.nextButton}
+  >
+    この内容で次へ
+  </button>
+</section> 
           {openOption && (
   <div
     style={{
