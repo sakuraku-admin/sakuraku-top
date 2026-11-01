@@ -256,22 +256,7 @@ export default function MenuPage() {
                     onClick={() => setSelectedMenu(item)}
                     style={styles.menuButton}
                   >
-                    <div style={styles.buttonInner}>
-                      <span
-                        style={{
-                          ...styles.deepMenuName,
-                          ...(item.name === "回復" ? styles.deepKaifuku : {}),
-                          ...(item.name === "温巡" ? styles.deepOnjun : {}),
-                          ...(item.name === "解放" ? styles.deepKaihou : {}),
-                        }}
-                      >
-                        {item.name}
-                      </span>
-
-                      <span style={styles.deepDuration}>（{item.duration}）</span>
-                    </div>
-
-                    {item.recommend && <span style={styles.star}>★</span>}
+                   <span style={styles.menuButtonText}>{item.name}</span>
                   </button>
                 ))}
               </div>
