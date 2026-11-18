@@ -73,11 +73,13 @@ function isActiveReservation(reservation) {
   return reservation?.status !== "cancelled";
 }
 
+
 function sortReservationsByDateTime(a, b) {
-  const aKey = `${a?.date || ""} ${a?.startTime || ""}`;
-  const bKey = `${b?.date || ""} ${b?.startTime || ""}`;
-  return aKey.localeCompare(bKey);
+  const aKey = `${a?.date || a?.reserveDate || ""} ${a?.startTime || a?.reserveTime || ""}`;
+  const bKey = `${b?.date || b?.reserveDate || ""} ${b?.startTime || b?.reserveTime || ""}`;
+  return bKey.localeCompare(aKey);
 }
+
 
 export default function ReserveCheckPage() {
   const [reservations, setReservations] = useState([]);
