@@ -23,10 +23,14 @@ function formatReservationHistory(item) {
   };
 }
 
+
 function sortHistoryNewestFirst(a, b) {
-  if (!a.createdAt || !b.createdAt) return 0;
-  return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+  const dateA = String(a.date || "").replace(/\D/g, "");
+  const dateB = String(b.date || "").replace(/\D/g, "");
+
+  return dateB.localeCompare(dateA);
 }
+
 
 export default function ReserveHistoryPage() {
   const [historyList, setHistoryList] = useState([]);
